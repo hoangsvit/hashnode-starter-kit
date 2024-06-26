@@ -296,3 +296,9 @@ img.image--right {
     @apply ring-blue-600 ring-offset-white dark:ring-offset-slate-800;
   }
 }
+
+/* Blog - Content */
+div#post-content-wrapper::first-letter {
+  font-size: 200%;
+  color: #eb6b54;
+}
