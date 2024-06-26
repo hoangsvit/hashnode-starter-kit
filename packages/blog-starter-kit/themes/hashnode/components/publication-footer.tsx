@@ -59,7 +59,7 @@ function PublicationFooter(props: any) {
           </>
         ) : (
           <div className="flex flex-col items-center">
-            <Link
+            {/* <Link
               aria-label="Publish with Hashnode"
               className="mb-4 flex flex-row items-center rounded-lg border border-slate-300 bg-white p-3 font-heading font-bold tracking-wide text-slate-600 transition-colors duration-75 hover:border-slate-400 hover:text-slate-900 dark:border-slate-800 dark:bg-black dark:text-slate-300 dark:hover:border-slate-500 dark:hover:text-white"
               href="https://hashnode.com/onboard?unlock-blog=true&source=blog-footer"
@@ -68,11 +68,11 @@ function PublicationFooter(props: any) {
                 <HashnodeLogoIconV2 className="h-6 w-6 fill-current" />
               </span>
               <span>Publish with Hashnode</span>
-            </Link>
+            </Link> */}
             <p className="text-sm text-slate-600 dark:text-slate-300">
               Powered by{' '}
-              <a aria-label="Hashnode" href="https://hashnode.com?source=blog-footer" className="underline">
-                Hashnode
+              <a aria-label="Hashnode" href="https://eplus.dev?source=blog-footer" className="underline">
+                ePlus.DEV
               </a>{' '}
               - Home for tech writers and readers
             </p>
