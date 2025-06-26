@@ -5,6 +5,20 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "pnpm install",
+			"type": "shell",
+			"command": "pnpm install --frozen-lockfile",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			}
+		},
+		{
 			"label": "hashnode",
 			"type": "shell",
 			"command": "pnpm dev",
