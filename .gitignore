@@ -39,4 +39,5 @@ next-env.d.ts
 
 # vscode
 .vscode/*
+!.vscode/tasks.json
 !.vscode/extensions.json
