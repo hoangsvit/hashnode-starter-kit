@@ -1,17 +1,26 @@
+import { useEffect, useState } from 'react';
 // MobX Stuff
 import Image from 'next/legacy/image';
-
-import { HashnodeLogoIconV2 } from './icons/svgs';
 import { resizeImage } from '../utils/image';
 import Link from 'next/link';
 
-// type PublicationFooterProps = Pick<Publication, 'title' | 'postsCount' | 'imprint' | 'isTeam'> &
-//   Pick<Publication['preferences'], 'disableFooterBranding' | 'logo' | 'darkMode'> & {
-//     authorName: string;
-//   }; // TODO: types need to be fixed
+// ... (giữ nguyên phần code cũ)
 
 function PublicationFooter(props: any) {
   const { isTeam, authorName, title, imprint, disableFooterBranding, logo } = props;
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowButton(window.scrollY > 200);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <footer className="blog-footer-area -mt-px border-t bg-slate-100 px-5 py-10 text-center text-slate-800 dark:border-slate-800 dark:bg-black dark:text-slate-500 md:px-10 md:py-12 lg:py-20">
@@ -20,10 +29,8 @@ function PublicationFooter(props: any) {
           <p className="mb-4 text-center text-sm font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
             Impressum
           </p>
-          {/* eslint-disable-next-line react/self-closing-comp */}
           <div
             className="prose mx-auto w-full dark:prose-dark"
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: `${imprint}` }}
           ></div>
         </section>
@@ -69,6 +76,16 @@ function PublicationFooter(props: any) {
           </div>
         )}
       </div>
+      {showButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 rounded-full bg-slate-700 bg-opacity-70 p-3 text-white shadow-lg hover:bg-slate-900 hover:bg-opacity-90 transition backdrop-blur-sm"
+          style={{ pointerEvents: 'auto' }}
+          aria-label="Top"
+        >
+          ↑ Top
+        </button>
+      )}
     </footer>
   );
 }
