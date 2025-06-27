@@ -13,7 +13,6 @@ import {
 	DraftByIdQuery,
 	DraftByIdQueryVariables,
 	DraftFragment,
-	Post,
 	PublicationByHostDocument,
 	PublicationByHostQuery,
 	PublicationByHostQueryVariables,
