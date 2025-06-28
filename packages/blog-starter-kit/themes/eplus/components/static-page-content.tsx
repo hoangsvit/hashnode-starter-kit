@@ -8,7 +8,7 @@ function StaticPageContent(props: Props) {
   const { content, title } = props.pageContent;
 
   return (
-    <div className={`blog-page-card pb-32`}>
+    <div className={`blog-page-card`}>
       <div
         className={`blog-page-content prose prose-lg mx-auto break-words tracking-tight dark:prose-dark xl:prose-xl`}
       >
