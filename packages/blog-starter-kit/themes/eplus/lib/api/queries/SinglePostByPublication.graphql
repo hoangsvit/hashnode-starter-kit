@@ -152,4 +152,15 @@ fragment PostFull on Post {
 			}
 		}
 	}
+	likedBy(first: 25) {
+		totalDocuments
+		edges {
+			node {
+				id
+				name
+				username
+				profilePicture
+			}
+		}
+	}
 }

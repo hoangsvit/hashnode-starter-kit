@@ -34,5 +34,8 @@ fragment MorePostsEdge on PostEdge {
 		comments(first: 0) {
 			totalDocuments
 		}
+		likedBy(first: 0) {
+			totalDocuments
+		}
 	}
 }
