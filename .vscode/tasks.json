@@ -19,12 +19,12 @@
 			}
 		},
 		{
-			"label": "hashnode",
+			"label": "eplus",
 			"type": "shell",
 			"command": "pnpm dev",
 			"group": "none",
 			"options": {
-				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/hashnode"
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/eplus"
 			},
 			"presentation": {
 				"reveal": "always",
@@ -36,9 +36,23 @@
 			}
 		},
 		{
-			"label": "hashnode - build",
+			"label": "eplus - build",
 			"type": "shell",
 			"command": "pnpm build",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/eplus"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			}
+		},
+		{
+			"label": "hashnode",
+			"type": "shell",
+			"command": "pnpm dev",
 			"group": "none",
 			"options": {
 				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/hashnode"
@@ -64,37 +78,9 @@
 			}
 		},
 		{
-			"label": "enterprise - build",
-			"type": "shell",
-			"command": "pnpm build",
-			"group": "none",
-			"options": {
-				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/enterprise"
-			},
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "one"
-			}
-		},
-		{
 			"label": "personal",
 			"type": "shell",
 			"command": "pnpm dev",
-			"group": "none",
-			"options": {
-				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/personal"
-			},
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "one"
-			}
-		},
-		{
-			"label": "personal - build",
-			"type": "shell",
-			"command": "pnpm build",
 			"group": "none",
 			"options": {
 				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/personal"
