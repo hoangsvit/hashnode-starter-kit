@@ -1,6 +1,5 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { useEffect } from 'react';
-
 import { CommentSVGV2, LoveSVG } from './icons/svgs';
 import { kFormatter } from '../utils/image';
 import { Separator } from './separator-root';
@@ -11,15 +10,13 @@ import PostShareWidget from './post-share-widget';
 
 
 function PostFloatingMenu(props: {
-  isPublicationPost: boolean;
-  post: PostFullFragment;
-  shareText: string;
-  showPaymentModal?: () => void;
-  openComments?: () => void;
-  list: any[];
+  readonly post: PostFullFragment;
+  readonly shareText: string;
+  readonly showPaymentModal?: () => void;
+  readonly openComments?: () => void;
+  readonly list: readonly any[];
 }) {
   const {
-    isPublicationPost,
     post,
     shareText,
     showPaymentModal,
@@ -66,11 +63,10 @@ function PostFloatingMenu(props: {
   }, []);
 
   // Best practice to have the accessible name being with the visible text (comment count)
+  const commentSuffix = post?.responseCount === 1 ? '' : 's';
   const commentBtnAccessibleLabel =
     post?.responseCount > 0
-      ? `${kFormatter(post.responseCount + (post.replyCount || 0))} comment${
-          post.responseCount === 1 ? '' : 's'
-        }, open the comments`
+      ? `${kFormatter(post.responseCount + (post.replyCount || 0))} comment${commentSuffix}, open the comments`
       : 'Open comments';
 
   return (
@@ -112,21 +108,19 @@ function PostFloatingMenu(props: {
                   aria-label="Like this post"
                   className="outline-none! flex cursor-pointer items-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
-                  <>
-                    <span className="rounded-full p-2">
-                      <LoveSVG className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
-                    </span>
-                    {post?.reactionCount > 0 && (
-                      <span className="ml-0.5 pr-2">{kFormatter(post.reactionCount)}</span>
-                    )}
-                  </>
+                  <span className="rounded-full p-2">
+                    <LoveSVG className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                  </span>
+                  {post?.reactionCount > 0 && (
+                    <span className="ml-0.5 pr-2">{kFormatter(post.reactionCount)}</span>
+                  )}
                 </button>
               </div>
             )}
           </PostFloatingBarTooltipWrapper>
 
           <Separator className="mx-2 h-5" />
-          
+
           <PostFloatingBarTooltipWrapper label="Write a comment">
             {post && (
               <div>
@@ -136,14 +130,12 @@ function PostFloatingMenu(props: {
                   aria-label={commentBtnAccessibleLabel}
                   className="outline-none! flex cursor-pointer items-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
-                  <>
-                    <span className="rounded-full p-2">
-                      <CommentSVGV2 className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
-                    </span>
-                    {post?.responseCount > 0 && (
-                      <span className="ml-0.5 pr-2">{kFormatter(post.responseCount + (post.replyCount || 0))}</span>
-                    )}
-                  </>
+                  <span className="rounded-full p-2">
+                    <CommentSVGV2 className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                  </span>
+                  {post?.responseCount > 0 && (
+                    <span className="ml-0.5 pr-2">{kFormatter(post.responseCount + (post.replyCount || 0))}</span>
+                  )}
                 </button>
               </div>
             )}
