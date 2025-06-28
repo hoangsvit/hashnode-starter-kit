@@ -9,10 +9,8 @@ export default function Custom404() {
       </Head>
       <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
-          <p className="text-base font-semibold text-indigo-600">404</p>
-          <h1 className="mt-4 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-            Page not found
-          </h1>
+        <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500">404</h1>
+        <p className="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">Something&#39;s missing.</p>
           <p className="mt-6 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
             Sorry, we couldn’t find the page you’re looking for.
           </p>
