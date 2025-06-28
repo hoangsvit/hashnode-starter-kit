@@ -3745,12 +3745,6 @@ type Post implements Node {
     """
     sortBy: PostCommentSortBy
   ): PostCommentConnection!
-  likedBy(
-    """A cursor to the last item of the previous page."""
-    after: String
-    """The number of users to be returned per page."""
-    first: Int!
-  ): PostLikerConnection!
   """
   Content of the post. Contains HTML and Markdown version of the post content.
   """
