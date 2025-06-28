@@ -4,8 +4,6 @@ import Image from 'next/legacy/image';
 import { resizeImage } from '../utils/image';
 import Link from 'next/link';
 
-// ... (giữ nguyên phần code cũ)
-
 function PublicationFooter(props: any) {
   const { isTeam, authorName, title, imprint, disableFooterBranding, logo } = props;
   const [showButton, setShowButton] = useState(false);
@@ -36,16 +34,19 @@ function PublicationFooter(props: any) {
         </section>
       )}
       <div className="blog-footer-credits flex flex-col items-center justify-center">
-        <div className="mb-12 flex flex-col flex-wrap items-center">
-          <p className="mb-2 text-slate-600 dark:text-slate-300">
-            &copy;{new Date().getFullYear()} {title || `${authorName}'s Blog`}
-          </p>
+        <div className="mb-6 flex flex-col flex-wrap items-center">
           <div className="flex flex-row items-center text-slate-600 dark:text-slate-300">
-            <Link href="/privacy-policy" className="mx-2 underline">
+            <Link href="/about-me" className="mx-2">
+              About
+            </Link>
+            <Link href="/ecosystem" className="mx-2">
+              Ecosystem
+            </Link>
+            <Link href="/privacy-policy" className="mx-2">
               Privacy policy
             </Link>
             <span className="font-extrabold text-black opacity-20 dark:text-white">&middot;</span>
-            <Link href="/terms-of-service" className="mx-2 underline">
+            <Link href="/terms-of-service" className="mx-2">
               Terms
             </Link>
           </div>
@@ -57,7 +58,7 @@ function PublicationFooter(props: any) {
                 <Link href="/" className="relative block h-10 w-40">
                   <Image
                     layout="fill"
-                    alt={title || `${authorName}'s ${isTeam ? 'team' : ''} blog`}
+                    alt={title ?? `${authorName}'s ${isTeam ? 'team' : ''} blog`}
                     src={resizeImage(logo, { w: 1000, h: 250, c: 'thumb' })}
                   />
                 </Link>
@@ -65,21 +66,36 @@ function PublicationFooter(props: any) {
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center">
-            <p className="text-sm text-slate-600 dark:text-slate-300">
-              Copyright © {new Date().getFullYear()} {' '}
-              <a aria-label="ePlus.DEV" href="https://eplus.dev" className="underline">
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                Built with
+              </span>
+              <span className="text-lg">❤️</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                by <span className="font-semibold text-slate-700 dark:text-white">{authorName}</span>
+              </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+              <span>&copy; 2020 - {new Date().getFullYear()}</span>
+              <span className="hidden sm:inline">|</span>
+              <a
+                aria-label="ePlus.DEV"
+                href="https://eplus.dev"
+                className="hover:underline font-semibold transition-colors duration-150"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 ePlus.DEV
-              </a>{' '}
-              - Made with love for the community
-            </p>
-          </div>
+              </a>
+              </div>
+            </div>
         )}
       </div>
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 rounded-full bg-slate-700 bg-opacity-70 p-3 text-white shadow-lg hover:bg-slate-900 hover:bg-opacity-90 transition backdrop-blur-sm"
+          className="fixed bottom-8 right-1 z-50 rounded-full bg-slate-700 bg-opacity-70 p-3 text-white shadow-lg hover:bg-slate-900 hover:bg-opacity-90 transition backdrop-blur-sm"
           style={{ pointerEvents: 'auto' }}
           aria-label="Top"
         >
