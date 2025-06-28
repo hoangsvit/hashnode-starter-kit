@@ -3,7 +3,7 @@ import React from 'react';
 export default class LoveSVG extends React.Component {
 	render() {
 		return (
-			<svg className={this.props.className} fill="none" viewBox="0 0 24 24">
+			<svg className={this.props.className} fill="none" viewBox="0 0 22 20">
 				<path
 					stroke="currentColor"
 					strokeLinecap="round"
