@@ -1,7 +1,7 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { useEffect } from 'react';
 
-import { CommentSVGV2 } from './icons/svgs';
+import { CommentSVGV2, LoveSVG } from './icons/svgs';
 import { kFormatter } from '../utils/image';
 import { Separator } from './separator-root';
 import PostFloatingBarTooltipWrapper from './post-floating-bar-tooltip-wrapper';
@@ -103,7 +103,31 @@ function PostFloatingMenu(props: {
       />
       <div className="post-floating-bar fixed left-0 right-0 z-50 flex h-12 w-full flex-wrap justify-center 2xl:h-14">
         <div className="relative mx-auto flex h-12 shrink flex-wrap items-center justify-center rounded-full border-1/2 border-slate-200 bg-white px-5 py-1 text-sm  text-slate-800 shadow-xl dark:border-slate-500 dark:bg-slate-700 dark:text-slate-50 2xl:h-14">
-            <PostFloatingBarTooltipWrapper label="Write a comment">
+          <PostFloatingBarTooltipWrapper label="Like this post">
+            {post && (
+              <div>
+                <button
+                  type="button"
+                  onClick={showPaymentModal}
+                  aria-label="Like this post"
+                  className="outline-none! flex cursor-pointer items-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  <>
+                    <span className="rounded-full p-2">
+                      <LoveSVG className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                    </span>
+                    {post?.reactionCount > 0 && (
+                      <span className="ml-0.5 pr-2">{kFormatter(post.reactionCount)}</span>
+                    )}
+                  </>
+                </button>
+              </div>
+            )}
+          </PostFloatingBarTooltipWrapper>
+
+          <Separator className="mx-2 h-5" />
+          
+          <PostFloatingBarTooltipWrapper label="Write a comment">
             {post && (
               <div>
                 <button
