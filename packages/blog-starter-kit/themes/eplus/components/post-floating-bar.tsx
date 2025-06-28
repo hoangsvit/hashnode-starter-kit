@@ -145,7 +145,7 @@ function PostFloatingMenu(props: {
 
           {post && post.features.tableOfContents.isEnabled && (
             <>
-              <TocSheet list={list} />
+              <TocSheet list={list.slice()} />
               <Separator className="mx-2 h-5" />
             </>
           )}
