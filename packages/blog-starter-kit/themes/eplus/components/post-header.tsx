@@ -284,7 +284,6 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 							{/* {props.isPublicationPost && renderPinnedWidgets(props.widgets, 'bottom')} */}
 
 							<PostFloatingMenu
-								isPublicationPost={true}
 								post={post}
 								shareText={shareText}
 								openComments={handleOpenComments}
