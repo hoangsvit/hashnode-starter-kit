@@ -78,7 +78,7 @@ function PublicationFooter(props: any) {
               </div>
               <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
               <span>&copy; 2020 - {new Date().getFullYear()}</span>
-              <span className="hidden sm:inline">|</span>
+              <span className="hidden sm:inline"> by </span>
               <a
                 aria-label="ePlus.DEV"
                 href="https://eplus.dev"

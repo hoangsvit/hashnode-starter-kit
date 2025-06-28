@@ -31,18 +31,34 @@ function TocRow(props: TocRowProps) {
 	const [childrenVisibility, setChildrenVisibility] = useState(false);
 	const { hide: hideTocModal } = useTocModalStore();
 
+	// Phân cấp màu sắc tinh tế và thanh lịch
+	const getLevelStyles = (level: number) => {
+		const baseIndent = (level - 1) * 16; // 16px per level
+		
+		return {
+			indent: `pl-${Math.min(baseIndent / 4, 12)}`, // max pl-12
+			textSize: level === 1 ? 'text-base' : level === 2 ? 'text-sm' : 'text-xs',
+			fontWeight: level === 1 ? 'font-semibold' : level === 2 ? 'font-medium' : 'font-normal',
+			opacity: level > 3 ? 'text-slate-600 dark:text-slate-400' : 'text-slate-800 dark:text-slate-200',
+			borderColor: level === 1 ? 'border-l-2 border-slate-300 dark:border-slate-600' : ''
+		};
+	};
+
+	const levelStyles = getLevelStyles(node.level || 1);
+
 	return (
-		<li key={node.id} className="px-2 py-0.5 align-middle">
+		<li key={node.id} className="group">
 			<div
 				className={twJoin(
-					'flex items-center gap-2 rounded-lg',
-					modal ? 'hover:bg-slate-100 dark:hover:bg-slate-800' : 'hover:underline',
+					'flex items-center gap-2 py-1.5 px-2 rounded-md transition-all duration-200',
+					levelStyles.borderColor,
+					'hover:bg-slate-50 dark:hover:bg-slate-800/50',
 				)}
 			>
 				{node.hasChildren && (
 					<button
 						type="button"
-						className="pl-2.5 text-slate-400"
+						className="flex-shrink-0 p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
 						aria-label={childrenVisibility ? `Collapse ${node.title}` : `Expand ${node.title}`}
 						aria-expanded={childrenVisibility}
 						onClick={() => {
@@ -50,17 +66,22 @@ function TocRow(props: TocRowProps) {
 						}}
 					>
 						{childrenVisibility ? (
-							<ChevronDownSVG_16x16 className="h-4 w-4 stroke-current" />
+							<ChevronDownSVG_16x16 className="h-3 w-3 stroke-current" />
 						) : (
-							<ChevronRightSVG_16x16 className="h-4 w-4 stroke-current" />
+							<ChevronRightSVG_16x16 className="h-3 w-3 stroke-current" />
 						)}
 					</button>
 				)}
 				<a
 					id={node.id}
 					className={twJoin(
-						'w-full py-2.5 pr-2.5 text-sm font-medium text-slate-800 dark:text-slate-100',
-						!node.hasChildren && 'pl-3',
+						'flex-1 leading-relaxed transition-colors duration-200',
+						levelStyles.textSize,
+						levelStyles.fontWeight,
+						levelStyles.opacity,
+						levelStyles.indent,
+						!node.hasChildren && 'ml-4',
+						'hover:text-slate-900 dark:hover:text-slate-100'
 					)}
 					href={`#heading-${node.slug}`}
 					onClick={() => {
@@ -79,7 +100,7 @@ function TocRow(props: TocRowProps) {
 				/>
 			</div>
 			{node.hasChildren ? (
-				<> {childrenVisibility && <div className="pl-5">{children}</div>} </>
+				<> {childrenVisibility && <div className="ml-2 mt-1">{children}</div>} </>
 			) : (
 				<>{children}</>
 			)}
@@ -131,7 +152,7 @@ function TocTree(props: TocTreeProps) {
 	}
 
 	return (
-		<ul className="list-inside font-semibold dark:border-slate-800">
+		<ul className="space-y-1">
 			{nodes.map((node) => (
 				<TocRow key={node.id} node={node} modal={modal}>
 					<TocTree
@@ -162,21 +183,21 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 
 		setIsOverflowing(shouldShowMoreOption);
 		setTocFullVisibility(!hasEnoughItems || hideShowMoreOption === true);
-	}, []);
+	}, [list, hideShowMoreOption]);
 	return (
 		<div
 			className={twJoin(
-				'relative mb-10 w-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-4 pt-0 dark:border-slate-800 dark:bg-slate-900',
-				modal && 'mb-0 rounded-none border-none px-0 py-4',
+				'relative mb-10 w-full rounded-xl border border-slate-200 bg-white p-5 dark:border-slate-700 dark:bg-slate-900',
+				modal && 'mb-0 rounded-none border-none bg-transparent px-0 py-4',
 			)}
 			ref={tocContainerRef}
 		>
 			<div className={tocFullVisibility ? 'max-h-full' : 'max-h-[388px] overflow-hidden'}>
 				{/* Header */}
 				{modal || (
-					<div className="pt-4">
-						<h2 className="px-[18px] py-2 text-sm font-medium uppercase text-slate-500 dark:text-slate-400">
-							<span>Table of contents</span>
+					<div className="mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+						<h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+							Table of Contents
 						</h2>
 					</div>
 				)}
@@ -199,9 +220,7 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 						<TocTree list={list} modal={modal} />
 						{/* Overlay */}
 						{!tocFullVisibility && isOverflowing && (
-							<div className="absolute bottom-0 right-0 w-full">
-								<div className="h-40 bg-gradient-to-t from-white to-transparent dark:from-slate-900" />
-							</div>
+							<div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent dark:from-slate-900 pointer-events-none" />
 						)}
 					</>
 				)}
@@ -209,10 +228,10 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 
 			{/* Show more toggle option */}
 			{isOverflowing && !hideShowMoreOption && (
-				<div className="relative z-20 flex items-center justify-center">
+				<div className="flex items-center justify-center pt-3 mt-3 border-t border-slate-100 dark:border-slate-800">
 					<button
 						type="button"
-						className="flex items-center justify-center gap-2"
+						className="text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors duration-200"
 						aria-expanded={tocFullVisibility}
 						aria-label={tocFullVisibility ? 'Show less content' : 'Show more content'}
 						onClick={() => {
@@ -222,13 +241,13 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 					>
 						{tocFullVisibility ? (
 							<>
-								<span className="text-sm text-slate-600 dark:text-slate-300">Show less</span>
-								<ChevronUpSVG_16x16 className="h-4 w-4 stroke-current text-slate-500" />
+								<span>Show less</span>
+								<ChevronUpSVG_16x16 className="inline h-3 w-3 stroke-current ml-1" />
 							</>
 						) : (
 							<>
-								<span className="text-sm text-slate-600 dark:text-slate-300">Show more</span>
-								<ChevronDownSVG_16x16 className="h-4 w-4 stroke-current text-slate-500" />
+								<span>Show more</span>
+								<ChevronDownSVG_16x16 className="inline h-3 w-3 stroke-current ml-1" />
 							</>
 						)}
 					</button>
