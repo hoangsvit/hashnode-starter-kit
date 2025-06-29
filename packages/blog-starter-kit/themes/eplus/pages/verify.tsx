@@ -16,24 +16,24 @@ import { resizeImage } from '@starter-kit/utils/image';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 
-interface VerifyPageProps {
+interface IdentityPageProps {
 	publication: PublicationFragment;
 }
 
-export default function VerifyPage({ publication }: Readonly<VerifyPageProps>) {
+export default function IdentityPage({ publication }: Readonly<IdentityPageProps>) {
 	const router = useRouter();
-	const [isVerifying, setIsVerifying] = useState(false);
-	const [verificationStatus, setVerificationStatus] = useState<'idle' | 'success' | 'error'>('idle');
+	const [isProcessing, setIsProcessing] = useState(false);
+	const [identityStatus, setIdentityStatus] = useState<'idle' | 'success' | 'error'>('idle');
 	const [errorMessage, setErrorMessage] = useState<string>('');
 	const { token, next } = router.query;
 
-	const handleVerification = useCallback(async (verificationToken: string) => {
-		setIsVerifying(true);
-		setVerificationStatus('idle');
+	const handleIdentityVerification = useCallback(async (verificationToken: string) => {
+		setIsProcessing(true);
+		setIdentityStatus('idle');
 		setErrorMessage('');
 
 		try {
-			const response = await fetch('/api/verify', {
+			const response = await fetch('/api/identity', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export default function VerifyPage({ publication }: Readonly<VerifyPageProps>) {
 				await response.json();
 				
 				// Cookies sẽ được set tự động từ response headers
-				setVerificationStatus('success');
+				setIdentityStatus('success');
 				
 				// Điều hướng sau 2 giây
 				setTimeout(() => {
@@ -57,27 +57,27 @@ export default function VerifyPage({ publication }: Readonly<VerifyPageProps>) {
 				}, 2000);
 			} else {
 				const errorData = await response.json();
-				setVerificationStatus('error');
-				setErrorMessage(errorData.message ?? 'Xác thực thất bại');
+				setIdentityStatus('error');
+				setErrorMessage(errorData.message ?? 'Xác thực danh tính thất bại');
 			}
 		} catch (error: unknown) {
-			console.error('Verification error:', error);
-			setVerificationStatus('error');
-			setErrorMessage('Có lỗi xảy ra trong quá trình xác thực');
+			console.error('Identity verification error:', error);
+			setIdentityStatus('error');
+			setErrorMessage('Có lỗi xảy ra trong quá trình xác thực danh tính');
 		} finally {
-			setIsVerifying(false);
+			setIsProcessing(false);
 		}
 	}, [next, router]);
 
 	useEffect(() => {
 		if (token && typeof token === 'string') {
-			handleVerification(token);
+			handleIdentityVerification(token);
 		}
-	}, [token, handleVerification]);
+	}, [token, handleIdentityVerification]);
 
 	const handleRetry = () => {
 		if (token && typeof token === 'string') {
-			handleVerification(token);
+			handleIdentityVerification(token);
 		}
 	};
 
@@ -108,54 +108,54 @@ export default function VerifyPage({ publication }: Readonly<VerifyPageProps>) {
 
 							{/* Tiêu đề */}
 							<h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-								Xác thực tài khoản
+								Xác thực danh tính
 							</h1>
 
 							{/* Trạng thái xác thực */}
 							{!token && (
 								<div className="mb-6">
 									<div className="text-red-600 dark:text-red-400 mb-4">
-										⚠️ Không tìm thấy token xác thực
+										⚠️ Không tìm thấy token xác thực danh tính
 									</div>
 									<p className="text-neutral-600 dark:text-neutral-400 text-sm">
-										Vui lòng kiểm tra lại link xác thực từ email.
+										Vui lòng kiểm tra lại link xác thực danh tính từ email.
 									</p>
 								</div>
 							)}
 
-							{token && isVerifying && (
+							{token && isProcessing && (
 								<div className="mb-6">
 									<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
 									<p className="text-neutral-600 dark:text-neutral-400">
-										Đang xác thực...
+										Đang xác thực danh tính...
 									</p>
 								</div>
 							)}
 
-							{verificationStatus === 'success' && (
+							{identityStatus === 'success' && (
 								<div className="mb-6">
 									<div className="text-green-600 text-4xl mb-4">✅</div>
 									<h2 className="text-xl font-semibold text-green-600 dark:text-green-400 mb-2">
-										Xác thực thành công!
+										Xác thực danh tính thành công!
 									</h2>
 									<p className="text-neutral-600 dark:text-neutral-400 text-sm">
-										Bạn sẽ được chuyển hướng trong giây lát...
+										Danh tính của bạn đã được xác nhận. Bạn sẽ được chuyển hướng trong giây lát...
 									</p>
 								</div>
 							)}
 
-							{verificationStatus === 'error' && (
+							{identityStatus === 'error' && (
 								<div className="mb-6">
 									<div className="text-red-600 text-4xl mb-4">❌</div>
 									<h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-2">
-										Xác thực thất bại
+										Xác thực danh tính thất bại
 									</h2>
 									<p className="text-neutral-600 dark:text-neutral-400 text-sm mb-4">
 										{errorMessage}
 									</p>
 									<HnButton
 										onClick={handleRetry}
-										disabled={isVerifying}
+										disabled={isProcessing}
 										className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
 									>
 										Thử lại
@@ -186,7 +186,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	// Nếu không có token, vẫn render page để hiển thị thông báo lỗi
 	if (!token) {
-		console.warn('Verify page accessed without token');
+		console.warn('Identity page accessed without token');
 	}
 
 	try {
