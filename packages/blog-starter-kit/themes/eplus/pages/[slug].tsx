@@ -83,12 +83,6 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 					property="twitter:description"
 					content={post.seo?.description || post.subtitle || post.brief}
 				/>
-				{post.author.socialMediaLinks?.twitter && (
-					<meta property="twitter:creator" content={post.author.socialMediaLinks.twitter} />
-				)}
-				{publication.author.socialMediaLinks?.twitter && (
-					<meta property="twitter:site" content={publication.author.socialMediaLinks.twitter} />
-				)}
 
 				{/* Image meta tags */}
 				<meta
