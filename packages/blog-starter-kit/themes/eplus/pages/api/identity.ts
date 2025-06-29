@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 interface IdentityResponse {
 	success: boolean;
 	message?: string;
+	token?: string;
 	user?: {
 		id: string;
 		email: string;
@@ -18,25 +19,38 @@ interface IdentityResponse {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IdentityResponse>) {
-	if (req.method !== 'GET') {
+	if (req.method !== 'POST') {
 		return res.status(405).json({ success: false, message: 'Method not allowed' });
 	}
-
 	try {
-		// Extract cookies from request headers
-		const cookies = parseCookies(req.headers.cookie || '');
-		const jwtToken = cookies.jwt;
+		// Chỉ lấy token từ request body
+		const { token } = req.body ?? {};
+		const personalAccessToken = token;
 
-		// Log cookies for debugging
-		console.log('Received cookies:', {
-			hasJWT: !!jwtToken,
-		});
-
-		// Sử dụng JWT token có sẵn để gọi GraphQL Me query
-		if (!jwtToken) {
+		// Kiểm tra token có tồn tại không
+		if (!personalAccessToken) {
 			return res.status(401).json({
 				success: false,
-				message: 'JWT token is required',
+				message: 'Personal Access Token is required in request body',
+			});
+		}
+
+		// Validate Personal Access Token format (UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+		if (personalAccessToken.length < 30) {
+			return res.status(401).json({
+				success: false,
+				message: 'Invalid Personal Access Token format. Token too short.',
+			});
+		}
+
+		// Check if token matches UUID format or general alphanumeric format
+		const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+		const generalTokenPattern = /^[A-Za-z0-9_-]+$/;
+
+		if (!uuidPattern.test(personalAccessToken) && !generalTokenPattern.test(personalAccessToken)) {
+			return res.status(401).json({
+				success: false,
+				message: 'Invalid Personal Access Token format. Please check your token.',
 			});
 		}
 
@@ -69,7 +83,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 				}
 			`;
 
-			console.log('🔄 Calling GraphQL Me query with provided JWT token');
+			console.log('🔄 Calling GraphQL Me query with Personal Access Token');
+			console.log(
+				'🎯 GraphQL Endpoint:',
+				process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT || 'https://gql.hashnode.com',
+			);
 
 			const response = await fetch(
 				process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT || 'https://gql.hashnode.com',
@@ -77,7 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
-						Authorization: `Bearer ${jwtToken}`,
+						Authorization: `Bearer ${personalAccessToken}`,
 					},
 					body: JSON.stringify({
 						query: graphqlQuery,
@@ -86,14 +104,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			);
 
 			const result = await response.json();
-			console.log('📊 GraphQL Response status:', response.status);
-			console.log('📊 GraphQL Response:', JSON.stringify(result, null, 2));
 
-			if (result.errors) {
-				console.error('❌ GraphQL Authentication failed:', result.errors);
+			// Check if HTTP status is not OK
+			if (!response.ok) {
 				return res.status(401).json({
 					success: false,
-					message: 'GraphQL authentication failed. Invalid token.',
+					message: `GraphQL request failed with status ${response.status}: ${response.statusText}`,
+				});
+			}
+
+			if (result.errors) {
+				// Provide more detailed error message
+				const errorDetails = result.errors.map((err: any) => err.message).join(', ');
+				return res.status(401).json({
+					success: false,
+					message: `GraphQL authentication failed: ${errorDetails}`,
 				});
 			} else if (result.data?.me) {
 				const meData = result.data.me;
@@ -109,23 +134,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 					followersCount: meData.followersCount,
 					followingsCount: meData.followingsCount,
 				};
-				console.log('✅ GraphQL Me query successful:', {
-					userId: graphqlUserInfo.id,
-					username: graphqlUserInfo.username,
-					email: graphqlUserInfo.email,
-				});
 			} else {
-				console.error('❌ No user data returned from GraphQL');
 				return res.status(401).json({
 					success: false,
 					message: 'No user data available from GraphQL API.',
 				});
 			}
 		} catch (error) {
-			console.error('❌ GraphQL Me query failed:', error);
+			// Provide more detailed error information
+			const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
 			return res.status(500).json({
 				success: false,
-				message: 'Failed to fetch user information from GraphQL API.',
+				message: `Failed to fetch user information from GraphQL API: ${errorMessage}`,
 			});
 		}
 
@@ -134,68 +154,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			...graphqlUserInfo,
 		};
 
-		// Tạo tokens cho user
-		const authToken = generateAuthToken(user);
-		const refreshToken = generateRefreshToken(user);
-		const identityToken = generateIdentityToken(user);
-
-		// Set HTTP-only cookies với thông tin bảo mật (sử dụng JWT token gốc)
+		// Set HTTP-only cookies với Personal Access Token gốc
 		res.setHeader('Set-Cookie', [
-			`auth-token=${authToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
-			`refresh-token=${refreshToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
-			`identity-token=${identityToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
-			`jwt=${jwtToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
-			`jwt=${jwtToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/; Domain=.hashnode.dev`,
+			`personal-access-token=${personalAccessToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
+			`personal-access-token=${personalAccessToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/; Domain=.hashnode.dev`,
 		]);
-
-		console.log('✅ User data fetched and cookies set:', {
-			userId: user.id,
-			email: user.email,
-			username: user.username,
-			cookiesSet: ['auth-token', 'refresh-token', 'identity-token', 'jwt'],
-		});
 
 		return res.status(200).json({
 			success: true,
 			message: 'User data fetched successfully',
 			user: user,
+			token: personalAccessToken, // Trả về token để frontend có thể lưu vào localStorage
 		});
 	} catch (error) {
-		console.error('API error:', error);
+		const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
 		return res.status(500).json({
 			success: false,
-			message: 'Internal server error',
+			message: `Internal server error: ${errorMessage}`,
 		});
 	}
-}
-
-// Utility function to parse cookies from header string
-function parseCookies(cookieHeader: string): Record<string, string> {
-	const cookies: Record<string, string> = {};
-
-	if (!cookieHeader) {
-		return cookies;
-	}
-
-	cookieHeader.split(';').forEach((cookie) => {
-		const [name, ...rest] = cookie.trim().split('=');
-		if (name && rest.length > 0) {
-			cookies[name] = rest.join('=');
-		}
-	});
-
-	return cookies;
-}
-
-// Utility functions for generating tokens
-function generateAuthToken(user: any): string {
-	return `auth_${user.id}_${Date.now()}`;
-}
-
-function generateRefreshToken(user: any): string {
-	return `refresh_${user.id}_${Date.now()}`;
-}
-
-function generateIdentityToken(user: any): string {
-	return `identity_${user.id}_${Date.now()}`;
 }
