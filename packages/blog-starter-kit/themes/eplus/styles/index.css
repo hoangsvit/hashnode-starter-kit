@@ -248,6 +248,45 @@ img.image--right {
   display: none;
 }
 
+/* Code block copy button styles */
+.copy-button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  min-width: 50px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.copy-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Pre element hover effect for copy button */
+pre:hover .copy-button {
+  opacity: 1 !important;
+}
+
+.copy-button:not(:hover) {
+  opacity: 0.7;
+}
+
+/* Code block styling improvements */
+pre {
+  position: relative !important;
+}
+
+pre code {
+  display: block;
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.375rem;
+}
+
 /* Tailwind component layer */
 @layer components {
   .focus-ring-base {

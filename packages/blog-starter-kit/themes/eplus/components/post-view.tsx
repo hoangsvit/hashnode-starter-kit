@@ -5,6 +5,7 @@ import { twJoin } from 'tailwind-merge';
 import moment from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import useCopyCodeButton from '../hooks/useCopyCodeButton';
 
 import {
   BookOpenSVG,
@@ -27,6 +28,10 @@ const PublicationSubscribeStandOut = dynamic(
 
 function PostView(props: any) {
   const postContentEle = useRef<HTMLDivElement>(null);
+
+  // Add copy button functionality to code blocks
+  useCopyCodeButton(postContentEle);
+
   const { post: _post } = useAppContext();
   const post = _post as unknown as PostFullFragment;
   const textSelectionSharerEnabled = post.publication?.features?.textSelectionSharer?.isEnabled || typeof post.publication?.features?.textSelectionSharer?.isEnabled === 'undefined';
