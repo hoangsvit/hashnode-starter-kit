@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-interface IdentityRequest {
-	token: string;
-}
-
 interface IdentityResponse {
 	success: boolean;
 	message?: string;
@@ -11,52 +7,161 @@ interface IdentityResponse {
 		id: string;
 		email: string;
 		name: string;
-		isVerified: boolean;
-		role: string;
+		username?: string;
+		profilePicture?: string | null;
+		bio?: string | null;
+		location?: string | null;
+		tagline?: string | null;
+		followersCount?: number;
+		followingsCount?: number;
 	};
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IdentityResponse>) {
-	if (req.method !== 'POST') {
+	if (req.method !== 'GET') {
 		return res.status(405).json({ success: false, message: 'Method not allowed' });
 	}
 
 	try {
-		const { token } = req.body as IdentityRequest;
+		// Extract cookies from request headers
+		const cookies = parseCookies(req.headers.cookie || '');
+		const jwtToken = cookies.jwt;
 
-		if (!token) {
-			return res.status(400).json({ success: false, message: 'Token is required' });
-		}
+		// Log cookies for debugging
+		console.log('Received cookies:', {
+			hasJWT: !!jwtToken,
+		});
 
-		// Xác thực danh tính dựa trên token
-		const identityResult = await verifyIdentityToken(token);
-
-		if (!identityResult.success) {
-			return res.status(400).json({
+		// Sử dụng JWT token có sẵn để gọi GraphQL Me query
+		if (!jwtToken) {
+			return res.status(401).json({
 				success: false,
-				message: identityResult.message || 'Invalid identity token',
+				message: 'JWT token is required',
 			});
 		}
 
-		// Set authentication cookies với thông tin danh tính
-		const authToken = generateAuthToken(identityResult.user);
-		const refreshToken = generateRefreshToken(identityResult.user);
-		const identityToken = generateIdentityToken(identityResult.user);
+		// Gọi GraphQL Me query để lấy thông tin user từ Hashnode API
+		let graphqlUserInfo = null;
+		try {
+			const graphqlQuery = `
+				query Me {
+					me {
+						id
+						name
+						username
+						email
+						profilePicture
+						bio {
+							text
+						}
+						location
+						tagline
+						dateJoined
+						followersCount
+						followingsCount
+						socialMediaLinks {
+							twitter
+							linkedin
+							github
+							website
+						}
+					}
+				}
+			`;
 
-		// Set HTTP-only cookies với thông tin bảo mật
+			console.log('🔄 Calling GraphQL Me query with provided JWT token');
+
+			const response = await fetch(
+				process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT || 'https://gql.hashnode.com',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${jwtToken}`,
+					},
+					body: JSON.stringify({
+						query: graphqlQuery,
+					}),
+				},
+			);
+
+			const result = await response.json();
+			console.log('📊 GraphQL Response status:', response.status);
+			console.log('📊 GraphQL Response:', JSON.stringify(result, null, 2));
+
+			if (result.errors) {
+				console.error('❌ GraphQL Authentication failed:', result.errors);
+				return res.status(401).json({
+					success: false,
+					message: 'GraphQL authentication failed. Invalid token.',
+				});
+			} else if (result.data?.me) {
+				const meData = result.data.me;
+				graphqlUserInfo = {
+					id: meData.id,
+					name: meData.name,
+					username: meData.username,
+					email: meData.email,
+					profilePicture: meData.profilePicture,
+					bio: meData.bio?.text ?? null,
+					location: meData.location,
+					tagline: meData.tagline,
+					followersCount: meData.followersCount,
+					followingsCount: meData.followingsCount,
+				};
+				console.log('✅ GraphQL Me query successful:', {
+					userId: graphqlUserInfo.id,
+					username: graphqlUserInfo.username,
+					email: graphqlUserInfo.email,
+				});
+			} else {
+				console.error('❌ No user data returned from GraphQL');
+				return res.status(401).json({
+					success: false,
+					message: 'No user data available from GraphQL API.',
+				});
+			}
+		} catch (error) {
+			console.error('❌ GraphQL Me query failed:', error);
+			return res.status(500).json({
+				success: false,
+				message: 'Failed to fetch user information from GraphQL API.',
+			});
+		}
+
+		// Sử dụng GraphQL user data trực tiếp
+		const user = {
+			...graphqlUserInfo,
+		};
+
+		// Tạo tokens cho user
+		const authToken = generateAuthToken(user);
+		const refreshToken = generateRefreshToken(user);
+		const identityToken = generateIdentityToken(user);
+
+		// Set HTTP-only cookies với thông tin bảo mật (sử dụng JWT token gốc)
 		res.setHeader('Set-Cookie', [
-			`auth-token=${authToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=3600; Path=/`,
-			`refresh-token=${refreshToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=604800; Path=/`,
-			`identity-token=${identityToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=86400; Path=/`,
+			`auth-token=${authToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
+			`refresh-token=${refreshToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
+			`identity-token=${identityToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
+			`jwt=${jwtToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
+			`jwt=${jwtToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/; Domain=.hashnode.dev`,
 		]);
+
+		console.log('✅ User data fetched and cookies set:', {
+			userId: user.id,
+			email: user.email,
+			username: user.username,
+			cookiesSet: ['auth-token', 'refresh-token', 'identity-token', 'jwt'],
+		});
 
 		return res.status(200).json({
 			success: true,
-			message: 'Identity verification successful',
-			user: identityResult.user,
+			message: 'User data fetched successfully',
+			user: user,
 		});
 	} catch (error) {
-		console.error('Identity verification error:', error);
+		console.error('API error:', error);
 		return res.status(500).json({
 			success: false,
 			message: 'Internal server error',
@@ -64,50 +169,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 	}
 }
 
-// Mock functions - thay thế bằng implementation thực tế
-async function verifyIdentityToken(token: string) {
-	// Simulate identity token verification
-	// In real implementation, this would:
-	// 1. Decode/decrypt the identity token
-	// 2. Check token expiration
-	// 3. Verify token signature
-	// 4. Check token against identity database
-	// 5. Validate user identity documents
-	// 6. Return user identity data if valid
+// Utility function to parse cookies from header string
+function parseCookies(cookieHeader: string): Record<string, string> {
+	const cookies: Record<string, string> = {};
 
-	if (token === 'invalid_identity_token') {
-		return { success: false, message: 'Identity token expired or invalid' };
+	if (!cookieHeader) {
+		return cookies;
 	}
 
-	if (token === 'unverified_identity') {
-		return { success: false, message: 'Identity verification pending' };
-	}
+	cookieHeader.split(';').forEach((cookie) => {
+		const [name, ...rest] = cookie.trim().split('=');
+		if (name && rest.length > 0) {
+			cookies[name] = rest.join('=');
+		}
+	});
 
-	// Mock successful identity verification
-	return {
-		success: true,
-		user: {
-			id: 'user_123',
-			email: 'user@example.com',
-			name: 'Verified User',
-			isVerified: true,
-			role: 'verified_user',
-		},
-	};
+	return cookies;
 }
 
+// Utility functions for generating tokens
 function generateAuthToken(user: any): string {
-	// In real implementation, this would create a JWT with user info and identity status
-	return `auth_${user.id}_${user.role}_${Date.now()}`;
+	return `auth_${user.id}_${Date.now()}`;
 }
 
 function generateRefreshToken(user: any): string {
-	// In real implementation, this would create a long-lived refresh token
 	return `refresh_${user.id}_${Date.now()}`;
 }
 
 function generateIdentityToken(user: any): string {
-	// In real implementation, this would create an identity-specific token
-	// containing verified identity information
-	return `identity_${user.id}_${user.isVerified}_${Date.now()}`;
+	return `identity_${user.id}_${Date.now()}`;
 }
