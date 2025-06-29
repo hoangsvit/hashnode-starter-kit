@@ -3,7 +3,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, Fragment } from 'react';
 import { twJoin } from 'tailwind-merge';
 
 import { resizeImage } from '@starter-kit/utils/image';
@@ -16,12 +16,13 @@ import CoAuthorsModal from './co-authors-modal';
 import CustomImage from './custom-image';
 import ProfileImage from './profile-image';
 import TocRenderDesign from './toc-render-design';
+import useCopyCodeButton from '../hooks/useCopyCodeButton';
+
 const OtherPostsOfAccount = dynamic(() => import('./other-posts-of-account'), { ssr: false });
 const AboutAuthor = dynamic(() => import('./about-author'), { ssr: false });
 
 import { useEmbeds } from '@starter-kit/utils/renderer/hooks/useEmbeds';
 import { loadIframeResizer } from '@starter-kit/utils/renderer/services/embed';
-import { Fragment } from 'react';
 import { BookOpenSVG } from './icons/svgs';
 // @ts-ignore
 import { triggerCustomWidgetEmbed } from '@starter-kit/utils/trigger-custom-widget-embed';
@@ -44,6 +45,10 @@ const PublicationSubscribeStandOut = dynamic(() => import('./publication-subscri
 
 export const PostHeader = ({ post, morePosts }: Props) => {
 	const postContentEle = useRef<HTMLDivElement>(null);
+
+	// Add copy button functionality to code blocks
+	useCopyCodeButton(postContentEle);
+
 	const [selectedFilter, setSelectedFilter] = useState('totalReactions');
 	const toc = post.features?.tableOfContents?.isEnabled
 		? post.features?.tableOfContents?.items.flat()
@@ -104,14 +109,13 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 			return;
 		}
 
-		// TODO:
 		// More of an alert, did this below to wrap async funcs inside useEffect
 		(async () => {
 			await loadIframeResizer();
 			triggerCustomWidgetEmbed(post.publication?.id.toString());
 			setCanLoadEmbeds(true);
 		})();
-	}, []);
+	}, [post]);
 	const authorsArray = [post.author, ...(post.coAuthors || [])];
 	return (
 		<Fragment>
