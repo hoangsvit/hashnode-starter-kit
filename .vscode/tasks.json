@@ -1,0 +1,95 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	// created by eplus.dev
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "pnpm install",
+			"type": "shell",
+			"command": "pnpm install --frozen-lockfile",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			}
+		},
+		{
+			"label": "eplus",
+			"type": "shell",
+			"command": "pnpm dev",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/eplus"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		},
+		{
+			"label": "eplus - build",
+			"type": "shell",
+			"command": "pnpm build",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/eplus"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			}
+		},
+		{
+			"label": "hashnode",
+			"type": "shell",
+			"command": "pnpm dev",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/hashnode"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			}
+		},
+		{
+			"label": "enterprise",
+			"type": "shell",
+			"command": "pnpm dev",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/enterprise"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			}
+		},
+		{
+			"label": "personal",
+			"type": "shell",
+			"command": "pnpm dev",
+			"group": "none",
+			"options": {
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/personal"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "one"
+			}
+		}
+	]
+}
