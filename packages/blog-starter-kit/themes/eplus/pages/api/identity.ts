@@ -154,17 +154,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 			...graphqlUserInfo,
 		};
 
-		// Set HTTP-only cookies với Personal Access Token gốc
-		res.setHeader('Set-Cookie', [
-			`personal-access-token=${personalAccessToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/`,
-			`personal-access-token=${personalAccessToken}; HttpOnly; Secure; SameSite=Strict; Max-Age=63072000; Path=/; Domain=.hashnode.dev`,
-		]);
+		// Set HTTP-only cookie with Personal Access Token (2 years expiration)
+		// Max-Age: 63072000 seconds = 2 years (365 * 24 * 60 * 60 * 2)
+		const cookieValue = `hashnode_token=${personalAccessToken}; HttpOnly; SameSite=Strict; Max-Age=63072000; Path=/`;
+
+		// Only set Secure flag in production (HTTPS)
+		const isProduction = process.env.NODE_ENV === 'production';
+		const secureCookie = isProduction ? cookieValue + '; Secure' : cookieValue;
+
+		res.setHeader('Set-Cookie', secureCookie);
 
 		return res.status(200).json({
 			success: true,
 			message: 'User data fetched successfully',
 			user: user,
-			token: personalAccessToken, // Trả về token để frontend có thể lưu vào localStorage
+			// Token is now stored securely in HTTP-only cookies only
 		});
 	} catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
