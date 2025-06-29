@@ -87,7 +87,10 @@ function PublicationFooter(props: any) {
                 rel="noopener noreferrer"
               >
                 ePlus.DEV
-              </a>
+                </a>
+                <a href={`https://hashnode.com/onboard?next=http://beta.eplus.dev/cloud-logging-on-kubernetes-engine-gsp483`}>
+                  Hashnode
+                </a>
               </div>
             </div>
         )}
