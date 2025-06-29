@@ -1,0 +1,35 @@
+query Me {
+	me {
+		id
+		name
+		username
+		email
+		profilePicture
+		bio {
+			text
+		}
+		location
+		tagline
+		dateJoined
+		followersCount
+		followingsCount
+		socialMediaLinks {
+			twitter
+			linkedin
+			github
+			website
+		}
+		publications(first: 10) {
+			edges {
+				node {
+					id
+					title
+					url
+					about {
+						text
+					}
+				}
+			}
+		}
+	}
+}
