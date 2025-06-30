@@ -4,84 +4,78 @@ const useCopyCodeButton = (containerRef: React.RefObject<HTMLElement>) => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const createCopyIcon = () => {
-      return `
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 6.5A1.5 1.5 0 0 1 7.5 5h5A1.5 1.5 0 0 1 14 6.5v5a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 6 11.5v-5Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          <path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          <path d="M4 14.5A1.5 1.5 0 0 0 5.5 16h5a1.5 1.5 0 0 0 1.5-1.5v-.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-        </svg>
-      `;
-    };
+    // Constants
+    const COPY_TEXT = 'Copy';
+    const COPIED_TEXT = 'Copied!';
+    const COPY_DELAY = 2000;
+    const RENDER_DELAY = 100;
+    const OBSERVER_DELAY = 50;
 
-    const createCheckIcon = () => {
-      return `
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M15 6L8 13L5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        </svg>
-      `;
-    };
+    // CSS classes
+    const DEFAULT_CLASSES = 'copy-button absolute top-3 right-3 text-white font-medium px-3 py-1.5 rounded-md transition-opacity duration-200 z-10 flex items-center justify-center text-xs bg-slate-700 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-500 opacity-70 hover:opacity-100';
+    const SUCCESS_CLASSES = 'copy-button absolute top-3 right-3 text-white font-medium px-3 py-1.5 rounded-md z-10 flex items-center justify-center text-xs bg-green-600 opacity-100';
 
     const createCopyButton = () => {
       const copyButton = document.createElement('button');
-      copyButton.className = 'copy-button absolute top-3 right-3 bg-slate-700 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-500 text-white font-medium p-2 rounded-md transition-all duration-200 opacity-70 hover:opacity-100 focus:opacity-100 z-10 flex items-center justify-center';
-      copyButton.innerHTML = createCopyIcon();
+      copyButton.className = DEFAULT_CLASSES;
+      copyButton.textContent = COPY_TEXT;
       copyButton.setAttribute('data-copied', 'false');
       copyButton.setAttribute('aria-label', 'Copy code to clipboard');
       copyButton.setAttribute('title', 'Copy code');
       return copyButton;
     };
 
-    const fallbackCopy = (text: string, button: HTMLElement) => {
+    const updateButtonState = (button: HTMLElement, isCopied: boolean) => {
+      button.textContent = isCopied ? COPIED_TEXT : COPY_TEXT;
+      button.setAttribute('data-copied', isCopied.toString());
+      button.setAttribute('title', isCopied ? 'Copied!' : 'Copy code');
+      button.className = isCopied ? SUCCESS_CLASSES : DEFAULT_CLASSES;
+    };
+
+    const fallbackCopy = async (text: string, button: HTMLElement) => {
       const textArea = document.createElement('textarea');
       textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
       document.body.appendChild(textArea);
+      textArea.focus();
       textArea.select();
+      
       try {
-        document.execCommand('copy');
-        button.innerHTML = createCheckIcon();
-        button.setAttribute('title', 'Copied!');
-        setTimeout(() => {
-          button.innerHTML = createCopyIcon();
-          button.setAttribute('title', 'Copy code');
-        }, 2000);
-      } catch (fallbackErr) {
-        console.error('Fallback copy failed: ', fallbackErr);
+        const success = document.execCommand('copy');
+        if (success) {
+          updateButtonState(button, true);
+          setTimeout(() => updateButtonState(button, false), COPY_DELAY);
+        }
+      } catch (err) {
+        console.error('Fallback copy failed: ', err);
+      } finally {
+        document.body.removeChild(textArea);
       }
-      document.body.removeChild(textArea);
     };
 
     const handleCopyClick = async (codeBlock: Element, button: HTMLElement) => {
       try {
         const code = codeBlock.textContent || '';
-        await navigator.clipboard.writeText(code);
-
-        // Visual feedback with icon change
-        button.innerHTML = createCheckIcon();
-        button.setAttribute('data-copied', 'true');
-        button.setAttribute('title', 'Copied!');
-        button.className = 'copy-button absolute top-3 right-3 bg-green-600 hover:bg-green-500 text-white font-medium p-2 rounded-md transition-all duration-200 opacity-100 z-10 flex items-center justify-center';
-
-        // Reset after 2 seconds
-        setTimeout(() => {
-          button.innerHTML = createCopyIcon();
-          button.setAttribute('data-copied', 'false');
-          button.setAttribute('title', 'Copy code');
-          button.className = 'copy-button absolute top-3 right-3 bg-slate-700 hover:bg-slate-600 dark:bg-slate-600 dark:hover:bg-slate-500 text-white font-medium p-2 rounded-md transition-all duration-200 opacity-70 hover:opacity-100 focus:opacity-100 z-10 flex items-center justify-center';
-        }, 2000);
+        
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(code);
+          updateButtonState(button, true);
+          setTimeout(() => updateButtonState(button, false), COPY_DELAY);
+        } else {
+          await fallbackCopy(code, button);
+        }
       } catch (err) {
         console.error('Failed to copy code: ', err);
-        fallbackCopy(codeBlock.textContent || '', button);
+        await fallbackCopy(codeBlock.textContent || '', button);
       }
     };
 
-    const handleMouseEnter = (button: HTMLElement) => {
-      button.style.opacity = '1';
-    };
-
-    const handleMouseLeave = (button: HTMLElement) => {
+    const handleMouseInteraction = (button: HTMLElement, isEnter: boolean) => {
       if (button.getAttribute('data-copied') === 'false') {
-        button.style.opacity = '0.7';
+        button.classList.toggle('opacity-70', !isEnter);
+        button.classList.toggle('opacity-100', isEnter);
       }
     };
 
@@ -93,8 +87,8 @@ const useCopyCodeButton = (containerRef: React.RefObject<HTMLElement>) => {
 
       // Add event listeners
       copyButton.addEventListener('click', () => handleCopyClick(codeBlock, copyButton));
-      pre.addEventListener('mouseenter', () => handleMouseEnter(copyButton));
-      pre.addEventListener('mouseleave', () => handleMouseLeave(copyButton));
+      pre.addEventListener('mouseenter', () => handleMouseInteraction(copyButton, true));
+      pre.addEventListener('mouseleave', () => handleMouseInteraction(copyButton, false));
 
       // Style the pre element and append button
       pre.style.position = 'relative';
@@ -106,12 +100,14 @@ const useCopyCodeButton = (containerRef: React.RefObject<HTMLElement>) => {
       codeBlocks.forEach(addCopyButtonToCodeBlock);
     };
 
-    // Add buttons after a short delay to ensure content is rendered
-    const timer = setTimeout(addCopyButtons, 100);
+    // Initial setup with debounced execution
+    const timer = setTimeout(addCopyButtons, RENDER_DELAY);
 
-    // Observer to handle dynamically added content
+    // Observer for dynamic content with debounced callback
+    let observerTimer: NodeJS.Timeout;
     const observer = new MutationObserver(() => {
-      setTimeout(addCopyButtons, 50);
+      clearTimeout(observerTimer);
+      observerTimer = setTimeout(addCopyButtons, OBSERVER_DELAY);
     });
 
     observer.observe(containerRef.current, {
@@ -121,6 +117,7 @@ const useCopyCodeButton = (containerRef: React.RefObject<HTMLElement>) => {
 
     return () => {
       clearTimeout(timer);
+      clearTimeout(observerTimer);
       observer.disconnect();
     };
   }, [containerRef]);
