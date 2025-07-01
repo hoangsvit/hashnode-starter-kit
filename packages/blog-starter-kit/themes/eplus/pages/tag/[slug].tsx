@@ -54,7 +54,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 					{/* Basic SEO meta tags */}
 					<meta name="keywords" content={`${tag.name}, ${tag.slug}, ${publication.title}, blog, articles`} />
 					<meta name="author" content={publication.author.name} />
-					<meta name="robots" content={posts.edges.length > 2 ? "index, follow" : "noindex, follow"} />
+					<meta name="robots" content="index, follow" />
 					<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 					<meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
 					<meta name="language" content="en" />
@@ -166,21 +166,43 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 						)}
 						</div>
 					</div>
-					{posts.edges.length > 0 && (
-						<div className="my-10 flex flex-col items-center justify-center">
-						<hr className="w-full border-t dark:border-slate-800" />
-						<p className="-mt-5 bg-white p-2 font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-400">
-							Articles with this tag
-						</p>
+					{posts.edges.length > 0 ? (
+						<>
+							<div className="my-10 flex flex-col items-center justify-center">
+								<hr className="w-full border-t dark:border-slate-800" />
+								<p className="-mt-5 bg-white p-2 font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-400">
+									Articles with this tag
+								</p>
+							</div>
+							<PublicationPosts
+								publication={publication}
+								posts={postData}
+								fetchMore={fetchMore}
+								fetchedOnce={fetchedOnce}
+								fetching={fetching}
+							/>
+						</>
+					) : (
+						<div className="my-10 flex flex-col items-center justify-center text-center">
+							<div className="rounded-lg bg-slate-50 dark:bg-slate-800 p-8 max-w-md">
+								<h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+									No articles yet
+								</h3>
+								<p className="text-slate-600 dark:text-slate-400 mb-4">
+									There are no articles tagged with #{tag.name} yet. Be the first to write one!
+								</p>
+								<a
+									href={`https://hashnode.com/n/${tag.slug}`}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
+								>
+									<span>Explore more on Hashnode</span>
+									<ExternalLinkSVG className="w-4 h-4" />
+								</a>
+							</div>
 						</div>
 					)}
-					<PublicationPosts
-						publication={publication}
-						posts={postData}
-						fetchMore={fetchMore}
-						fetchedOnce={fetchedOnce}
-						fetching={fetching}
-					/>{' '}
 				</div>
 				<PublicationFooter
 					authorName={publication.author.name}
@@ -235,7 +257,9 @@ export const getServerSideProps: any = async (ctx: any) => { // TODO: type needs
 
   const { posts } = publication || {};
 
-  if (!posts || posts.edges.length === 0) {
+  // Cho phép tag page tồn tại ngay cả khi chưa có posts
+  // Chỉ check posts tồn tại, không check length
+  if (!posts) {
     return {
       notFound: true,
     };

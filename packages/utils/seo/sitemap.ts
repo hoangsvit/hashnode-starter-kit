@@ -48,7 +48,7 @@ export const getSitemap = (publication: any) => {
 		xml += '<url>';
 		xml += `<loc>${domain}/tag/${tag}</loc>`;
 		xml += '<changefreq>weekly</changefreq>';
-		xml += `<priority>0.6</priority>`;
+		xml += `<priority>0.7</priority>`;
 		xml += '</url>';
 	});
 
