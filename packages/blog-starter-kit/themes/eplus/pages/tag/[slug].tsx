@@ -48,6 +48,76 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 			<Layout>
 				<Head>
 					<title>{title}</title>
+					<link rel="canonical" href={`${publication.url}/tag/${tag.slug}`} />
+					<meta name="description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`} />
+					
+					{/* Basic SEO meta tags */}
+					<meta name="keywords" content={`${tag.name}, ${tag.slug}, ${publication.title}, blog, articles`} />
+					<meta name="author" content={publication.author.name} />
+					<meta name="robots" content={posts.edges.length > 2 ? "index, follow" : "noindex, follow"} />
+					<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+					<meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+					<meta name="language" content="vi" />
+
+					{/* Open Graph meta tags */}
+					<meta property="og:type" content="website" />
+					<meta property="og:title" content={title} />
+					<meta property="og:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`} />
+					<meta property="og:url" content={`${publication.url}/tag/${tag.slug}`} />
+					<meta property="og:site_name" content={publication.title} />
+					<meta property="og:locale" content="vi_VN" />
+
+					{/* Twitter Card meta tags */}
+					<meta property="twitter:card" content="summary" />
+					<meta property="twitter:title" content={title} />
+					<meta property="twitter:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`} />
+
+					{/* Additional meta tags */}
+					<meta name="theme-color" content="#ffffff" />
+					<meta name="apple-mobile-web-app-capable" content="yes" />
+					<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+					<meta name="format-detection" content="telephone=no" />
+
+					{/* Schema.org structured data for tag page */}
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{
+							__html: JSON.stringify({
+								"@context": "https://schema.org",
+								"@type": "WebPage",
+								"name": title,
+								"description": `Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`,
+								"url": `${publication.url}/tag/${tag.slug}`,
+								"mainEntity": {
+									"@type": "Blog",
+									"name": publication.title,
+									"description": publication.descriptionSEO || publication.title,
+									"url": publication.url,
+									"author": {
+										"@type": publication.isTeam ? "Organization" : "Person",
+										"name": publication.author.name
+									}
+								},
+								"breadcrumb": {
+									"@type": "BreadcrumbList",
+									"itemListElement": [
+										{
+											"@type": "ListItem",
+											"position": 1,
+											"name": "Home",
+											"item": publication.url
+										},
+										{
+											"@type": "ListItem", 
+											"position": 2,
+											"name": `Tag: ${tag.name}`,
+											"item": `${publication.url}/tag/${tag.slug}`
+										}
+									]
+								}
+							})
+						}}
+					/>
 				</Head>
 				<Header currentMenuId={currentMenuId} isHome={false} />
 				<div className={twJoin('blog-content-area feed-width', 'mx-auto md:w-2/3', !!publication.about?.html && 'mt-12')}>
