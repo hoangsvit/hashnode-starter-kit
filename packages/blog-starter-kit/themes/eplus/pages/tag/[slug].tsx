@@ -49,7 +49,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 				<Head>
 					<title>{title}</title>
 					<link rel="canonical" href={`${publication.url}/tag/${tag.slug}`} />
-					<meta name="description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`} />
+					<meta name="description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`} />
 					
 					{/* Basic SEO meta tags */}
 					<meta name="keywords" content={`${tag.name}, ${tag.slug}, ${publication.title}, blog, articles`} />
@@ -57,20 +57,20 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 					<meta name="robots" content={posts.edges.length > 2 ? "index, follow" : "noindex, follow"} />
 					<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 					<meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-					<meta name="language" content="vi" />
+					<meta name="language" content="en" />
 
 					{/* Open Graph meta tags */}
 					<meta property="og:type" content="website" />
 					<meta property="og:title" content={title} />
-					<meta property="og:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`} />
+					<meta property="og:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`} />
 					<meta property="og:url" content={`${publication.url}/tag/${tag.slug}`} />
 					<meta property="og:site_name" content={publication.title} />
-					<meta property="og:locale" content="vi_VN" />
+					<meta property="og:locale" content="en_US" />
 
 					{/* Twitter Card meta tags */}
 					<meta property="twitter:card" content="summary" />
 					<meta property="twitter:title" content={title} />
-					<meta property="twitter:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`} />
+					<meta property="twitter:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`} />
 
 					{/* Additional meta tags */}
 					<meta name="theme-color" content="#ffffff" />
@@ -86,7 +86,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 								"@context": "https://schema.org",
 								"@type": "WebPage",
 								"name": title,
-								"description": `Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${posts.totalDocuments || 'various'} articles about ${tag.name}.`,
+								"description": `Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`,
 								"url": `${publication.url}/tag/${tag.slug}`,
 								"mainEntity": {
 									"@type": "Blog",
@@ -137,6 +137,16 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 								{tag.name}
 							</h1>
 							<p className="text-lg text-slate-600 dark:text-slate-400">#{tag.slug}</p>
+							{Boolean(tag.followersCount || tag.postsCount) && (
+								<div className="mt-2 flex gap-4 text-sm text-slate-500 dark:text-slate-400">
+									{Boolean(tag.postsCount) && (
+										<span>{tag.postsCount} articles</span>
+									)}
+									{Boolean(tag.followersCount) && (
+										<span>{tag.followersCount} followers</span>
+									)}
+								</div>
+							)}
 							</div>
 						</div>
 						{tag && (
