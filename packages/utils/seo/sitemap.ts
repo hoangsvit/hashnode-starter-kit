@@ -47,8 +47,8 @@ export const getSitemap = (publication: any) => {
 	uniqueTags.forEach((tag: any) => {
 		xml += '<url>';
 		xml += `<loc>${domain}/tag/${tag}</loc>`;
-		xml += '<changefreq>always</changefreq>';
-		xml += `<priority>1</priority>`;
+		xml += '<changefreq>weekly</changefreq>';
+		xml += `<priority>0.6</priority>`;
 		xml += '</url>';
 	});
 

@@ -60,15 +60,14 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 				<meta name="robots" content="index, follow" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-				<meta name="language" content="vi" />
+				<meta name="language" content="en" />
 
-				{/* Open Graph meta tags */}
 				<meta property="og:type" content="article" />
 				<meta property="og:title" content={post.seo?.title || post.title} />
 				<meta property="og:description" content={post.seo?.description || post.subtitle || post.brief} />
 				<meta property="og:url" content={post.url} />
 				<meta property="og:site_name" content={publication.title} />
-				<meta property="og:locale" content="vi_VN" />
+				<meta property="og:locale" content="en_US" />
 				{post.publishedAt && <meta property="article:published_time" content={post.publishedAt} />}
 				{post.updatedAt && <meta property="article:modified_time" content={post.updatedAt} />}
 				<meta property="article:author" content={post.author.name} />
