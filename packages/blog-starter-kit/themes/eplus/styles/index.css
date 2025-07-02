@@ -79,8 +79,9 @@
   margin: 2em 0;
 }
 .prose .hn-table table {
-  border: 1px solid #e0e0e0;
   margin: 0;
+  min-width: 100%;
+  background-color: transparent !important;
 }
 .prose .hn-table table tbody td:first-child,
 .prose table tbody td:first-child {
@@ -91,12 +92,28 @@
   padding: 0;
 }
 .prose .hn-table table td {
-  min-width: 200px;
+  min-width: 150px;
   padding: 0.5rem;
+  background-color: transparent !important;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 .prose .hn-table table td,
 .prose .hn-table table th {
   padding: 0.5rem !important;
+  background-color: transparent !important;
+}
+
+/* Mobile responsive for tables */
+@media (max-width: 768px) {
+  .prose .hn-table table td {
+    min-width: 120px;
+    font-size: 0.875rem;
+  }
+  
+  .prose .hn-table table th {
+    font-size: 0.875rem;
+  }
 }
 
 /* Container styles */
@@ -338,4 +355,83 @@ pre {
   .focus-ring-colors-base {
     @apply ring-blue-600 ring-offset-white dark:ring-offset-slate-800;
   }
+}
+
+/* Static page content styles */
+.blog-page-content {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+.blog-page-content * {
+  max-width: 100%;
+}
+
+.blog-page-content img {
+  height: auto;
+  max-width: 100%;
+}
+
+.blog-page-content table {
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+}
+
+.blog-page-content pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.blog-page-content code {
+  word-break: break-all;
+}
+
+/* Ensure proper spacing for page content */
+.blog-page-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Additional table responsive styling */
+.prose-content {
+  overflow-x: auto;
+}
+
+.prose-content table {
+  background-color: transparent !important;
+  width: 100%;
+  table-layout: auto;
+}
+
+.prose-content table th,
+.prose-content table td {
+  background-color: transparent !important;
+  white-space: nowrap;
+}
+
+/* Mobile table responsiveness */
+@media (max-width: 640px) {
+  .prose-content table {
+    font-size: 0.875rem;
+  }
+  
+  .prose-content table th,
+  .prose-content table td {
+    padding: 0.375rem !important;
+    white-space: normal;
+    word-break: break-word;
+  }
+}
+
+/* Dark mode table styling */
+.dark .prose-content table {
+  background-color: transparent !important;
+}
+
+.dark .prose-content table th,
+.dark .prose-content table td {
+  background-color: transparent !important;
 }
