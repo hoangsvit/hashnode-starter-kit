@@ -190,7 +190,7 @@ export default function PostOrPage(props: Props) {
 					>
 						<PostPageNavbar publication={publication} ref={headerRef} />
 					</header>
-					<Container>
+					<Container className="px-4 md:px-6 lg:px-8">
 						<article className="flex flex-col items-start gap-10 pb-10">
 							<Post {...props} />
 						</article>
@@ -250,7 +250,7 @@ export default function PostOrPage(props: Props) {
 				>
 					<PostPageNavbar publication={publication} ref={headerRef} />
 				</header>
-				<Container>
+				<Container className="px-4 md:px-6 lg:px-8">
 					<article className="flex flex-col items-start gap-10 pb-10">
 						<Page {...props} />
 					</article>
