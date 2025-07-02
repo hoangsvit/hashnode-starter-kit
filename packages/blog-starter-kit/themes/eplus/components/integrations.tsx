@@ -87,12 +87,17 @@ export function Integrations() {
     })(window, document, "clarity", "script", '${msClarityID}');`;
 
 	useEffect(() => {
+		if (!gaTrackingID || typeof window === 'undefined') return;
+		
 		// @ts-ignore
-		window.gtag('config', gaTrackingID, {
-			transport_url: 'https://ping.hashnode.com',
-			first_party_collection: true,
-		});
-	}, []);
+		if (typeof window.gtag !== 'undefined') {
+			// @ts-ignore
+			window.gtag('config', gaTrackingID, {
+				page_title: document.title,
+				page_location: window.location.href,
+			});
+		}
+	}, [gaTrackingID]);
 
 	return (
 		<>
