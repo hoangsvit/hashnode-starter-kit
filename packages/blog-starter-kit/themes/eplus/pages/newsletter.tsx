@@ -80,7 +80,6 @@ const Newsletter = (props: Props) => {
 					disableFooterBranding={publication.preferences.disableFooterBranding}
 					isTeam={publication.isTeam}
 					logo={publication.preferences.logo}
-					darkMode={publication.preferences.darkMode}
 				/>
 				) : null}
     </AppProvider>
