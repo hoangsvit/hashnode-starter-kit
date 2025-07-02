@@ -11,7 +11,6 @@ import { useRef } from 'react';
 import { twJoin } from 'tailwind-merge';
 import { Container } from '../components/container';
 import { AppProvider } from '../components/contexts/appContext';
-import { Header } from '../components/header';
 import { Layout } from '../components/layout';
 import { PostHeader } from '../components/post-header';
 import PostPageNavbar from '../components/post-page-navbar';
@@ -163,9 +162,7 @@ const Page = ({ page }: PageProps) => {
 				
 				<style dangerouslySetInnerHTML={{ __html: highlightJsMonokaiTheme }}></style>
 			</Head>
-			<div className="blog-page-area mx-auto min-h-screen px-4 py-8 md:w-2/3 md:p-10">
-				<StaticPageContent pageContent={page} />
-			</div>
+			<StaticPageContent pageContent={page} />
 		</>
 	);
 };
@@ -197,16 +194,14 @@ export default function PostOrPage(props: Props) {
 						<article className="flex flex-col items-start gap-10 pb-10">
 							<Post {...props} />
 						</article>
-					</Container>
-					<PublicationFooter
-						authorName={publication.author.name}
-						title={publication.title}
-						imprint={publication.imprint}
-						disableFooterBranding={publication.preferences.disableFooterBranding}
-						isTeam={publication.isTeam}
-						logo={publication.preferences.logo}
-						darkMode={publication.preferences.darkMode}
-					/>
+					</Container>				<PublicationFooter
+					authorName={publication.author.name}
+					title={publication.title}
+					imprint={publication.imprint}
+					disableFooterBranding={publication.preferences.disableFooterBranding}
+					isTeam={publication.isTeam}
+					logo={publication.preferences.logo}
+				/>
 				</Layout>
 			</AppProvider>
 		);
@@ -244,7 +239,17 @@ export default function PostOrPage(props: Props) {
 						}}
 					/>
 				</Head>
-				<Header isHome={false} />
+				<header
+					ref={headerRef}
+					className={twJoin(
+						'blog-header',
+						'z-50 w-full border-b',
+						navPositionStyles,
+						'border-black/10 bg-white bg-opacity-70 dark:border-white/10 dark:bg-slate-900 dark:bg-opacity-70',
+					)}
+				>
+					<PostPageNavbar publication={publication} ref={headerRef} />
+				</header>
 				<Container>
 					<article className="flex flex-col items-start gap-10 pb-10">
 						<Page {...props} />
@@ -257,7 +262,6 @@ export default function PostOrPage(props: Props) {
 					disableFooterBranding={publication.preferences.disableFooterBranding}
 					isTeam={publication.isTeam}
 					logo={publication.preferences.logo}
-					darkMode={publication.preferences.darkMode}
 				/>
 			</Layout>
 		</AppProvider>
