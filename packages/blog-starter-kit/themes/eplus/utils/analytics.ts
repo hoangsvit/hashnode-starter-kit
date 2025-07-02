@@ -10,6 +10,10 @@ declare global {
 	}
 }
 
+// Environment checks
+const isProd = process.env.NEXT_PUBLIC_MODE === 'production';
+const isDevAnalyticsEnabled = process.env.NEXT_PUBLIC_GA_DEV_MODE === 'true';
+
 /**
  * Check if Google Analytics is loaded and ready
  */
@@ -23,16 +27,29 @@ export const isGAReady = (): boolean => {
 };
 
 /**
+ * Log analytics events in development mode
+ */
+const logDevEvent = (eventName: string, eventData: any) => {
+	if (!isProd && isDevAnalyticsEnabled) {
+		console.log(`🔍 GA Dev Mode - ${eventName}:`, eventData);
+	}
+};
+
+/**
  * Track page view manually (tự động được gọi trong Analytics component)
  */
 export const trackPageView = (url?: string, title?: string) => {
-	if (!isGAReady()) return;
-
-	window.gtag('event', 'page_view', {
+	const eventData = {
 		page_title: title || document.title,
 		page_location: url || window.location.href,
 		page_path: window.location.pathname,
-	});
+	};
+
+	logDevEvent('Page View', eventData);
+
+	if (!isGAReady()) return;
+
+	window.gtag('event', 'page_view', eventData);
 };
 
 /**
@@ -45,14 +62,18 @@ export const trackEvent = (
 	value?: number,
 	customParams?: Record<string, any>
 ) => {
-	if (!isGAReady()) return;
-
-	window.gtag('event', action, {
+	const eventData = {
 		event_category: category,
 		event_label: label,
 		value: value,
 		...customParams,
-	});
+	};
+
+	logDevEvent(`Event: ${action}`, eventData);
+
+	if (!isGAReady()) return;
+
+	window.gtag('event', action, eventData);
 };
 
 /**

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useAppContext } from './contexts/appContext';
 const isProd = process.env.NEXT_PUBLIC_MODE === 'production';
+const isDevAnalyticsEnabled = process.env.NEXT_PUBLIC_GA_DEV_MODE === 'true';
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_URL || '';
 
 export const Analytics = () => {
@@ -11,10 +12,21 @@ export const Analytics = () => {
 	const gaTrackingID = publication.integrations?.gaTrackingID || process.env.NEXT_PUBLIC_GA_TRACKING_ID;
 
 	useEffect(() => {
-		if (!isProd) return;
+		// Allow analytics in production OR when dev mode is explicitly enabled
+		if (!isProd && !isDevAnalyticsEnabled) return;
 
 		const _sendPageViewsToGoogleAnalytics = () => {
 			if (!gaTrackingID || typeof window === 'undefined') return;
+			
+			// Log in development mode for debugging
+			if (!isProd) {
+				console.log('🔍 GA Dev Mode - Sending page view:', {
+					gaTrackingID,
+					page_title: document.title,
+					page_location: window.location.href,
+					page_path: window.location.pathname,
+				});
+			}
 			
 			// @ts-ignore
 			if (typeof window.gtag !== 'undefined') {
