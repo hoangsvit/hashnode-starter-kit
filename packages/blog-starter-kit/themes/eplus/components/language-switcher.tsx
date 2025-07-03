@@ -22,9 +22,9 @@ export const LanguageSwitcher = () => {
     
     const { pathname, query } = router;
     
-    // Đổi ngôn ngữ và reload để fetch lại content từ server
+    // Đổi ngôn ngữ mà không reload trang
     await router.push({ pathname, query }, router.asPath, { locale: newLocale });
-    window.location.reload();
+    setIsChanging(false);
   }, [router]);
 
   const toggleDropdown = useCallback(() => {
@@ -54,7 +54,7 @@ export const LanguageSwitcher = () => {
         {isChanging ? (
           <>
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 dark:border-gray-100"></div>
-            <span className="hidden sm:inline">Changing...</span>
+            <span className="hidden sm:inline">{t('common.switchLanguage')}...</span>
           </>
         ) : (
           <>
