@@ -50,7 +50,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 		<div ref={containerRef} className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
 			<div className="mb-6">
 				<h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-					Bài viết trong series: {series.name}
+					Posts in series: {series.name}
 				</h2>
 				{series.description?.html && (
 					<div
@@ -105,10 +105,9 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 								}`}
 							>
 								{isCurrentPost && (
-									<div className="absolute top-2 right-2">
-										<span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-											Bài hiện tại
-										</span>
+									<div className="absolute top-2 right-2">									<span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+										Current Post
+									</span>
 									</div>
 								)}
 
@@ -172,7 +171,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 												</div>
 												<span>•</span>
 												<time dateTime={post.publishedAt}>
-													{new Date(post.publishedAt).toLocaleDateString('vi-VN', {
+													{new Date(post.publishedAt).toLocaleDateString('en-US', {
 														year: 'numeric',
 														month: 'long',
 														day: 'numeric',
@@ -194,7 +193,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 						href={`/series/${series.slug}`}
 						className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
 					>
-						Xem tất cả bài viết trong series
+						View all posts in series
 						<svg
 							className="ml-2 h-4 w-4"
 							fill="none"
