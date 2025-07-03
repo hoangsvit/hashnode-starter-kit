@@ -1,6 +1,5 @@
 import CustomImage from '../components/custom-image';
-import PublicationSubscribeStandOut } = async (ctx) => {
-  const { req, res, query, locale = 'en' } = ctx;om '../components/publication-subscribe-standout';
+import PublicationSubscribeStandOut from '../components/publication-subscribe-standout';
 import { resizeImage } from '../utils/image';
 import { AppProvider } from '../components/contexts/appContext';
 
@@ -12,7 +11,7 @@ import {
   PublicationFragment,
 } from '../generated/graphql';
 import { createHeaders, createSSRExchange, getUrqlClientConfig } from '../lib/api/client';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { log as _log } from 'next-axiom';
 import { initUrqlClient } from 'next-urql';
@@ -92,7 +91,7 @@ export const getServerSideProps: GetServerSideProps<{
   publication: PublicationFragment;
   recent3Posts: PostThumbnailFragment[];
 }> = async (ctx) => {
-  const { req, res, query } = ctx;
+  const { res, query } = ctx;
   const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
   const log = _log.with({ host });
 
@@ -143,19 +142,12 @@ export const getServerSideProps: GetServerSideProps<{
 
   res.setHeader('Cache-Control', 's-maxage=3, stale-while-revalidate');
 
-  const isDarkTheme =
-    typeof query.isDarkTheme === 'undefined'
-      ? !!publication.preferences.darkMode?.enabled
-      : query.isDarkTheme === 'true';
-  // @ts-ignore
   return {
     props: {
       publication,
       recent3Posts: publication.recentPosts.edges.map((edge) => edge.node),
       currentMenuId: 'newsletter',
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };  currentMenuId: 'newsletter'
+      ...(await serverSideTranslations(ctx.locale || 'en', ['common'])),
     },
   };
 };
