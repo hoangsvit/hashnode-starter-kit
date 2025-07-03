@@ -1,5 +1,6 @@
 import CustomImage from '../components/custom-image';
-import PublicationSubscribeStandOut from '../components/publication-subscribe-standout';
+import PublicationSubscribeStandOut } = async (ctx) => {
+  const { req, res, query, locale = 'en' } = ctx;om '../components/publication-subscribe-standout';
 import { resizeImage } from '../utils/image';
 import { AppProvider } from '../components/contexts/appContext';
 
@@ -12,6 +13,7 @@ import {
 } from '../generated/graphql';
 import { createHeaders, createSSRExchange, getUrqlClientConfig } from '../lib/api/client';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { log as _log } from 'next-axiom';
 import { initUrqlClient } from 'next-urql';
 import { Header } from '../components/header';
@@ -146,13 +148,14 @@ export const getServerSideProps: GetServerSideProps<{
       ? !!publication.preferences.darkMode?.enabled
       : query.isDarkTheme === 'true';
   // @ts-ignore
-  req.isDarkTheme = isDarkTheme;
-
   return {
     props: {
       publication,
       recent3Posts: publication.recentPosts.edges.map((edge) => edge.node),
-      currentMenuId: 'newsletter'
+      currentMenuId: 'newsletter',
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };  currentMenuId: 'newsletter'
     },
   };
 };
