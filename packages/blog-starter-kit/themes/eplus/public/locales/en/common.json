@@ -38,7 +38,9 @@
 		"noArticlesYet": "No articles yet",
 		"noArticlesWithTag": "There are no articles tagged with #{{tagName}} yet. Be the first to write one!",
 		"exploreMoreOnHashnode": "Explore more on Hashnode",
-		"aboutTopic": "about"
+		"aboutTopic": "about",
+		"pinned": "Pinned",
+		"views": "views"
 	},
 	"navigation": {
 		"home": "Home",

@@ -38,7 +38,9 @@
 		"noArticlesYet": "Chưa có bài viết nào",
 		"noArticlesWithTag": "Chưa có bài viết nào được gắn thẻ #{{tagName}}. Hãy là người đầu tiên viết một bài!",
 		"exploreMoreOnHashnode": "Khám phá thêm trên Hashnode",
-		"aboutTopic": "về"
+		"aboutTopic": "về",
+		"pinned": "Được ghim",
+		"views": "lượt xem"
 	},
 	"navigation": {
 		"home": "Trang chủ",
