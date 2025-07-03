@@ -24,17 +24,17 @@ fragment PostFull on Post {
 			domain {
 				host
 				ready
-        	}
+			}
 		}
 		urlPattern
 		features {
 			newsletter {
-            	isEnabled
-          	}
+				isEnabled
+			}
 			readTime {
 				isEnabled
 			}
-			 textSelectionSharer {
+			textSelectionSharer {
 				isEnabled
 			}
 		}
@@ -45,6 +45,8 @@ fragment PostFull on Post {
 	slug
 	series {
 		id
+		name
+		slug
 	}
 	url
 	brief
@@ -70,8 +72,8 @@ fragment PostFull on Post {
 		username
 		profilePicture
 		socialMediaLinks {
-          twitter
-        }
+			twitter
+		}
 		bio {
 			html
 		}
@@ -84,7 +86,7 @@ fragment PostFull on Post {
 			html
 		}
 		profilePicture
-  	}
+	}
 	title
 	content {
 		markdown
