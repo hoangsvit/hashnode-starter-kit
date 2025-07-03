@@ -13,14 +13,38 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 const variableConstant = 'variable';
-const fontInterVar = inter.variable.replace(variableConstant, 'Inter');
-const fontPlusJakartaSansVar = plusJakartaSans.variable.replace(variableConstant, 'Plus_Jakarta_Sans');
+const fontInterVar = inter.variable?.replace(variableConstant, 'Inter') || '--font-inter';
+const fontPlusJakartaSansVar = plusJakartaSans.variable?.replace(variableConstant, 'Plus_Jakarta_Sans') || '--font-plus-jakarta-sans';
 
-export const GlobalFontVariables = () => (
-  <style jsx global>{`
-    html {
-      --font-inter: ${fontInterVar};
-      --font-plus-jakarta-sans: ${fontPlusJakartaSansVar};
-    }
-  `}</style>
-);
+export const GlobalFontVariables = () => {
+  // Check if fonts are loaded properly
+  if (typeof window === 'undefined') {
+    // Server-side: return minimal styles
+    return (
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            html {
+              --font-inter: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+              --font-plus-jakarta-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            }
+          `
+        }}
+      />
+    );
+  }
+  
+  // Client-side: use the font variables
+  return (
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+          html {
+            --font-inter: ${fontInterVar};
+            --font-plus-jakarta-sans: ${fontPlusJakartaSansVar};
+          }
+        `
+      }}
+    />
+  );
+};

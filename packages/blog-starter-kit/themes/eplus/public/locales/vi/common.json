@@ -1,0 +1,78 @@
+{
+	"common": {
+		"readMore": "Đọc thêm",
+		"subscribe": "Đăng ký",
+		"newsletter": "Bản tin",
+		"search": "Tìm kiếm",
+		"tags": "Thẻ",
+		"series": "Chuỗi bài",
+		"home": "Trang chủ",
+		"about": "Giới thiệu",
+		"contact": "Liên hệ",
+		"blog": "Blog",
+		"posts": "Bài viết",
+		"post": "Bài viết",
+		"author": "Tác giả",
+		"publishedOn": "Được đăng vào",
+		"readTime": "phút đọc",
+		"share": "Chia sẻ",
+		"tableOfContents": "Mục lục",
+		"relatedPosts": "Bài viết liên quan",
+		"previousPost": "Bài trước",
+		"nextPost": "Bài tiếp theo",
+		"backToHome": "Về trang chủ",
+		"noPostsFound": "Không tìm thấy bài viết",
+		"loading": "Đang tải...",
+		"error": "Đã xảy ra lỗi",
+		"tryAgain": "Thử lại",
+		"language": "Ngôn ngữ",
+		"switchLanguage": "Chuyển ngôn ngữ",
+		"on": "trên",
+		"discover": "Khám phá",
+		"various": "nhiều",
+		"followers": "người theo dõi",
+		"moreContent": "Nội dung khác",
+		"seeMoreContent": "Xem thêm bài viết từ thẻ này trên Hashnode",
+		"readMoreOnHashnode": "Đọc thêm câu chuyện trên Hashnode",
+		"articlesWithTag": "Bài viết có thẻ này",
+		"noArticlesYet": "Chưa có bài viết nào",
+		"noArticlesWithTag": "Chưa có bài viết nào được gắn thẻ #{{tagName}}. Hãy là người đầu tiên viết một bài!",
+		"exploreMoreOnHashnode": "Khám phá thêm trên Hashnode",
+		"aboutTopic": "về"
+	},
+	"navigation": {
+		"home": "Trang chủ",
+		"blog": "Blog",
+		"about": "Giới thiệu",
+		"contact": "Liên hệ",
+		"newsletter": "Bản tin"
+	},
+	"footer": {
+		"copyright": "Bảo lưu mọi quyền",
+		"poweredBy": "Được hỗ trợ bởi",
+		"followUs": "Theo dõi chúng tôi"
+	},
+	"series": {
+		"title": "Chuỗi bài",
+		"postsInSeries": "Bài viết trong chuỗi này",
+		"currentPost": "Bạn đang ở đây",
+		"allPosts": "Tất cả bài viết trong chuỗi"
+	},
+	"newsletter": {
+		"title": "Đăng ký nhận bản tin",
+		"description": "Nhận những bài viết mới nhất ngay trong hộp thư của bạn",
+		"emailPlaceholder": "Nhập email của bạn",
+		"subscribeButton": "Đăng ký",
+		"successMessage": "Đăng ký thành công!",
+		"errorMessage": "Đăng ký thất bại. Vui lòng thử lại."
+	},
+	"search": {
+		"placeholder": "Tìm kiếm bài viết...",
+		"noResults": "Không tìm thấy bài viết phù hợp",
+		"results": "Kết quả tìm kiếm"
+	},
+	"tags": {
+		"title": "Thẻ",
+		"postsTagged": "Bài viết được gắn thẻ"
+	}
+}

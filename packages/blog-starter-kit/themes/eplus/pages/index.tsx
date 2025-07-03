@@ -1,5 +1,6 @@
-import { InferGetStaticPropsType } from 'next';
+import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import Image from 'next/legacy/image';
 import { useState } from 'react';
@@ -44,7 +45,7 @@ const NoPostsImage = ({ alt = '' }) => {
 };
 
 export default function Index(
-	props: InferGetStaticPropsType<typeof getStaticProps> & Required<WithUrqlProps>,
+	props: InferGetServerSidePropsType<typeof getServerSideProps> & Required<WithUrqlProps>,
 ) {
 	const { host, publication, initialLimit } = props;
 
@@ -195,7 +196,8 @@ export default function Index(
 	);
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+	const { locale = 'en' } = context;
 	const ssrCache = createSSRExchange();
 	const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
 	const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
@@ -224,7 +226,6 @@ export const getStaticProps = async () => {
 		});
 		return {
 			notFound: true,
-			revalidate: REVALIDATION_INTERVAL,
 		};
 	}
 
@@ -260,7 +261,6 @@ export const getStaticProps = async () => {
 		});
 		return {
 			notFound: true,
-			revalidate: REVALIDATION_INTERVAL,
 		};
 	}
 
@@ -271,7 +271,7 @@ export const getStaticProps = async () => {
 			urqlState: ssrCache.extractData(),
 			host,
 			isHome: true,
+			...(await serverSideTranslations(locale, ['common'])),
 		},
-		revalidate: 1,
 	};
 };

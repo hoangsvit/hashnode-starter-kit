@@ -1,0 +1,78 @@
+{
+	"common": {
+		"readMore": "Read More",
+		"subscribe": "Subscribe",
+		"newsletter": "Newsletter",
+		"search": "Search",
+		"tags": "Tags",
+		"series": "Series",
+		"home": "Home",
+		"about": "About",
+		"contact": "Contact",
+		"blog": "Blog",
+		"posts": "Posts",
+		"post": "Post",
+		"author": "Author",
+		"publishedOn": "Published on",
+		"readTime": "min read",
+		"share": "Share",
+		"tableOfContents": "Table of Contents",
+		"relatedPosts": "Related Posts",
+		"previousPost": "Previous Post",
+		"nextPost": "Next Post",
+		"backToHome": "Back to Home",
+		"noPostsFound": "No posts found",
+		"loading": "Loading...",
+		"error": "An error occurred",
+		"tryAgain": "Try Again",
+		"language": "Language",
+		"switchLanguage": "Switch Language",
+		"on": "on",
+		"discover": "Discover",
+		"various": "various",
+		"followers": "followers",
+		"moreContent": "More content",
+		"seeMoreContent": "See more articles from tag on Hashnode",
+		"readMoreOnHashnode": "Read more stories on Hashnode",
+		"articlesWithTag": "Articles with this tag",
+		"noArticlesYet": "No articles yet",
+		"noArticlesWithTag": "There are no articles tagged with #{{tagName}} yet. Be the first to write one!",
+		"exploreMoreOnHashnode": "Explore more on Hashnode",
+		"aboutTopic": "about"
+	},
+	"navigation": {
+		"home": "Home",
+		"blog": "Blog",
+		"about": "About",
+		"contact": "Contact",
+		"newsletter": "Newsletter"
+	},
+	"footer": {
+		"copyright": "All rights reserved",
+		"poweredBy": "Powered by",
+		"followUs": "Follow us"
+	},
+	"series": {
+		"title": "Series",
+		"postsInSeries": "Posts in this series",
+		"currentPost": "You are here",
+		"allPosts": "All posts in series"
+	},
+	"newsletter": {
+		"title": "Subscribe to Newsletter",
+		"description": "Get the latest posts delivered right to your inbox",
+		"emailPlaceholder": "Enter your email",
+		"subscribeButton": "Subscribe",
+		"successMessage": "Successfully subscribed!",
+		"errorMessage": "Failed to subscribe. Please try again."
+	},
+	"search": {
+		"placeholder": "Search posts...",
+		"noResults": "No posts found matching your search",
+		"results": "Search Results"
+	},
+	"tags": {
+		"title": "Tags",
+		"postsTagged": "Posts tagged with"
+	}
+}

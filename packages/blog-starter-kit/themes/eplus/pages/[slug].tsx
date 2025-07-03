@@ -6,6 +6,7 @@ import {
 } from '@starter-kit/utils/social/og';
 import request from 'graphql-request';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import { useRef } from 'react';
 import { twJoin } from 'tailwind-merge';
@@ -279,8 +280,7 @@ export default function PostOrPage(props: Props) {
 type Params = {
 	slug: string;
 };
-
-export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<Props, Params> = async ({ params, locale = 'en' }) => {
 	if (!params) {
 		throw new Error('No params');
 	}
@@ -293,7 +293,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
 		request(endpoint, SinglePostByPublicationDocument, { host, slug }),
 		request(endpoint, MorePostsByPublicationDocument, { first: 4, host }),
 	]);
-
 	if (postData.publication?.post) {
 		return {
 			props: {
@@ -301,6 +300,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
 				post: postData.publication.post,
 				morePosts: morePostsData.publication?.posts.edges ?? [],
 				publication: postData.publication,
+				...(await serverSideTranslations(locale, ['common'])),
 			},
 			revalidate: 1,
 		};
@@ -314,6 +314,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
 				type: 'page',
 				page: pageData.publication.staticPage,
 				publication: pageData.publication,
+				...(await serverSideTranslations(locale, ['common'])),
 			},
 			revalidate: 1,
 		};
@@ -338,13 +339,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	const postSlugs = (data.publication?.posts.edges ?? []).map((edge) => edge.node.slug);
 
 	return {
-		paths: postSlugs.map((slug) => {
-			return {
-				params: {
-					slug: slug,
-				},
-			};
-		}),
+		paths: postSlugs.flatMap((slug) => 
+			['en', 'vi'].map((locale) => ({
+				params: { slug },
+				locale,
+			}))
+		),
 		fallback: 'blocking',
 	};
 };

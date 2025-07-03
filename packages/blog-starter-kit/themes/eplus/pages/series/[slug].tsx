@@ -1,5 +1,6 @@
 import { resizeImage } from '@starter-kit/utils/image';
 import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -163,7 +164,7 @@ type Params = {
 };
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx) => {
-	const { req, query, resolvedUrl, params } = ctx;
+	const { req, query, resolvedUrl, params, locale = 'en' } = ctx;
 	const slug = params!.slug;
 	const requestHost = query['x-host'] || req.headers.host;
 	const [resolvedPath] = resolvedUrl.split('?');
@@ -236,6 +237,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx)
 			urqlState: ssrCache.extractData(),
 			initialLimit: INITIAL_LIMIT,
 			currentMenuId: rawCurrentMenuId,
+			...(await serverSideTranslations(locale, ['common'])),
 		},
 	};
 };

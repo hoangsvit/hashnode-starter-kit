@@ -8,6 +8,7 @@ import PublicationLogo from './publication-logo';
 import PublicationNavLinks from './publication-nav-links';
 import PublicationSocialLinks from './publication-social-links';
 import { UserAvatar } from './user-avatar';
+import { LanguageSwitcher } from './language-switcher';
 import { useAuth } from '../hooks/useAuth';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
@@ -157,6 +158,11 @@ export const Header = (props: Props) => {
 								)
 							}
 						/>
+
+						{/* Language Switcher */}
+						<div className="ml-2">
+							<LanguageSwitcher />
+						</div>
 					</div>
 				</div>
 

@@ -1,4 +1,6 @@
 import Head from 'next/head';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import { twJoin } from 'tailwind-merge';
 import { useState } from 'react';
 import { useQuery } from 'urql';
@@ -28,6 +30,7 @@ type Props = {
 };
 
 export default function Post({ publication, posts, tag, slug, currentMenuId }: Props) {
+	const { t } = useTranslation('common');
 	const title = `#${tag.name} - ${publication.title}`;
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
@@ -49,7 +52,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 				<Head>
 					<title>{title}</title>
 					<link rel="canonical" href={`${publication.url}/tag/${tag.slug}`} />
-					<meta name="description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`} />
+					<meta name="description" content={`${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.about')} ${tag.name}.`} />
 					
 					{/* Basic SEO meta tags */}
 					<meta name="keywords" content={`${tag.name}, ${tag.slug}, ${publication.title}, blog, articles`} />
@@ -62,7 +65,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 					{/* Open Graph meta tags */}
 					<meta property="og:type" content="website" />
 					<meta property="og:title" content={title} />
-					<meta property="og:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`} />
+					<meta property="og:description" content={`${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.about')} ${tag.name}.`} />
 					<meta property="og:url" content={`${publication.url}/tag/${tag.slug}`} />
 					<meta property="og:site_name" content={publication.title} />
 					<meta property="og:locale" content="en_US" />
@@ -70,7 +73,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 					{/* Twitter Card meta tags */}
 					<meta property="twitter:card" content="summary" />
 					<meta property="twitter:title" content={title} />
-					<meta property="twitter:description" content={`Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`} />
+					<meta property="twitter:description" content={`${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.about')} ${tag.name}.`} />
 
 					{/* Additional meta tags */}
 					<meta name="theme-color" content="#ffffff" />
@@ -86,7 +89,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 								"@context": "https://schema.org",
 								"@type": "WebPage",
 								"name": title,
-								"description": `Explore all articles tagged with #${tag.name} on ${publication.title}. Discover ${tag.postsCount ?? 'various'} articles about ${tag.name}.`,
+								"description": `${t('common.discover')} ${t('common.posts')} ${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.aboutTopic')} ${tag.name}.`,
 								"url": `${publication.url}/tag/${tag.slug}`,
 								"mainEntity": {
 									"@type": "Blog",
@@ -104,13 +107,13 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 										{
 											"@type": "ListItem",
 											"position": 1,
-											"name": "Home",
+											"name": t('common.home'),
 											"item": publication.url
 										},
 										{
 											"@type": "ListItem", 
 											"position": 2,
-											"name": `Tag: ${tag.name}`,
+											"name": `${t('tags.title')}: ${tag.name}`,
 											"item": `${publication.url}/tag/${tag.slug}`
 										}
 									]
@@ -130,7 +133,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 						<div className="flex w-full min-w-0 flex-col flex-wrap items-center md:flex-row xl:flex-nowrap">
 						<div className="mb-5 w-full min-w-0 xl:mb-0 xl:flex-1 xl:pr-8">
 							<span className="blog-series-label mb-2 font-semibold uppercase tracking-tight text-slate-600 dark:text-slate-400">
-							Tag
+							{t('tags.title')}
 							</span>
 							<div className="truncate ">
 							<h1 className="blog-series-title mb-2 pb-px font-heading text-3xl font-bold text-slate-900 dark:text-white md:text-4xl">
@@ -140,10 +143,10 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 							{Boolean(tag.followersCount || tag.postsCount) && (
 								<div className="mt-2 flex gap-4 text-sm text-slate-500 dark:text-slate-400">
 									{Boolean(tag.postsCount) && (
-										<span>{tag.postsCount} articles</span>
+										<span>{tag.postsCount} {t('common.posts')}</span>
 									)}
 									{Boolean(tag.followersCount) && (
-										<span>{tag.followersCount} followers</span>
+										<span>{tag.followersCount} {t('common.followers')}</span>
 									)}
 								</div>
 							)}
@@ -154,14 +157,14 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 							<a
 								className="mb-2 flex flex-row items-center whitespace-nowrap rounded-lg border bg-white px-4 py-2 font-medium text-blue-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
 								href={`https://hashnode.com/n/${tag.slug}`}
-								aria-label="See more articles from tag on Hashnode"
+								aria-label={t('common.seeMoreContent')}
 								target="_Blank"
 								rel="noopener"
 							>
-								<span>More content</span>
+								<span>{t('common.moreContent')}</span>
 								<ExternalLinkSVG className="ml-1 h-4 w-4 fill-current" />
 							</a>
-							<p className="text-sm text-slate-700 dark:text-slate-400">Read more stories on Hashnode</p>
+							<p className="text-sm text-slate-700 dark:text-slate-400">{t('common.readMoreOnHashnode')}</p>
 						</div>
 						)}
 						</div>
@@ -171,7 +174,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 							<div className="my-10 flex flex-col items-center justify-center">
 								<hr className="w-full border-t dark:border-slate-800" />
 								<p className="-mt-5 bg-white p-2 font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-400">
-									Articles with this tag
+									{t('common.articlesWithTag')}
 								</p>
 							</div>
 							<PublicationPosts
@@ -186,10 +189,10 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 						<div className="my-10 flex flex-col items-center justify-center text-center">
 							<div className="rounded-lg bg-slate-50 dark:bg-slate-800 p-8 max-w-md">
 								<h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
-									No articles yet
+									{t('common.noArticlesYet')}
 								</h3>
 								<p className="text-slate-600 dark:text-slate-400 mb-4">
-									There are no articles tagged with #{tag.name} yet. Be the first to write one!
+									{t('common.noArticlesWithTag', { tagName: tag.name })}
 								</p>
 								<a
 									href={`https://hashnode.com/n/${tag.slug}`}
@@ -197,7 +200,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 									rel="noopener noreferrer"
 									className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
 								>
-									<span>Explore more on Hashnode</span>
+									<span>{t('common.exploreMoreOnHashnode')}</span>
 									<ExternalLinkSVG className="w-4 h-4" />
 								</a>
 							</div>
@@ -218,7 +221,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 }
 
 export const getServerSideProps: any = async (ctx: any) => { // TODO: type needs to be fixed
-  const { req, res, query } = ctx;
+  const { req, res, query, locale = 'en' } = ctx;
   const { resolvedUrl } = ctx;
   const [resolvedPath] = resolvedUrl.split('?');
   const { 'x-host': queryHost } = query;
@@ -284,7 +287,8 @@ export const getServerSideProps: any = async (ctx: any) => { // TODO: type needs
       posts,
       tag,
 	  slug: slug,
-	  currentMenuId: currentMenu
+	  currentMenuId: currentMenu,
+      ...(await serverSideTranslations(locale, ['common'])),
     },
   };
 }

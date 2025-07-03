@@ -11,9 +11,15 @@ importers:
       classnames:
         specifier: ^2.3.1
         version: 2.5.1
+      i18next:
+        specifier: ^25.3.0
+        version: 25.3.0(typescript@5.8.3)
       next:
         specifier: ^13.4.19
-        version: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-i18next:
+        specifier: ^15.4.2
+        version: 15.4.2(i18next@25.3.0(typescript@5.8.3))(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-i18next@15.5.3(i18next@25.3.0(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
       nextjs-toploader:
         specifier: ^3.8.16
         version: 3.8.16(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -23,6 +29,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^15.5.3
+        version: 15.5.3(i18next@25.3.0(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
     devDependencies:
       '@types/node':
         specifier: ^18.0.3
@@ -217,6 +226,9 @@ importers:
       html-react-parser:
         specifier: ^4.2.2
         version: 4.2.10(react@18.3.1)
+      i18next:
+        specifier: ^25.3.0
+        version: 25.3.0(typescript@5.8.3)
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
@@ -229,9 +241,15 @@ importers:
       next-axiom:
         specifier: 0.18.0
         version: 0.18.0(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+      next-i18next:
+        specifier: ^15.4.2
+        version: 15.4.2(i18next@25.3.0(typescript@5.8.3))(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-i18next@15.5.3(i18next@25.3.0(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3))(react@18.3.1)
       next-urql:
         specifier: 5.0.2
         version: 5.0.2(react@18.3.1)(urql@4.2.2(@urql/core@5.1.1(graphql@16.11.0))(react@18.3.1))
+      react-i18next:
+        specifier: ^15.5.3
+        version: 15.5.3(i18next@25.3.0(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
       react-perfect-scrollbar:
         specifier: ^1.5.8
         version: 1.5.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1624,6 +1642,9 @@ packages:
   '@types/hast@2.3.10':
     resolution: {integrity: sha512-McWspRw8xx8J9HurkVBfYj0xKoE25tOFlHGdx4MJ5xORQrMGZNqJhVQWaIbm6Oyla5kYOXtDiopzKRJzEOkwJw==}
 
+  '@types/hoist-non-react-statics@3.3.6':
+    resolution: {integrity: sha512-lPByRJUer/iN/xa4qpyL0qmL11DqNW81iU/IG1S3uvRUq4oKagz8VCxZjiWkumgt66YT3vOdDgZ0o32sGKtCEw==}
+
   '@types/js-cookie@2.2.7':
     resolution: {integrity: sha512-aLkWa0C0vO5b4Sr798E26QgOkss68Un0bLjs7u9qxzPT5CG+8DuNTffWES58YzJs3hrVAOs1wonycqEBqNJubA==}
 
@@ -2173,6 +2194,9 @@ packages:
 
   copy-to-clipboard@3.3.3:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
+
+  core-js@3.43.0:
+    resolution: {integrity: sha512-N6wEbTTZSYOY2rYAn85CuvWWkCK6QweMn7/4Nr3w+gDBeBhk/x4EJeY6FPo4QzDoJZxVTv8U7CMvgWk6pOHHqA==}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -2876,8 +2900,14 @@ packages:
     resolution: {integrity: sha512-Ox1pJVrDCyGHMG9CFg1tmrRUMRPRsAWYc/PinY0XzJU4K7y7vjNoLKIQ7BR5UJMCxNN8EM1MNDmHWA/B3aZUuw==}
     engines: {node: '>=6'}
 
+  hoist-non-react-statics@3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
+
   html-dom-parser@5.0.3:
     resolution: {integrity: sha512-slsc6ipw88OUZjAayRs5NTmfOQCwcUa3hNyk6AdsbQxY09H5Lr1Y3CZ4ZlconMKql3Ga6sWg3HMoUzo7KSItaQ==}
+
+  html-parse-stringify@3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
 
   html-react-parser@4.2.10:
     resolution: {integrity: sha512-JyKZVQ+kQ8PdycISwkuLbEEvV/k4hWhU6cb6TT7yGaYwdqA7cPt4VRYXkCZcix2vlQtgDBSMJUmPI2jpNjPGvg==}
@@ -2903,6 +2933,17 @@ packages:
 
   hyphenate-style-name@1.1.0:
     resolution: {integrity: sha512-WDC/ui2VVRrz3jOVi+XtjqkDjiVjTtFaAGiW37k6b+ohyQ5wYDOGkvCZa8+H0nx3gyvv0+BST9xuOgIyGQ00gw==}
+
+  i18next-fs-backend@2.6.0:
+    resolution: {integrity: sha512-3ZlhNoF9yxnM8pa8bWp5120/Ob6t4lVl1l/tbLmkml/ei3ud8IWySCHt2lrY5xWRlSU5D9IV2sm5bEbGuTqwTw==}
+
+  i18next@25.3.0:
+    resolution: {integrity: sha512-ZSQIiNGfqSG6yoLHaCvrkPp16UejHI8PCDxFYaNG/1qxtmqNmqEg4JlWKlxkrUmrin2sEjsy+Mjy1TRozBhOgw==}
+    peerDependencies:
+      typescript: ^5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -3501,6 +3542,15 @@ packages:
     peerDependencies:
       next: ^12.1.4 || ^13
 
+  next-i18next@15.4.2:
+    resolution: {integrity: sha512-zgRxWf7kdXtM686ecGIBQL+Bq0+DqAhRlasRZ3vVF0TmrNTWkVhs52n//oU3Fj5O7r/xOKkECDUwfOuXVwTK/g==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      i18next: '>= 23.7.13'
+      next: '>= 12.0.0'
+      react: '>= 17.0.2'
+      react-i18next: '>= 13.5.0'
+
   next-themes@0.3.0:
     resolution: {integrity: sha512-/QHIrsYpd6Kfk7xakK4svpDI5mmXP0gfvCoJdGpZQ2TOrQZmsW0QxjaiLn8wbIKjtm4BTSqLoix4lxYYOnLJ/w==}
     peerDependencies:
@@ -3905,6 +3955,22 @@ packages:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
       react: ^18.3.1
+
+  react-i18next@15.5.3:
+    resolution: {integrity: sha512-ypYmOKOnjqPEJZO4m1BI0kS8kWqkBNsKYyhVUfij0gvjy9xJNoG/VcGkxq5dRlVwzmrmY1BQMAmpbbUBLwC4Kw==}
+    peerDependencies:
+      i18next: '>= 23.2.3'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+      typescript: ^5
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+      typescript:
+        optional: true
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -4642,6 +4708,10 @@ packages:
 
   vfile@5.3.7:
     resolution: {integrity: sha512-r7qlzkgErKjobAmyNIkkSpizsFPYiUPuJb5pNW1RB4JcYVZhs4lIbVqk8XPk033CV/1z8ss5pkax8SuhGpcG8g==}
+
+  void-elements@3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
 
   watchpack@2.4.0:
     resolution: {integrity: sha512-Lcvm7MGST/4fup+ifyKi2hjyIAwcdI4HRgtvTpIUxBRhB+RFtUh8XtDOxUfctVCnhVi+QQj49i91OyvzkJl6cg==}
@@ -5972,6 +6042,11 @@ snapshots:
     dependencies:
       '@types/unist': 2.0.11
 
+  '@types/hoist-non-react-statics@3.3.6':
+    dependencies:
+      '@types/react': 18.3.23
+      hoist-non-react-statics: 3.3.2
+
   '@types/js-cookie@2.2.7': {}
 
   '@types/js-cookie@3.0.6': {}
@@ -6546,6 +6621,8 @@ snapshots:
   copy-to-clipboard@3.3.3:
     dependencies:
       toggle-selection: 1.0.6
+
+  core-js@3.43.0: {}
 
   core-util-is@1.0.3: {}
 
@@ -7433,10 +7510,18 @@ snapshots:
 
   hex-rgb@4.3.0: {}
 
+  hoist-non-react-statics@3.3.2:
+    dependencies:
+      react-is: 16.13.1
+
   html-dom-parser@5.0.3:
     dependencies:
       domhandler: 5.0.3
       htmlparser2: 9.0.0
+
+  html-parse-stringify@3.0.1:
+    dependencies:
+      void-elements: 3.1.0
 
   html-react-parser@4.2.10(react@18.3.1):
     dependencies:
@@ -7477,6 +7562,14 @@ snapshots:
       - supports-color
 
   hyphenate-style-name@1.1.0: {}
+
+  i18next-fs-backend@2.6.0: {}
+
+  i18next@25.3.0(typescript@5.8.3):
+    dependencies:
+      '@babel/runtime': 7.27.6
+    optionalDependencies:
+      typescript: 5.8.3
 
   iconv-lite@0.4.24:
     dependencies:
@@ -8131,8 +8224,20 @@ snapshots:
 
   next-axiom@0.18.0(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
     dependencies:
-      next: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       whatwg-fetch: 3.6.20
+
+  next-i18next@15.4.2(i18next@25.3.0(typescript@5.8.3))(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-i18next@15.5.3(i18next@25.3.0(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3))(react@18.3.1):
+    dependencies:
+      '@babel/runtime': 7.27.6
+      '@types/hoist-non-react-statics': 3.3.6
+      core-js: 3.43.0
+      hoist-non-react-statics: 3.3.2
+      i18next: 25.3.0(typescript@5.8.3)
+      i18next-fs-backend: 2.6.0
+      next: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-i18next: 15.5.3(i18next@25.3.0(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
 
   next-themes@0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -8145,7 +8250,7 @@ snapshots:
       react-ssr-prepass: 1.6.0(react@18.3.1)
       urql: 4.2.2(@urql/core@5.1.1(graphql@16.11.0))(react@18.3.1)
 
-  next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 13.5.11
       '@swc/helpers': 0.5.2
@@ -8154,7 +8259,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(react@18.3.1)
+      styled-jsx: 5.1.1(@babel/core@7.27.7)(react@18.3.1)
       watchpack: 2.4.0
     optionalDependencies:
       '@next/swc-darwin-arm64': 13.5.9
@@ -8172,7 +8277,7 @@ snapshots:
 
   nextjs-toploader@3.8.16(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      next: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nprogress: 0.2.0
       prop-types: 15.8.1
       react: 18.3.1
@@ -8483,6 +8588,16 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  react-i18next@15.5.3(i18next@25.3.0(typescript@5.8.3))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.8.3):
+    dependencies:
+      '@babel/runtime': 7.27.6
+      html-parse-stringify: 3.0.1
+      i18next: 25.3.0(typescript@5.8.3)
+      react: 18.3.1
+    optionalDependencies:
+      react-dom: 18.3.1(react@18.3.1)
+      typescript: 5.8.3
 
   react-is@16.13.1: {}
 
@@ -9039,10 +9154,12 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.2
 
-  styled-jsx@5.1.1(react@18.3.1):
+  styled-jsx@5.1.1(@babel/core@7.27.7)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
+    optionalDependencies:
+      '@babel/core': 7.27.7
 
   stylis@4.3.6: {}
 
@@ -9375,6 +9492,8 @@ snapshots:
       is-buffer: 2.0.5
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
+
+  void-elements@3.1.0: {}
 
   watchpack@2.4.0:
     dependencies:
