@@ -91,7 +91,7 @@ export const getServerSideProps: GetServerSideProps<{
   publication: PublicationFragment;
   recent3Posts: PostThumbnailFragment[];
 }> = async (ctx) => {
-  const { res, query } = ctx;
+  const { res } = ctx;
   const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
   const log = _log.with({ host });
 
