@@ -17,6 +17,8 @@
 		"readTime": "min read",
 		"share": "Share",
 		"tableOfContents": "Table of Contents",
+		"openTableOfContents": "Open table of contents",
+		"closeTableOfContents": "Close table of contents modal",
 		"relatedPosts": "Related Posts",
 		"previousPost": "Previous Post",
 		"nextPost": "Next Post",
