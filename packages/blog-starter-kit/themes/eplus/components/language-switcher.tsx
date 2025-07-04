@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { ChevronDownSVG } from './icons/svgs';
-import { Fragment, useState, useCallback } from 'react';
+import { Fragment, useState, useCallback, useEffect } from 'react';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -14,17 +14,38 @@ export const LanguageSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
 
+  // Reset trạng thái loading khi route thay đổi hoàn tất
+  useEffect(() => {
+    const handleRouteChangeComplete = () => {
+      setIsChanging(false);
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChangeComplete);
+    };
+  }, [router.events]);
+
   const handleLanguageChange = useCallback(async (newLocale: string) => {
     if (newLocale === router.locale) return; // Tránh reload không cần thiết
     
     setIsChanging(true);
     setIsOpen(false);
     
-    const { pathname, query } = router;
-    
-    // Đổi ngôn ngữ mà không reload trang
-    await router.push({ pathname, query }, router.asPath, { locale: newLocale });
-    setIsChanging(false);
+    try {
+      // Sử dụng cách tiếp cận chuẩn của Next.js i18n
+      const { pathname, query, asPath } = router;
+      
+      // Chuyển đổi ngôn ngữ bằng cách thay đổi URL
+      await router.push(
+        { pathname, query },
+        asPath,
+        { locale: newLocale }
+      );
+    } catch (error) {
+      console.error('Error changing language:', error);
+      setIsChanging(false);
+    }
   }, [router]);
 
   const toggleDropdown = useCallback(() => {
@@ -70,10 +91,7 @@ export const LanguageSwitcher = () => {
           <div
             className="fixed inset-0 z-10"
             onClick={closeDropdown}
-            onKeyDown={(e) => e.key === 'Escape' && closeDropdown()}
-            role="button"
-            tabIndex={-1}
-            aria-label="Close language selector"
+            aria-hidden="true"
           />
           <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-20">
             <div className="py-1">
