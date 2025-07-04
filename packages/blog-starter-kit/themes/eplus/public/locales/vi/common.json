@@ -80,9 +80,10 @@
 		"errorMessage": "Vui lòng nhập email hợp lệ hoặc thử lại sau."
 	},
 	"search": {
-		"placeholder": "Tìm kiếm bài viết...",
-		"noResults": "Không tìm thấy bài viết phù hợp",
-		"results": "Kết quả tìm kiếm"
+		"placeholder": "Tìm kiếm bài viết từ blog này...",
+		"noResults": "Không tìm thấy bài viết nào",
+		"results": "Kết quả tìm kiếm",
+		"clearResults": "Xóa kết quả tìm kiếm"
 	},
 	"tags": {
 		"title": "Thẻ",
@@ -91,5 +92,20 @@
 	"comments": {
 		"title": "Bình luận",
 		"noComments": "Chưa có bình luận nào"
+	},
+	"share": {
+		"shareThisArticle": "Chia sẻ bài viết này",
+		"permalink": "Liên kết vĩnh viễn",
+		"draftLink": "Liên kết bản nháp",
+		"copyPermalink": "Sao chép liên kết bài viết",
+		"copyDraftLink": "Sao chép liên kết bản nháp",
+		"copiedPermalink": "Đã sao chép liên kết bài viết",
+		"copiedDraftLink": "Đã sao chép liên kết bản nháp",
+		"twitter": "Twitter",
+		"reddit": "Reddit",
+		"linkedin": "LinkedIn",
+		"hackerNews": "Hacker News",
+		"facebook": "Facebook",
+		"whatsapp": "WhatsApp"
 	}
 }

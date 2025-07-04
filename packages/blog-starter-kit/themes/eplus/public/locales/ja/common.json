@@ -1,0 +1,111 @@
+{
+	"common": {
+		"readMore": "続きを読む",
+		"subscribe": "購読する",
+		"newsletter": "ニュースレター",
+		"search": "検索",
+		"tags": "タグ",
+		"series": "シリーズ",
+		"home": "ホーム",
+		"about": "について",
+		"contact": "お問い合わせ",
+		"blog": "ブログ",
+		"posts": "投稿",
+		"post": "投稿",
+		"author": "著者",
+		"publishedOn": "公開日",
+		"readTime": "分で読める",
+		"share": "共有",
+		"tableOfContents": "目次",
+		"openTableOfContents": "目次を開く",
+		"closeTableOfContents": "目次モーダルを閉じる",
+		"relatedPosts": "関連投稿",
+		"previousPost": "前の投稿",
+		"nextPost": "次の投稿",
+		"backToHome": "ホームに戻る",
+		"noPostsFound": "投稿が見つかりません",
+		"loading": "読み込み中...",
+		"error": "エラーが発生しました",
+		"tryAgain": "再試行",
+		"language": "言語",
+		"switchLanguage": "言語を切り替える",
+		"on": "で",
+		"discover": "発見",
+		"various": "様々な",
+		"followers": "フォロワー",
+		"moreContent": "その他のコンテンツ",
+		"seeMoreContent": "Hashnodeでこのタグの記事をもっと見る",
+		"readMoreOnHashnode": "Hashnodeでもっと読む",
+		"articlesWithTag": "このタグの記事",
+		"noArticlesYet": "まだ記事がありません",
+		"noArticlesWithTag": "#{{tagName}}タグの記事はまだありません。最初の記事を書いてみませんか！",
+		"exploreMoreOnHashnode": "Hashnodeでもっと探索する",
+		"aboutTopic": "について",
+		"pinned": "ピン留め",
+		"views": "閲覧数",
+		"with": "と",
+		"coAuthor": "共著者",
+		"loadMore": "さらに読み込む",
+		"reachedEnd": "最後まで読みました！👋",
+		"noPostsImage": "投稿なし",
+		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"postsInSeries": "シリーズの投稿",
+		"currentPost": "現在の投稿",
+		"viewAllPostsInSeries": "シリーズの全投稿を表示"
+	},
+	"navigation": {
+		"home": "ホーム",
+		"blog": "ブログ",
+		"about": "について",
+		"contact": "お問い合わせ",
+		"newsletter": "ニュースレター"
+	},
+	"footer": {
+		"copyright": "全著作権所有",
+		"poweredBy": "提供",
+		"followUs": "フォローする"
+	},
+	"series": {
+		"title": "シリーズ",
+		"postsInSeries": "このシリーズの投稿",
+		"currentPost": "現在地",
+		"allPosts": "シリーズの全投稿"
+	},
+	"newsletter": {
+		"title": "ニュースレター購読",
+		"description": "最新の投稿を受信トレイに直接配信",
+		"emailPlaceholder": "メールアドレスを入力",
+		"subscribeButton": "購読する",
+		"successMessage": "確認メールを送信しました。リンクをクリックしてニュースレターの購読を完了してください。",
+		"errorMessage": "有効なメールアドレスを入力するか、後でもう一度お試しください。"
+	},
+	"search": {
+		"placeholder": "このブログから記事を検索...",
+		"noResults": "記事が見つかりません",
+		"results": "検索結果",
+		"clearResults": "検索結果をクリア"
+	},
+	"tags": {
+		"title": "タグ",
+		"postsTagged": "タグ付けされた投稿"
+	},
+	"comments": {
+		"title": "コメント",
+		"noComments": "まだコメントがありません"
+	},
+	"share": {
+		"shareThisArticle": "この記事を共有",
+		"permalink": "パーマリンク",
+		"draftLink": "下書きリンク",
+		"copyPermalink": "記事のパーマリンクをコピー",
+		"copyDraftLink": "下書きプレビューリンクをコピー",
+		"copiedPermalink": "記事のパーマリンクをコピーしました",
+		"copiedDraftLink": "下書きプレビューリンクをコピーしました",
+		"twitter": "Twitter",
+		"reddit": "Reddit",
+		"linkedin": "LinkedIn",
+		"hackerNews": "Hacker News",
+		"facebook": "Facebook",
+		"whatsapp": "WhatsApp"
+	}
+}

@@ -18,6 +18,19 @@ import { getBlurHash, imageReplacer } from '../utils/image';
 import CoAuthorsModal from './co-authors-modal';
 import CustomImage from './custom-image';
 import ProfileImage from './profile-image';
+
+// Helper function to add ref parameter to external URLs
+const addRefToExternalUrl = (url: string): string => {
+  if (!url.startsWith('http')) return url; // Skip internal links
+  
+  try {
+    const urlObj = new URL(url);
+    urlObj.searchParams.set('ref', 'eplus.dev');
+    return urlObj.toString();
+  } catch {
+    return url; // Return original URL if parsing fails
+  }
+};
 import TocRenderDesign from './toc-render-design';
 import useCopyCodeButton from '../hooks/useCopyCodeButton';
 
@@ -203,8 +216,10 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 							)}
 							{!post.coAuthors?.length && (
 								<a
-									href={`https://hashnode.com/@${post.author.username}`}
+									href={addRefToExternalUrl(`https://hashnode.com/@${post.author.username}`)}
 									className="ml-2 font-semibold text-slate-600 dark:text-white md:ml-0"
+									target="_blank"
+									rel="noopener noreferrer"
 								>
 									<span>{post.author.name}</span>
 								</a>

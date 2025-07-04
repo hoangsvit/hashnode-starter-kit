@@ -3,6 +3,19 @@ import Image from 'next/image';
 import { resizeImage } from '../utils/image';
 import Link from 'next/link';
 
+// Helper function to add ref parameter to external URLs
+const addRefToExternalUrl = (url: string): string => {
+  if (!url.startsWith('http')) return url; // Skip internal links
+  
+  try {
+    const urlObj = new URL(url);
+    urlObj.searchParams.set('ref', 'eplus.dev');
+    return urlObj.toString();
+  } catch {
+    return url; // Return original URL if parsing fails
+  }
+};
+
 interface PublicationFooterProps {
   isTeam?: boolean;
   authorName?: string;
@@ -114,7 +127,7 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
               <span>&copy; 2020 - {new Date().getFullYear()}</span>
               <span className="hidden sm:inline">by</span>
               <a
-                href="https://eplus.dev"
+                href={addRefToExternalUrl("https://eplus.dev")}
                 className="hover:underline font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
                 target="_blank"
                 rel="noopener noreferrer"

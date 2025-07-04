@@ -1,0 +1,111 @@
+{
+	"common": {
+		"readMore": "और पढ़ें",
+		"subscribe": "सब्सक्राइब करें",
+		"newsletter": "न्यूजलेटर",
+		"search": "खोजें",
+		"tags": "टैग",
+		"series": "सीरीज",
+		"home": "होम",
+		"about": "के बारे में",
+		"contact": "संपर्क",
+		"blog": "ब्लॉग",
+		"posts": "पोस्ट",
+		"post": "पोस्ट",
+		"author": "लेखक",
+		"publishedOn": "प्रकाशित",
+		"readTime": "मिनट पढ़ने",
+		"share": "शेयर करें",
+		"tableOfContents": "विषय सूची",
+		"openTableOfContents": "विषय सूची खोलें",
+		"closeTableOfContents": "विषय सूची मोडल बंद करें",
+		"relatedPosts": "संबंधित पोस्ट",
+		"previousPost": "पिछली पोस्ट",
+		"nextPost": "अगली पोस्ट",
+		"backToHome": "होम पर वापस",
+		"noPostsFound": "कोई पोस्ट नहीं मिली",
+		"loading": "लोड हो रहा है...",
+		"error": "एक त्रुटि हुई",
+		"tryAgain": "फिर से कोशिश करें",
+		"language": "भाषा",
+		"switchLanguage": "भाषा बदलें",
+		"on": "पर",
+		"discover": "खोजें",
+		"various": "विभिन्न",
+		"followers": "फॉलोअर्स",
+		"moreContent": "और कंटेंट",
+		"seeMoreContent": "Hashnode पर इस टैग के और आर्टिकल देखें",
+		"readMoreOnHashnode": "Hashnode पर और कहानियां पढ़ें",
+		"articlesWithTag": "इस टैग के साथ आर्टिकल",
+		"noArticlesYet": "अभी तक कोई आर्टिकल नहीं",
+		"noArticlesWithTag": "अभी तक #{{tagName}} टैग के साथ कोई आर्टिकल नहीं है। पहले लिखने वाले बनें!",
+		"exploreMoreOnHashnode": "Hashnode पर और एक्सप्लोर करें",
+		"aboutTopic": "के बारे में",
+		"pinned": "पिन किया गया",
+		"views": "व्यू",
+		"with": "के साथ",
+		"coAuthor": "सह-लेखक",
+		"loadMore": "और लोड करें",
+		"reachedEnd": "आप अंत तक पहुंच गए हैं! 👋",
+		"noPostsImage": "कोई पोस्ट नहीं",
+		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"postsInSeries": "सीरीज में पोस्ट",
+		"currentPost": "मौजूदा पोस्ट",
+		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें"
+	},
+	"navigation": {
+		"home": "होम",
+		"blog": "ब्लॉग",
+		"about": "के बारे में",
+		"contact": "संपर्क",
+		"newsletter": "न्यूजलेटर"
+	},
+	"footer": {
+		"copyright": "सभी अधिकार सुरक्षित",
+		"poweredBy": "द्वारा संचालित",
+		"followUs": "हमें फॉलो करें"
+	},
+	"series": {
+		"title": "सीरीज",
+		"postsInSeries": "इस सीरीज में पोस्ट",
+		"currentPost": "आप यहाँ हैं",
+		"allPosts": "सीरीज में सभी पोस्ट"
+	},
+	"newsletter": {
+		"title": "न्यूजलेटर सब्सक्राइब करें",
+		"description": "नवीनतम पोस्ट सीधे अपने इनबॉक्स में पाएं",
+		"emailPlaceholder": "अपना ईमेल पता दर्ज करें",
+		"subscribeButton": "सब्सक्राइब करें",
+		"successMessage": "हमने एक पुष्टि ईमेल भेजा है। इस न्यूजलेटर की सब्सक्रिप्शन पूरी करने के लिए लिंक पर क्लिक करें।",
+		"errorMessage": "कृपया एक वैध ईमेल पता दर्ज करें या बाद में फिर से कोशिश करें।"
+	},
+	"search": {
+		"placeholder": "इस ब्लॉग से आर्टिकल खोजें...",
+		"noResults": "कोई आर्टिकल नहीं मिला",
+		"results": "खोज परिणाम",
+		"clearResults": "खोज परिणाम साफ़ करें"
+	},
+	"tags": {
+		"title": "टैग",
+		"postsTagged": "टैग की गई पोस्ट"
+	},
+	"comments": {
+		"title": "टिप्पणियां",
+		"noComments": "अभी तक कोई टिप्पणी नहीं"
+	},
+	"share": {
+		"shareThisArticle": "इस आर्टिकल को शेयर करें",
+		"permalink": "स्थायी लिंक",
+		"draftLink": "ड्राफ्ट लिंक",
+		"copyPermalink": "आर्टिकल पर्मालिंक कॉपी करें",
+		"copyDraftLink": "ड्राफ्ट प्रीव्यू लिंक कॉपी करें",
+		"copiedPermalink": "आर्टिकल पर्मालिंक कॉपी किया गया",
+		"copiedDraftLink": "ड्राफ्ट प्रीव्यू लिंक कॉपी किया गया",
+		"twitter": "Twitter",
+		"reddit": "Reddit",
+		"linkedin": "LinkedIn",
+		"hackerNews": "Hacker News",
+		"facebook": "Facebook",
+		"whatsapp": "WhatsApp"
+	}
+}
