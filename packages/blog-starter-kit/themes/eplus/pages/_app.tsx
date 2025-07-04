@@ -6,9 +6,13 @@ import NextTopLoader from 'nextjs-toploader';
 import { appWithTranslation } from 'next-i18next';
 import { GlobalFontVariables } from '../components/fonts';
 import { getUrqlClientConfig } from '../lib/api/client';
+import { useImageBlurMode } from '../hooks/useImageBlurMode';
 import '../styles/index.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
+	// Apply image blur mode for privacy when enabled
+	useImageBlurMode();
+	
 	useEffect(() => {
 		(window as any).adjustIframeSize = (id: string, newHeight: string) => {
 			const i = document.getElementById(id);
