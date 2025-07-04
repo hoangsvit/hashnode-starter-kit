@@ -157,6 +157,8 @@
 		"writeNewPost": "Escribir nueva publicación",
 		"dashboard": "Panel de Control",
 		"logout": "Cerrar Sesión",
-		"clickToLogin": "Haz clic para iniciar sesión"
+		"clickToLogin": "Haz clic para iniciar sesión",
+		"writtenBy": "Escrito por",
+		"moreArticles": "Más artículos"
 	}
 }

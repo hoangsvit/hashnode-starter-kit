@@ -3,21 +3,21 @@ import Link from 'next/link';
 import { resizeImage } from '../utils/image';
 import ProfileImage from './profile-image';
 import CustomImage from './custom-image';
-import { PostFullFragment } from '../generated/graphql';
+import { useTranslation } from 'next-i18next';
 
 
 type Props = {
-  post: PostFullFragment;
-  morePosts: any
+  readonly morePosts: any
 };
 
 function OtherPostsOfAccount(props: Props) {
-  const {  morePosts, post } = props;
- 
+  const { t } = useTranslation('common');
+  const { morePosts } = props;
+
   if (!morePosts || morePosts.length === 0) {
     return <div />;
   }
-  
+
   const morePostsRendered = morePosts.map((postNode: any) => {
     const post  = postNode.node;
     const postURL = `/${post.slug}`;
@@ -96,7 +96,7 @@ function OtherPostsOfAccount(props: Props) {
   return (
     <div className="blog-more-articles mt-10 mb-20">
       <h3 className="blog-more-articles-title mb-5 text-center font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-        {true ? 'More articles' : `More Stories by ${post.author.name}`}
+        {t('common.moreArticles')}
       </h3>
       <div className="blog-more-articles-wrapper container mx-auto grid grid-flow-row grid-cols-6 px-4 xl:grid-cols-9 xl:gap-6 2xl:px-0">
         {morePostsRendered}

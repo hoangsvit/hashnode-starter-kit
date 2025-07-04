@@ -157,6 +157,8 @@
 		"writeNewPost": "Viết bài mới",
 		"dashboard": "Bảng điều khiển",
 		"logout": "Đăng xuất",
-		"clickToLogin": "Nhấp để đăng nhập"
+		"clickToLogin": "Nhấp để đăng nhập",
+		"writtenBy": "Được viết bởi",
+		"moreArticles": "Bài viết khác"
 	}
 }

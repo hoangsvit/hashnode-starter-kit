@@ -157,6 +157,8 @@
 		"writeNewPost": "नया पोस्ट लिखें",
 		"dashboard": "डैशबोर्ड",
 		"logout": "लॉग आउट",
-		"clickToLogin": "लॉगिन करने के लिए क्लिक करें"
+		"clickToLogin": "लॉगिन करने के लिए क्लिक करें",
+		"writtenBy": "लेखक",
+		"moreArticles": "अधिक लेख"
 	}
 }
