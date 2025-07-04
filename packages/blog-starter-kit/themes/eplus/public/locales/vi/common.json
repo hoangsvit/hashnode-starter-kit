@@ -40,7 +40,13 @@
 		"exploreMoreOnHashnode": "Khám phá thêm trên Hashnode",
 		"aboutTopic": "về",
 		"pinned": "Được ghim",
-		"views": "lượt xem"
+		"views": "lượt xem",
+		"with": "cùng với",
+		"coAuthor": "đồng tác giả",
+		"loadMore": "Tải thêm",
+		"reachedEnd": "Bạn đã đến cuối rồi! 👋",
+		"noPostsImage": "Không có bài viết",
+		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}"
 	},
 	"navigation": {
 		"home": "Trang chủ",
@@ -63,10 +69,10 @@
 	"newsletter": {
 		"title": "Đăng ký nhận bản tin",
 		"description": "Nhận những bài viết mới nhất ngay trong hộp thư của bạn",
-		"emailPlaceholder": "Nhập email của bạn",
+		"emailPlaceholder": "Nhập địa chỉ email của bạn",
 		"subscribeButton": "Đăng ký",
-		"successMessage": "Đăng ký thành công!",
-		"errorMessage": "Đăng ký thất bại. Vui lòng thử lại."
+		"successMessage": "Chúng tôi đã gửi email xác nhận. Vui lòng click vào liên kết để hoàn tất việc đăng ký nhận bản tin.",
+		"errorMessage": "Vui lòng nhập email hợp lệ hoặc thử lại sau."
 	},
 	"search": {
 		"placeholder": "Tìm kiếm bài viết...",
@@ -76,5 +82,9 @@
 	"tags": {
 		"title": "Thẻ",
 		"postsTagged": "Bài viết được gắn thẻ"
+	},
+	"comments": {
+		"title": "Bình luận",
+		"noComments": "Chưa có bình luận nào"
 	}
 }

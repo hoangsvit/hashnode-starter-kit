@@ -40,7 +40,13 @@
 		"exploreMoreOnHashnode": "Explore more on Hashnode",
 		"aboutTopic": "about",
 		"pinned": "Pinned",
-		"views": "views"
+		"views": "views",
+		"with": "with",
+		"coAuthor": "co-author",
+		"loadMore": "Load more",
+		"reachedEnd": "You've reached the end! 👋",
+		"noPostsImage": "No posts",
+		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}"
 	},
 	"navigation": {
 		"home": "Home",
@@ -63,10 +69,10 @@
 	"newsletter": {
 		"title": "Subscribe to Newsletter",
 		"description": "Get the latest posts delivered right to your inbox",
-		"emailPlaceholder": "Enter your email",
+		"emailPlaceholder": "Enter your email address",
 		"subscribeButton": "Subscribe",
-		"successMessage": "Successfully subscribed!",
-		"errorMessage": "Failed to subscribe. Please try again."
+		"successMessage": "We've sent a confirmation email. Click on the link to complete your subscription to this newsletter.",
+		"errorMessage": "Please enter a valid email address or try again later."
 	},
 	"search": {
 		"placeholder": "Search posts...",
@@ -76,5 +82,9 @@
 	"tags": {
 		"title": "Tags",
 		"postsTagged": "Posts tagged with"
+	},
+	"comments": {
+		"title": "Comments",
+		"noComments": "No comments yet"
 	}
 }

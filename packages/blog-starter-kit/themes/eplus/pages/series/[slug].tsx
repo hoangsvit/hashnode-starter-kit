@@ -1,6 +1,7 @@
 import { resizeImage } from '@starter-kit/utils/image';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -34,7 +35,11 @@ export default function Series({
 	slug,
 	currentMenuId,
 }: Required<WithUrqlProps> & Props) {
-	const title = `${series.name} - ${publication.title}`;
+	const { t } = useTranslation('common');
+	const title = t('common.seriesPageTitle', { 
+		seriesName: series.name, 
+		publicationTitle: publication.title 
+	});
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
 		query: SeriesPageInitialDocument,
@@ -83,7 +88,7 @@ export default function Series({
 							<div className="flex flex-col-reverse flex-wrap items-start md:flex-row">
 								<div className={twJoin('pr-8', series.coverImage ? 'w-full md:w-1/2' : 'w-full')}>
 									<span className="blog-series-label mb-2 font-semibold uppercase tracking-tight text-slate-600 dark:text-slate-400">
-										Series
+										{t('common.series')}
 									</span>
 									<h1 className="blog-series-title font-heading mb-2 text-3xl font-bold text-slate-900 dark:text-white md:text-4xl xl:text-5xl">
 										{series.name}
@@ -119,11 +124,11 @@ export default function Series({
 							<div className="mb-6 flex w-full flex-col items-center rounded border-2 border-dashed p-6 dark:border-slate-800">
 								<img
 									className="mb-5 block w-56"
-									alt="No posts"
+									alt={t('common.noPostsImage')}
 									src="https://cdn.hashnode.com/res/hashnode/image/upload/v1584017401345/LrrwlBZC0.png"
 								/>
 								<p className="text-2xl font-bold leading-snug tracking-tight text-slate-700 dark:text-slate-400">
-									No posts yet
+									{t('common.noArticlesYet')}
 								</p>
 							</div>
 						) : null}
@@ -132,7 +137,7 @@ export default function Series({
 							<div className="my-10 flex flex-col items-center justify-center">
 								<hr className="w-full border-t dark:border-slate-800" />
 								<p className="-mt-5 bg-white p-2 font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-400">
-									Articles in this series
+									{t('series.postsInSeries')}
 								</p>
 							</div>
 						)}

@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState, Fragment } from 'react';
 import { twJoin } from 'tailwind-merge';
+import { useTranslation } from 'next-i18next';
 
 import { resizeImage } from '@starter-kit/utils/image';
 // @ts-ignore
@@ -44,6 +45,7 @@ const PublicationSubscribeStandOut = dynamic(() => import('./publication-subscri
 });
 
 export const PostHeader = ({ post, morePosts }: Props) => {
+	const { t } = useTranslation('common');
 	const postContentEle = useRef<HTMLDivElement>(null);
 
 	// Add copy button functionality to code blocks
@@ -213,7 +215,7 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 										<span className="font-normal">
 											{' '}
 											<br className="block sm:hidden" />
-											with {post.coAuthors.length} co-author{post.coAuthors.length === 1 ? '' : 's'}
+											{t('common.with')} {post.coAuthors.length} {t('common.coAuthor')}{post.coAuthors.length === 1 ? '' : 's'}
 										</span>
 									)}
 								</button>
@@ -233,7 +235,7 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 									<span className="mx-3 block font-bold text-slate-500">&middot;</span>
 									<p className="flex flex-row items-center text-slate-700 dark:text-slate-400">
 										<BookOpenSVG className="mr-2 h-5 w-5 fill-current opacity-75" />
-										<span>{post.readTimeInMinutes} min read</span>
+										<span>{post.readTimeInMinutes} {t('common.readTime')}</span>
 									</p>
 								</>
 							)}
