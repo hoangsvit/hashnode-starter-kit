@@ -46,7 +46,10 @@
 		"loadMore": "Load more",
 		"reachedEnd": "You've reached the end! 👋",
 		"noPostsImage": "No posts",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}"
+		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"postsInSeries": "Posts in series",
+		"currentPost": "Current Post",
+		"viewAllPostsInSeries": "View all posts in series"
 	},
 	"navigation": {
 		"home": "Home",
