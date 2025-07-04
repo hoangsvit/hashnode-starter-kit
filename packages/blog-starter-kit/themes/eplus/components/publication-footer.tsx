@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, memo } from 'react';
 import Image from 'next/image';
 import { resizeImage } from '../utils/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // Helper function to add ref parameter to external URLs
 const addRefToExternalUrl = (url: string): string => {
@@ -28,6 +29,7 @@ interface PublicationFooterProps {
 const PublicationFooter = memo(function PublicationFooter(props: PublicationFooterProps) {
   const { isTeam, authorName, title, imprint, disableFooterBranding, logo } = props;
   const [showButton, setShowButton] = useState(false);
+  const router = useRouter();
 
   // Generate aria-label for logo link
   const blogType = isTeam ? 'team' : '';
@@ -97,7 +99,7 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
           <>        {logo && (
           <div className="flex flex-col items-center">
             <Link 
-              href="/" 
+              href={router.locale === 'en' ? '/' : `/${router.locale}/`} 
               className="relative block h-10 w-40" 
               aria-label={logoAriaLabel}
             >

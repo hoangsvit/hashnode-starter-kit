@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
+import { useRouter } from 'next/router';
 
 import { CheckSVG } from './icons/svgs';
 import { PublicationFragment } from '../generated/graphql';
@@ -22,9 +23,14 @@ const PublicationSidebarNavLinkItem = ({
   label,
   isActive,
 }: IPublicationSidebarNavLinkItem) => {
+  const router = useRouter();
+
+  // Handle i18n routing - for default locale (en), use path as-is
+  const localizedHref = router.locale === 'en' ? href : `/${router.locale}${href}`;
+
   return (
     <Link
-      href={href}
+      href={localizedHref}
       className={twJoin(
         isActive ? 'blog-nav-active font-semibold' : 'blog-nav',
         'focus-ring-base mb-1 flex w-full flex-row items-center justify-between rounded p-3 font-medium text-slate-700 transition-colors duration-100 hover:bg-slate-100 active:opacity-100 dark:text-slate-200 dark:hover:bg-slate-800',
