@@ -338,9 +338,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 	const postSlugs = (data.publication?.posts.edges ?? []).map((edge) => edge.node.slug);
 
+	// Import i18n config to get all supported locales
+	const i18nConfig = require('../next-i18next.config.js');
+	const supportedLocales = i18nConfig.i18n.locales;
+
 	return {
 		paths: postSlugs.flatMap((slug) => 
-			['en', 'vi'].map((locale) => ({
+			supportedLocales.map((locale) => ({
 				params: { slug },
 				locale,
 			}))
