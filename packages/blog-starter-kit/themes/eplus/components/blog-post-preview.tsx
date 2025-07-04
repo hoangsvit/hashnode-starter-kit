@@ -5,7 +5,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
-import { formatDate } from '../utils/dateFormatter';
+import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
 
 import { BookOpenSVG, FileLineChartSVG, PinSVG } from './icons/svgs';
 import { getBlurHash, resizeImage } from '../utils/image';
@@ -111,7 +111,12 @@ function BlogPostPreview(props: {
                 <PinSVG className="ml-1 h-6 w-6 stroke-current" />
               </div>
             )}
-            <Link href={postURL} aria-label={post.title} className="blog-post-card-time mr-4">
+            <Link 
+              href={postURL} 
+              aria-label={post.title} 
+              className="blog-post-card-time tooltip-handle mr-4"
+              data-title={formatDateTooltip(post.publishedAt, currentLocale)}
+            >
               {formatDate(post.publishedAt, currentLocale, 'localized')}
             </Link>
             {features.readTime.isEnabled && post.readTimeInMinutes ? (
