@@ -446,8 +446,9 @@ pre {
 .blur-images-mode .blog-featured-area img,
 .blur-images-mode [id^="post-content"] img,
 .blur-images-mode .dev-mode-blur-image {
-  filter: blur(8px) !important;
-  transition: filter 0.3s ease;
+  filter: blur(50px) !important;
+  opacity: 0.1 !important;
+  transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .blur-images-mode .prose img:hover,
@@ -457,27 +458,32 @@ pre {
 .blur-images-mode .blog-featured-area img:hover,
 .blur-images-mode [id^="post-content"] img:hover,
 .blur-images-mode .dev-mode-blur-image:hover {
-  filter: blur(4px) !important;
+  filter: blur(40px) !important;
+  opacity: 0.2 !important;
 }
 
 /* Legacy classes for backward compatibility */
 .dev-mode-blur img {
-  filter: blur(8px) !important;
-  transition: filter 0.3s ease;
+  filter: blur(50px) !important;
+  opacity: 0.1 !important;
+  transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .dev-mode-blur img:hover {
-  filter: blur(4px) !important;
+  filter: blur(40px) !important;
+  opacity: 0.2 !important;
 }
 
 /* Specific class for images in content */
 .dev-mode-blur-image {
-  filter: blur(8px) !important;
-  transition: filter 0.3s ease;
+  filter: blur(50px) !important;
+  opacity: 0.1 !important;
+  transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .dev-mode-blur-image:hover {
-  filter: blur(4px) !important;
+  filter: blur(40px) !important;
+  opacity: 0.2 !important;
 }
 
 /* Blur all images in development mode */
@@ -487,8 +493,9 @@ pre {
 .development-mode .blog-article-card img,
 .development-mode .blog-featured-area img,
 .development-mode [id^="post-content"] img {
-  filter: blur(8px) !important;
-  transition: filter 0.3s ease;
+  filter: blur(50px) !important;
+  opacity: 0.1 !important;
+  transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
 .development-mode .prose img:hover,
@@ -497,5 +504,6 @@ pre {
 .development-mode .blog-article-card img:hover,
 .development-mode .blog-featured-area img:hover,
 .development-mode [id^="post-content"] img:hover {
-  filter: blur(4px) !important;
+  filter: blur(40px) !important;
+  opacity: 0.2 !important;
 }
