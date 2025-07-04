@@ -3,7 +3,9 @@ import Image from 'next/legacy/image';
 import Link from 'next/link';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
+import { formatDate } from '../utils/dateFormatter';
 
 import { BookOpenSVG, FileLineChartSVG, PinSVG } from './icons/svgs';
 import { getBlurHash, resizeImage } from '../utils/image';
@@ -23,6 +25,8 @@ function BlogPostPreview(props: {
 }) {
   const { post, publication, pinnedPostId } = props;
   const { t } = useTranslation('common');
+  const router = useRouter();
+  const currentLocale = router.locale || 'en';
   const postURL = `/${post.slug}`;
   const {
     preferences: { layout },
@@ -108,7 +112,7 @@ function BlogPostPreview(props: {
               </div>
             )}
             <Link href={postURL} aria-label={post.title} className="blog-post-card-time mr-4">
-              {moment(post.publishedAt).format('ll')}
+              {formatDate(post.publishedAt, currentLocale, 'localized')}
             </Link>
             {features.readTime.isEnabled && post.readTimeInMinutes ? (
               <Link href={postURL} aria-label={`${post.title} ${t('common.readTime')}`} className="mr-4 flex flex-row items-center">
