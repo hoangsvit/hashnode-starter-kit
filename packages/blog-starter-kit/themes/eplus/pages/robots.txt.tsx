@@ -9,7 +9,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		throw new Error('Could not determine host');
 	}
 
-	const sitemapUrl = `https://${host}/sitemap.xml`;
+	const sitemapUrl = `https://${host}/sitemap/index.xml`;
 	const robotsTxt = `
 User-agent: *
 Allow: /
@@ -19,7 +19,7 @@ User-agent: AdsBot-Google
 Allow: /
 
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 Sitemap: ${sitemapUrl}
   `.trim();
