@@ -49,27 +49,29 @@ export const LanguageSwitcher = () => {
         asPath
       });
 
-      // Tạo URL mới cho locale mới
-      let newUrl = asPath;
+      // Xử lý URL cho locale mới
+      let targetAsPath = asPath;
 
+      // Nếu chuyển sang tiếng Anh (default locale)
       if (newLocale === 'en') {
-        // Với English (default locale), loại bỏ locale prefix
+        // Loại bỏ locale prefix nếu có
         if (router.locale && router.locale !== 'en') {
-          newUrl = asPath.replace(new RegExp(`^/${router.locale}`), '');
-          if (!newUrl.startsWith('/')) {
-            newUrl = '/' + newUrl;
-          }
+          targetAsPath = asPath.replace(new RegExp(`^/${router.locale}`), '') || '/';
         }
-      } else if (router.locale === 'en') {
-        // Từ English sang locale khác
-        newUrl = `/${newLocale}${asPath}`;
-      } else {
-        // Từ locale này sang locale khác
-        newUrl = asPath.replace(new RegExp(`^/${router.locale}`), `/${newLocale}`);
       }
 
-      // Sử dụng window.location để đảm bảo URL chính xác
-      window.location.href = newUrl;
+      // Sử dụng router.push với locale option để Next.js xử lý i18n routing
+      await router.push(
+        {
+          pathname,
+          query,
+        },
+        targetAsPath,
+        {
+          locale: newLocale,
+          scroll: false // Giữ nguyên scroll position
+        }
+      );
 
     } catch (error) {
       console.error('Error changing language:', error);
