@@ -1,4 +1,5 @@
 import moment from 'dayjs';
+import { useTranslation } from 'next-i18next';
 
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -17,6 +18,7 @@ moment.extend(relativeTime);
 moment.extend(localizedFormat);
 
 export const PostComments = () => {
+	const { t } = useTranslation('common');
 	const { post } = useAppContext();
 	if (!post) return null;
 	const discussionUrl = `https://hashnode.com/discussions/post/${post.id}`;
@@ -76,7 +78,7 @@ export const PostComments = () => {
 
 										{checkIfCommentByAuthor(comment) && (
 											<span className="block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium leading-normal text-green-700 dark:bg-green-800 dark:text-green-50">
-												Author
+												{t('common.author')}
 											</span>
 										)}
 									</p>
@@ -143,7 +145,7 @@ export const PostComments = () => {
 			<div className="relative z-50 flex flex-row flex-wrap items-center justify-between border-b bg-white p-4 dark:border-slate-800 dark:bg-transparent">
 				<div className="flex w-full flex-row items-center dark:text-slate-200 md:w-auto">
 					<h3 className="text-xl font-medium tracking-tight text-slate-900 dark:text-slate-100">
-						Comments{' '}
+						{t('comments.title')}{' '}
 						{post.responseCount > 0 ? (
 							<span>({(post.responseCount || 0) + (post.replyCount || 0)})</span>
 						) : (

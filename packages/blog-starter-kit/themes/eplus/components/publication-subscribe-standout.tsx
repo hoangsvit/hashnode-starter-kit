@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'next-i18next';
 
 import isEmail from 'validator/lib/isEmail';
 import { useAppContext } from './contexts/appContext';
@@ -9,6 +10,7 @@ import { SubscribeToNewsletterDocument } from '../generated/graphql';
 
 
 function PublicationSubscribeStandOut() {
+  const { t } = useTranslation('common');
   const { publication } = useAppContext();
   const [, subscribeToNewsletter] = useMutation(SubscribeToNewsletterDocument);
 
@@ -31,7 +33,7 @@ function PublicationSubscribeStandOut() {
       return;
     }
     if (!isEmail(emailVal)) {
-      setState({ ...state, err: 'Please enter a valid email' });
+      setState({ ...state, err: t('newsletter.errorMessage') });
       return;
     }
     setState({ ...state, submitDisabled: true });
@@ -44,7 +46,7 @@ function PublicationSubscribeStandOut() {
     const _state = { submitDisabled: false, err: '', subscribed: false };
 
     if (!data?.subscribeToNewsletter.status || error) {
-      _state.err = error?.graphQLErrors[0].message || 'Something went wrong. Please try again.';
+      _state.err = error?.graphQLErrors[0].message || t('newsletter.errorMessage');
     } else {
       _state.subscribed = true;
       _state.err = '';
@@ -64,11 +66,10 @@ function PublicationSubscribeStandOut() {
   return (
     <div className="my-10 mt-20 flex w-full flex-col items-center pb-10 md:px-5">
       <h3 className="mb-5 text-center font-heading text-2xl font-bold text-slate-900 dark:text-slate-50 md:text-3xl">
-        Subscribe to {publication!.isTeam ? 'our' : 'my'} newsletter
+        {t('newsletter.title')}
       </h3>
       <p className="mb-5 text-center text-lg text-slate-700 dark:text-slate-300 md:w-2/3 md:text-xl">
-        Read articles from {publication?.title ? <strong>{publication.title}</strong> : 'this blog'} directly inside your inbox. Subscribe
-        to the newsletter, and don&apos;t miss out.
+        {t('newsletter.description')}
       </p>
       {!state.subscribed && (
         <div className="flex flex-row overflow-hidden rounded-lg border border-slate-800 dark:border-slate-200 md:w-2/3">
@@ -76,7 +77,7 @@ function PublicationSubscribeStandOut() {
             type="email"
             ref={email}
             onKeyUp={handleEmailChange}
-            placeholder="Enter your email address"
+            placeholder={t('newsletter.emailPlaceholder')}
             className="w-full bg-transparent p-3 text-black outline-none dark:text-white md:p-5 md:text-lg"
           />
           <Button
@@ -86,7 +87,7 @@ function PublicationSubscribeStandOut() {
             disabled={state.submitDisabled}
             className="shrink-0 rounded-none bg-slate-800 px-3 font-bold uppercase tracking-wide text-white hover:bg-slate-700 dark:bg-slate-200 dark:text-black dark:hover:bg-slate-300 md:px-5"
           >
-            Subscribe
+            {t('newsletter.subscribeButton')}
           </Button>
         </div>
       )}
@@ -96,9 +97,7 @@ function PublicationSubscribeStandOut() {
             <PaperPlaneSVG className="[animation-iteration-count: 3] mb-5 h-10 w-10 animate-bounce fill-current" />
           </span>
           <p className="font-semibold ">
-            We&apos;ve sent a confirmation email;
-            <br />
-            click on the link to complete your subscription to this newsletter.
+            {t('newsletter.successMessage')}
           </p>
         </div>
       )}
