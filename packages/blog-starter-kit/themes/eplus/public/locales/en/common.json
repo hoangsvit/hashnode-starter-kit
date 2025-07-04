@@ -80,9 +80,10 @@
 		"errorMessage": "Please enter a valid email address or try again later."
 	},
 	"search": {
-		"placeholder": "Search posts...",
-		"noResults": "No posts found matching your search",
-		"results": "Search Results"
+		"placeholder": "Search articles from this blog...",
+		"noResults": "No articles found",
+		"results": "Search Results",
+		"clearResults": "Clear search results"
 	},
 	"tags": {
 		"title": "Tags",
@@ -91,5 +92,20 @@
 	"comments": {
 		"title": "Comments",
 		"noComments": "No comments yet"
+	},
+	"share": {
+		"shareThisArticle": "Share this article",
+		"permalink": "Permalink",
+		"draftLink": "Draft link",
+		"copyPermalink": "Copy article permalink",
+		"copyDraftLink": "Copy draft preview link",
+		"copiedPermalink": "Copied article permalink",
+		"copiedDraftLink": "Copied draft preview link",
+		"twitter": "Twitter",
+		"reddit": "Reddit",
+		"linkedin": "LinkedIn",
+		"hackerNews": "Hacker News",
+		"facebook": "Facebook",
+		"whatsapp": "WhatsApp"
 	}
 }

@@ -1,0 +1,111 @@
+{
+	"common": {
+		"readMore": "Leer más",
+		"subscribe": "Suscribirse",
+		"newsletter": "Boletín",
+		"search": "Buscar",
+		"tags": "Etiquetas",
+		"series": "Series",
+		"home": "Inicio",
+		"about": "Acerca de",
+		"contact": "Contacto",
+		"blog": "Blog",
+		"posts": "Publicaciones",
+		"post": "Publicación",
+		"author": "Autor",
+		"publishedOn": "Publicado el",
+		"readTime": "min de lectura",
+		"share": "Compartir",
+		"tableOfContents": "Tabla de contenidos",
+		"openTableOfContents": "Abrir tabla de contenidos",
+		"closeTableOfContents": "Cerrar modal de tabla de contenidos",
+		"relatedPosts": "Publicaciones relacionadas",
+		"previousPost": "Publicación anterior",
+		"nextPost": "Siguiente publicación",
+		"backToHome": "Volver al inicio",
+		"noPostsFound": "No se encontraron publicaciones",
+		"loading": "Cargando...",
+		"error": "Se produjo un error",
+		"tryAgain": "Intentar de nuevo",
+		"language": "Idioma",
+		"switchLanguage": "Cambiar idioma",
+		"on": "en",
+		"discover": "Descubrir",
+		"various": "varios",
+		"followers": "seguidores",
+		"moreContent": "Más contenido",
+		"seeMoreContent": "Ver más artículos de esta etiqueta en Hashnode",
+		"readMoreOnHashnode": "Leer más historias en Hashnode",
+		"articlesWithTag": "Artículos con esta etiqueta",
+		"noArticlesYet": "Aún no hay artículos",
+		"noArticlesWithTag": "Aún no hay artículos etiquetados con #{{tagName}}. ¡Sé el primero en escribir uno!",
+		"exploreMoreOnHashnode": "Explorar más en Hashnode",
+		"aboutTopic": "acerca de",
+		"pinned": "Fijado",
+		"views": "vistas",
+		"with": "con",
+		"coAuthor": "coautor",
+		"loadMore": "Cargar más",
+		"reachedEnd": "¡Has llegado al final! 👋",
+		"noPostsImage": "Sin publicaciones",
+		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"postsInSeries": "Publicaciones en la serie",
+		"currentPost": "Publicación actual",
+		"viewAllPostsInSeries": "Ver todas las publicaciones de la serie"
+	},
+	"navigation": {
+		"home": "Inicio",
+		"blog": "Blog",
+		"about": "Acerca de",
+		"contact": "Contacto",
+		"newsletter": "Boletín"
+	},
+	"footer": {
+		"copyright": "Todos los derechos reservados",
+		"poweredBy": "Desarrollado por",
+		"followUs": "Síguenos"
+	},
+	"series": {
+		"title": "Series",
+		"postsInSeries": "Publicaciones en esta serie",
+		"currentPost": "Estás aquí",
+		"allPosts": "Todas las publicaciones de la serie"
+	},
+	"newsletter": {
+		"title": "Suscribirse al boletín",
+		"description": "Recibe las últimas publicaciones directamente en tu bandeja de entrada",
+		"emailPlaceholder": "Ingresa tu dirección de correo electrónico",
+		"subscribeButton": "Suscribirse",
+		"successMessage": "Hemos enviado un correo de confirmación. Haz clic en el enlace para completar tu suscripción a este boletín.",
+		"errorMessage": "Por favor, ingresa una dirección de correo válida o inténtalo de nuevo más tarde."
+	},
+	"search": {
+		"placeholder": "Buscar artículos de este blog...",
+		"noResults": "No se encontraron artículos",
+		"results": "Resultados de búsqueda",
+		"clearResults": "Limpiar resultados de búsqueda"
+	},
+	"tags": {
+		"title": "Etiquetas",
+		"postsTagged": "Publicaciones etiquetadas con"
+	},
+	"comments": {
+		"title": "Comentarios",
+		"noComments": "Aún no hay comentarios"
+	},
+	"share": {
+		"shareThisArticle": "Compartir este artículo",
+		"permalink": "Enlace permanente",
+		"draftLink": "Enlace de borrador",
+		"copyPermalink": "Copiar enlace permanente del artículo",
+		"copyDraftLink": "Copiar enlace de vista previa del borrador",
+		"copiedPermalink": "Enlace permanente del artículo copiado",
+		"copiedDraftLink": "Enlace de vista previa del borrador copiado",
+		"twitter": "Twitter",
+		"reddit": "Reddit",
+		"linkedin": "LinkedIn",
+		"hackerNews": "Hacker News",
+		"facebook": "Facebook",
+		"whatsapp": "WhatsApp"
+	}
+}

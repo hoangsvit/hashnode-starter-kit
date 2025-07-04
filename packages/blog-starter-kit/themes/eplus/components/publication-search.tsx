@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, MutableRefObject } from 'react';
 import dayjs from 'dayjs';
+import { useTranslation } from 'next-i18next';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { twJoin, twMerge } from 'tailwind-merge';
 import { useQuery } from 'urql';
@@ -50,6 +51,7 @@ type Props = {
 const PublicationSearch = (props: Props) => {
   let timeoutHandler: any;
   const { publication, toggleSearchUI, triggerRef } = props;
+  const { t } = useTranslation('common');
 
   const [searchActive, setSearchActive] = useState(false);
   const [after, setAfter] = useState<string | null>(null);
@@ -173,14 +175,14 @@ const PublicationSearch = (props: Props) => {
               onChange={onKeywordChange}
               type="text"
               className={twMerge(inputText, 'rounded-full px-6 py-3')}
-              placeholder={fetching ? 'Searching...' : 'Start typing to search'}
+              placeholder={fetching ? t('search.placeholder').replace('...', t('loading')) : t('search.placeholder')}
             />
             {fetching ? (
               <RefreshSVG className="absolute bottom-0 right-0 top-0 my-auto mr-16 h-5 w-5 animate-hn-spin fill-current text-slate-500 dark:text-slate-200" />
             ) : null}
             {searchActive ? (
               <button
-                aria-label="Clear search results"
+                aria-label={t('search.clearResults')}
                 type="button"
                 className="absolute bottom-1/2 right-4 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full hover:bg-slate-100 focus:bg-slate-100 focus:outline-none dark:hover:bg-slate-800 dark:focus:bg-slate-800"
                 onClick={resetResults}
@@ -193,13 +195,13 @@ const PublicationSearch = (props: Props) => {
             {isInputEmpty && (
               <div className="my-4 flex flex-row items-center justify-center text-slate-500 dark:text-slate-300">
                 <SearchSVG className="mr-2.5 h-5 w-5 stroke-current" />
-                <DialogPrimitive.Title className="font-normal">Search articles from this blog</DialogPrimitive.Title>
+                <DialogPrimitive.Title className="font-normal">{t('search.placeholder')}</DialogPrimitive.Title>
               </div>
             )}
             {!isLoading && isResultEmpty ? (
               <div className="my-4 flex flex-row items-center justify-center text-slate-500 dark:text-slate-300">
                 <SearchSVG className="mr-4 h-5 w-5 stroke-current" />
-                <p>No articles found</p>
+                <p>{t('search.noResults')}</p>
               </div>
             ) : null}
           </div>
@@ -241,7 +243,7 @@ const PublicationSearch = (props: Props) => {
                               <>
                                 <span className="mx-2 inline-block font-bold opacity-50">&middot;</span>
                                 <p className="inline-block">
-                                  {post.reactionCount} Reaction{post.reactionCount === 1 ? '' : 's'}
+                                  {post.reactionCount} {post.reactionCount === 1 ? t('common.views').slice(0, -1) : t('common.views')}
                                 </p>
                               </>
                             )}
@@ -283,7 +285,7 @@ const PublicationSearch = (props: Props) => {
               {!fetching && !isResultEmpty && pageInfo?.hasNextPage && <Waypoint onEnter={fetchMore} topOffset="-5%" />}
               {isEndOfFeed && (
                 <div className="self-center py-6 text-center font-heading font-semibold text-slate-700 dark:text-slate-300">
-                  <p className="text-md">You&apos;ve reached the end! 👋</p>
+                  <p className="text-md">{t('common.reachedEnd')}</p>
                 </div>
               )}
             </div>
