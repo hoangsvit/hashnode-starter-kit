@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState, Fragment } from 'react';
 import { twJoin } from 'tailwind-merge';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
+import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
 
 import { resizeImage } from '@starter-kit/utils/image';
 // @ts-ignore
@@ -46,6 +48,8 @@ const PublicationSubscribeStandOut = dynamic(() => import('./publication-subscri
 
 export const PostHeader = ({ post, morePosts }: Props) => {
 	const { t } = useTranslation('common');
+	const router = useRouter();
+	const currentLocale = router.locale || 'en';
 	const postContentEle = useRef<HTMLDivElement>(null);
 
 	// Add copy button functionality to code blocks
@@ -226,9 +230,9 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 							<Link
 								href={absolutePostURL}
 								className="tooltip-handle text-slate-700 dark:text-slate-400"
-								data-title={`${moment(post.publishedAt).format('MMM D, YYYY HH:mm')}`}
+								data-title={formatDateTooltip(post.publishedAt, currentLocale)}
 							>
-								<span>{moment(post.publishedAt).format('MMM D, YYYY')}</span>
+								<span>{formatDate(post.publishedAt, currentLocale, 'short')}</span>
 							</Link>
 							{post.publication?.features?.readTime?.isEnabled && (
 								<>

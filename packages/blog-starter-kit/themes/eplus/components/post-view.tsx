@@ -6,7 +6,9 @@ import moment from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 import useCopyCodeButton from '../hooks/useCopyCodeButton';
+import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
 
 import {
   BookOpenSVG,
@@ -29,6 +31,8 @@ const PublicationSubscribeStandOut = dynamic(
 
 function PostView(props: any) {
   const { t } = useTranslation('common');
+  const router = useRouter();
+  const currentLocale = router.locale || 'en';
   const postContentEle = useRef<HTMLDivElement>(null);
 
   // Add copy button functionality to code blocks
@@ -120,9 +124,9 @@ function PostView(props: any) {
                     <Link
                     href='/'
                     className="tooltip-handle text-slate-700 dark:text-slate-400"
-                    data-title={`${moment(new Date(post.publishedAt)).format('MMM D, YYYY HH:mm')}`}
+                    data-title={formatDateTooltip(post.publishedAt, currentLocale)}
                     >
-                    <span>{moment(new Date(post.publishedAt)).format('MMM D, YYYY')}</span>
+                    <span>{formatDate(post.publishedAt, currentLocale, 'short')}</span>
                     </Link>
                     {(post?.publication?.features.readTime.isEnabled) && (
                     <>

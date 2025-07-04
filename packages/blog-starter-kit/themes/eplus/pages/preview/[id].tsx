@@ -2,6 +2,10 @@ import request from 'graphql-request';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import moment from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import 'dayjs/locale/vi';
+import 'dayjs/locale/en';
+import { useRouter } from 'next/router';
 
 import { Container } from '../../components/container';
 import { AppProvider } from '../../components/contexts/appContext';
@@ -31,6 +35,8 @@ import Autolinker from "../../utils/autolinker";
 import DraftFloatingMenu from '../../components/draft-floating-menu';
 import { markdownToHtml } from '@starter-kit/utils/renderer/markdownToHtml';
 import TocRenderDesign from '../../components/toc-render-design';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { formatDate, formatDateTooltip } from '../../utils/dateFormatter';
 
 type Props = {
 	draft: DraftFragment; // TODO: to be fixed
@@ -38,7 +44,14 @@ type Props = {
 };
 
 export default function Post({ publication, draft }: Props) {
+	const router = useRouter();
 	const headerRef = useRef<HTMLElement | null>(null);
+	
+	// Setup dayjs locale based on current locale
+	const currentLocale = router.locale || 'en';
+	moment.extend(localizedFormat);
+	moment.locale(currentLocale);
+	
 	if (!draft) {
 		return <ErrorPage statusCode={404} />;
 	}
@@ -156,9 +169,9 @@ export default function Post({ publication, draft }: Props) {
 											<span className="mx-3 hidden font-bold text-slate-500 md:block">&middot;</span>
 											<a
 											className="tooltip-handle text-slate-700 dark:text-slate-400"
-											data-title={`${moment(draft.updatedAt).format('MMM D, YYYY HH:mm')}`}
+											data-title={formatDateTooltip(draft.updatedAt, currentLocale)}
 											>
-											<span>{moment(draft.updatedAt).format('MMM D, YYYY')}</span>
+											<span>{formatDate(draft.updatedAt, currentLocale, 'short')}</span>
 											</a>
 											<span className="mx-3 block font-bold text-slate-500">&middot;</span>
 											{publication.features?.readTime?.isEnabled && (
@@ -228,9 +241,10 @@ type Params = {
 	params: {
 		id: string;
 	};
+	locale?: string;
 };
 
-export async function getStaticProps({ params }: Params) {
+export async function getStaticProps({ params, locale }: Params) {
 	const [dataDraft, dataPublication] = await Promise.all([
 		request<DraftByIdQuery, DraftByIdQueryVariables>(
 			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT,
@@ -252,6 +266,7 @@ export async function getStaticProps({ params }: Params) {
 	const draft = dataDraft.draft;
 	return {
 		props: {
+			...(await serverSideTranslations(locale ?? 'en', ['common'])),
 			draft,
 			publication,
 		},
