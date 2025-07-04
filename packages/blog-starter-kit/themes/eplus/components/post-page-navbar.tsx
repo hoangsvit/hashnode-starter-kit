@@ -35,7 +35,7 @@ const PostPageNavbar = forwardRef<HTMLElement, Props>((props, ref) => {
 			// Check saved theme from localStorage first
 			const savedTheme = localStorage.getItem('theme');
 			const htmlElement = document.documentElement;
-			
+
 			if (savedTheme === 'dark') {
 				htmlElement.classList.add('dark');
 				setIsDarkMode(true);
@@ -56,13 +56,13 @@ const PostPageNavbar = forwardRef<HTMLElement, Props>((props, ref) => {
 				}
 			}
 		};
-		
+
 		// Initialize theme immediately
 		initializeTheme();
 	}, []);
 
 	const handleLogin = () => {
-		router.push('/identity');
+		router.push('/identity', '/identity', { locale: router.locale });
 	};
 
 	const toggleDarkMode = () => {
@@ -97,7 +97,7 @@ const PostPageNavbar = forwardRef<HTMLElement, Props>((props, ref) => {
 						tooltipText="Home"
 					>
 						<Link
-							href="/"
+							href={router.locale === 'en' ? '/' : `/${router.locale}/`}
 							aria-label="Back to blog home"
 							className={twJoin('blog-back-to-home-button', commonIconBtnStyles, 'mr-2 p-3')}
 						>

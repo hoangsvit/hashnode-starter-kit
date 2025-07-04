@@ -57,7 +57,7 @@ export const Header = (props: Props) => {
 	}, []);
 
 	const handleLogin = () => {
-		router.push('/identity');
+		router.push('/identity', '/identity', { locale: router.locale });
 	};
 
 	const toggleDarkMode = () => {

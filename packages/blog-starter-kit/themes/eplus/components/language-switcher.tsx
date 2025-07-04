@@ -33,20 +33,44 @@ export const LanguageSwitcher = () => {
 
   const handleLanguageChange = useCallback(async (newLocale: string) => {
     if (newLocale === router.locale) return; // Tránh reload không cần thiết
-    
+
     setIsChanging(true);
     setIsOpen(false);
-    
+
     try {
-      // Sử dụng cách tiếp cận chuẩn của Next.js i18n
+      // Sử dụng pathname và query để đảm bảo routing chính xác
       const { pathname, query, asPath } = router;
-      
-      // Chuyển đổi ngôn ngữ bằng cách thay đổi URL
-      await router.push(
-        { pathname, query },
-        asPath,
-        { locale: newLocale }
-      );
+
+      console.log('Language change:', {
+        currentLocale: router.locale,
+        newLocale,
+        pathname,
+        query,
+        asPath
+      });
+
+      // Tạo URL mới cho locale mới
+      let newUrl = asPath;
+
+      if (newLocale === 'en') {
+        // Với English (default locale), loại bỏ locale prefix
+        if (router.locale && router.locale !== 'en') {
+          newUrl = asPath.replace(new RegExp(`^/${router.locale}`), '');
+          if (!newUrl.startsWith('/')) {
+            newUrl = '/' + newUrl;
+          }
+        }
+      } else if (router.locale === 'en') {
+        // Từ English sang locale khác
+        newUrl = `/${newLocale}${asPath}`;
+      } else {
+        // Từ locale này sang locale khác
+        newUrl = asPath.replace(new RegExp(`^/${router.locale}`), `/${newLocale}`);
+      }
+
+      // Sử dụng window.location để đảm bảo URL chính xác
+      window.location.href = newUrl;
+
     } catch (error) {
       console.error('Error changing language:', error);
       setIsChanging(false);
@@ -69,8 +93,8 @@ export const LanguageSwitcher = () => {
         onClick={toggleDropdown}
         disabled={isChanging}
         className={`flex items-center space-x-2 px-3 py-2 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-md transition-colors ${
-          isChanging 
-            ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800' 
+          isChanging
+            ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800'
             : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800'
         }`}
         aria-label={t('common.switchLanguage')}
