@@ -157,6 +157,8 @@
 		"writeNewPost": "写新文章",
 		"dashboard": "仪表板",
 		"logout": "退出登录",
-		"clickToLogin": "点击登录"
+		"clickToLogin": "点击登录",
+		"writtenBy": "作者",
+		"moreArticles": "更多文章"
 	}
 }

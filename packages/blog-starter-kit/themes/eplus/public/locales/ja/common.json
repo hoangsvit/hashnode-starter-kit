@@ -157,6 +157,8 @@
 		"writeNewPost": "新しい投稿を書く",
 		"dashboard": "ダッシュボード",
 		"logout": "ログアウト",
-		"clickToLogin": "ログインするにはクリック"
+		"clickToLogin": "ログインするにはクリック",
+		"writtenBy": "著者",
+		"moreArticles": "その他の記事"
 	}
 }

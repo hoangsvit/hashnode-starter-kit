@@ -157,6 +157,8 @@
 		"writeNewPost": "Write new post",
 		"dashboard": "Dashboard",
 		"logout": "Logout",
-		"clickToLogin": "Click to login"
+		"clickToLogin": "Click to login",
+		"writtenBy": "Written by",
+		"moreArticles": "More articles"
 	}
 }

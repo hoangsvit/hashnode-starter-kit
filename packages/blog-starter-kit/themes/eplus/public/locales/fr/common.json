@@ -157,6 +157,8 @@
 		"writeNewPost": "Écrire un nouveau post",
 		"dashboard": "Tableau de Bord",
 		"logout": "Déconnexion",
-		"clickToLogin": "Cliquez pour vous connecter"
+		"clickToLogin": "Cliquez pour vous connecter",
+		"writtenBy": "Écrit par",
+		"moreArticles": "Plus d'articles"
 	}
 }
