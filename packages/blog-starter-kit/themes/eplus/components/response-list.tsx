@@ -58,7 +58,7 @@ function ResponseList(props: Props) {
 					target="_blank"
 					rel="noopener noreferrer"
 					icon={<HashnodeSVG className="h-5 w-5 stroke-current" />}
-					label="Add a comment"
+					label={t('userMenu.addComment')}
 					secondaryIcon={<ExternalArrowSVG className="h-4 w-4 stroke-current" />}
 				/>
 				<NoCommentsLightSVG className="h-40 w-40" />
