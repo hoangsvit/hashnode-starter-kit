@@ -22,7 +22,7 @@ import ProfileImage from './profile-image';
 // Helper function to add ref parameter to external URLs
 const addRefToExternalUrl = (url: string): string => {
   if (!url.startsWith('http')) return url; // Skip internal links
-  
+
   try {
     const urlObj = new URL(url);
     urlObj.searchParams.set('ref', 'eplus.dev');
@@ -340,7 +340,7 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 			</div>
 			{/* More posts from current post's author/publication rendered here */}
 			{/* TODO: Below breaking on failed nw request */}
-			{!post.series && <OtherPostsOfAccount post={post} morePosts={top3FilteredPosts} />}
+			{!post.series && <OtherPostsOfAccount morePosts={top3FilteredPosts} />}
 			{showCommentsSheet && (
 				<PostCommentsSidebar
 					hideSidebar={() => setShowCommentsSheet(false)}
