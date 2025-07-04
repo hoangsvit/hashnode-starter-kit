@@ -2,6 +2,7 @@ import cuid from 'cuid';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import { twJoin } from 'tailwind-merge';
+import { useTranslation } from 'next-i18next';
 
 import CustomImage from './custom-image';
 import { BookOpenSVG, ChartMixedSVG, PinSVG } from './icons/svgs';
@@ -18,6 +19,7 @@ const FeaturedPosts = (props: {
   };
 }) => {
   const { publication, posts } = props;
+  const { t } = useTranslation('common');
   const limit = 3;
   const padding = limit - posts.length;
 
@@ -87,7 +89,7 @@ const FeaturedPosts = (props: {
               </h1>
               {isPinnedToBlog && (
                 <div className="blog-article-card-label mx-4 mb-1 flex flex-row items-center break-words font-heading font-medium leading-snug text-blue-600 dark:text-blue-500">
-                  <span>Pinned</span>
+                  <span>{t('common.pinned')}</span>
                   <PinSVG className="ml-1 h-6 w-6 stroke-current" />
                 </div>
               )}
@@ -129,7 +131,7 @@ const FeaturedPosts = (props: {
                           onFocus={() => undefined}
                         >
                           <BookOpenSVG className="mr-2 h-4 w-4 fill-current" />
-                          <span>{post.readTimeInMinutes} min read</span>
+                          <span>{post.readTimeInMinutes} {t('common.readTime')}</span>
                         </Link>
                       </p>
                     ) : null}
@@ -146,7 +148,7 @@ const FeaturedPosts = (props: {
                             onFocus={() => undefined}
                           >
                             <ChartMixedSVG className="mr-2 h-4 w-4 fill-current" />
-                            <span>{kFormatter(post.views)} views</span>
+                            <span>{kFormatter(post.views)} {t('common.views')}</span>
                           </Link>
                         </p>
                       </>
