@@ -159,6 +159,7 @@
 		"logout": "Déconnexion",
 		"clickToLogin": "Cliquez pour vous connecter",
 		"writtenBy": "Écrit par",
-		"moreArticles": "Plus d'articles"
+		"moreArticles": "Plus d'articles",
+		"addComment": "Ajouter un commentaire"
 	}
 }

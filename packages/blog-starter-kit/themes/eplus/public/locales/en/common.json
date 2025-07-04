@@ -159,6 +159,7 @@
 		"logout": "Logout",
 		"clickToLogin": "Click to login",
 		"writtenBy": "Written by",
-		"moreArticles": "More articles"
+		"moreArticles": "More articles",
+		"addComment": "Add a comment"
 	}
 }
