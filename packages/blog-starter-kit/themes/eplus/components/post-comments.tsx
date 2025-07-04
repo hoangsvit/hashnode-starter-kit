@@ -1,11 +1,13 @@
 import moment from 'dayjs';
 import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { twJoin } from 'tailwind-merge';
 import { formatDate } from '../utils';
+import { formatDateTooltip } from '../utils/dateFormatter';
 import Autolinker from '../utils/autolinker';
 import { imageReplacer } from '../utils/image';
 import { useAppContext } from './contexts/appContext';
@@ -19,6 +21,8 @@ moment.extend(localizedFormat);
 
 export const PostComments = () => {
 	const { t } = useTranslation('common');
+	const router = useRouter();
+	const currentLocale = router.locale || 'en';
 	const { post } = useAppContext();
 	if (!post) return null;
 	const discussionUrl = `https://hashnode.com/discussions/post/${post.id}`;
@@ -94,7 +98,8 @@ export const PostComments = () => {
                         {formattedDate}
                       </a> */}
 									<span
-										title={moment(comment.dateAdded).format('MMM D, YYYY HH:mm')}
+										className="tooltip-handle"
+										title={formatDateTooltip(comment.dateAdded, currentLocale)}
 										aria-label="Response added at"
 									>
 										{formatDate(comment.dateAdded)}

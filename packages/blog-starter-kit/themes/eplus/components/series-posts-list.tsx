@@ -1,10 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 import { SeriesFragment } from '../generated/graphql';
 import CustomImage from './custom-image';
 import { resizeImage, getBlurHash } from '../utils/image';
 import { blurImageDimensions } from '../utils/const/images';
+import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
 
 interface SeriesPostsListProps {
 	series: SeriesFragment;
@@ -12,6 +15,9 @@ interface SeriesPostsListProps {
 }
 
 export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProps) => {
+	const { t } = useTranslation('common');
+	const router = useRouter();
+	const currentLocale = router.locale || 'en';
 	const [isVisible, setIsVisible] = useState(false);
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -50,7 +56,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 		<div ref={containerRef} className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
 			<div className="mb-6">
 				<h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-					Posts in series: {series.name}
+					{t('common.postsInSeries')}: {series.name}
 				</h2>
 				{series.description?.html && (
 					<div
@@ -105,9 +111,10 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 								}`}
 							>
 								{isCurrentPost && (
-									<div className="absolute top-2 right-2">									<span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-										Current Post
-									</span>
+									<div className="absolute top-2 right-2">
+										<span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+											{t('common.currentPost')}
+										</span>
 									</div>
 								)}
 
@@ -170,12 +177,12 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 													<span>{post.author.name}</span>
 												</div>
 												<span>•</span>
-												<time dateTime={post.publishedAt}>
-													{new Date(post.publishedAt).toLocaleDateString('en-US', {
-														year: 'numeric',
-														month: 'long',
-														day: 'numeric',
-													})}
+												<time 
+													dateTime={post.publishedAt}
+													className="tooltip-handle"
+													data-title={formatDateTooltip(post.publishedAt, currentLocale)}
+												>
+													{formatDate(post.publishedAt, currentLocale, 'short')}
 												</time>
 											</div>
 										</div>
@@ -193,7 +200,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 						href={`/series/${series.slug}`}
 						className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
 					>
-						View all posts in series
+						{t('common.viewAllPostsInSeries')}
 						<svg
 							className="ml-2 h-4 w-4"
 							fill="none"

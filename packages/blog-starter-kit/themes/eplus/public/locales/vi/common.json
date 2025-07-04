@@ -46,7 +46,10 @@
 		"loadMore": "Tải thêm",
 		"reachedEnd": "Bạn đã đến cuối rồi! 👋",
 		"noPostsImage": "Không có bài viết",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}"
+		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"postsInSeries": "Bài viết trong chuỗi",
+		"currentPost": "Bài hiện tại",
+		"viewAllPostsInSeries": "Xem tất cả bài viết trong chuỗi"
 	},
 	"navigation": {
 		"home": "Trang chủ",
