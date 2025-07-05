@@ -87,7 +87,7 @@ export default function Series({
 							<div className="flex flex-col-reverse flex-wrap items-start md:flex-row">
 								<div className={twJoin('pr-8', series.coverImage ? 'w-full md:w-1/2' : 'w-full')}>
 									<span className="blog-series-label mb-2 font-semibold uppercase tracking-tight text-slate-600 dark:text-slate-400">
-										{t('common.series')}
+										{t('series')}
 									</span>
 									<h1 className="blog-series-title font-heading mb-2 text-3xl font-bold text-slate-900 dark:text-white md:text-4xl xl:text-5xl">
 										{series.name}
@@ -174,6 +174,9 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx)
 	const [resolvedPath] = resolvedUrl.split('?');
 	const ssrCache = createSSRExchange();
 	const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
+
+	// Load messages for internationalization
+	const messages = (await import(`../../messages/${locale}.json`)).default;
 	let rawCurrentMenuId = '';
 	const publicationInfo = await urqlClient
 		.query(
@@ -241,6 +244,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx)
 			urqlState: ssrCache.extractData(),
 			initialLimit: INITIAL_LIMIT,
 			currentMenuId: rawCurrentMenuId,
+			messages,
 		},
 	};
 };
