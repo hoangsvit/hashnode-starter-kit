@@ -1,13 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const localesDir = 'public/locales';
-const locales = fs.readdirSync(localesDir);
+const localesDir = 'messages';
+const locales = fs.readdirSync(localesDir).map(file => file.replace('.json', ''));
 
 console.log('Checking translation files...\n');
 
 locales.forEach(locale => {
-  const filePath = path.join(localesDir, locale, 'common.json');
+  const filePath = path.join(localesDir, `${locale}.json`);
   if (fs.existsSync(filePath)) {
     const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     console.log(`${locale}: ${Object.keys(content.common).length} keys in common, ${Object.keys(content.userMenu).length} keys in userMenu`);
@@ -15,7 +15,7 @@ locales.forEach(locale => {
 });
 
 // Check for missing keys
-const enPath = path.join(localesDir, 'en', 'common.json');
+const enPath = path.join(localesDir, 'en.json');
 const enContent = JSON.parse(fs.readFileSync(enPath, 'utf8'));
 const enCommonKeys = Object.keys(enContent.common);
 const enUserMenuKeys = Object.keys(enContent.userMenu);
@@ -25,7 +25,7 @@ console.log('\nChecking for missing keys...\n');
 locales.forEach(locale => {
   if (locale === 'en') return;
 
-  const filePath = path.join(localesDir, locale, 'common.json');
+  const filePath = path.join(localesDir, `${locale}.json`);
   if (fs.existsSync(filePath)) {
     const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
     const commonKeys = Object.keys(content.common);
