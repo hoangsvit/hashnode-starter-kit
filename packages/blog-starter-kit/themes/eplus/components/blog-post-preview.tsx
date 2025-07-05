@@ -36,12 +36,19 @@ function BlogPostPreview(props: {
   const postCoverImageURL = post.coverImage?.url ?? getDefaultPostCoverImageUrl();
 
   const preload = async () => {
-    const nextData = document.getElementById('__NEXT_DATA__');
-    if (nextData) {
-      const { buildId } = JSON.parse(nextData.innerHTML);
-      if (buildId) {
-        fetch(`/_next/data/${buildId}/${post.slug}.json?slug=${post.slug}`);
+    try {
+      const nextData = document.getElementById('__NEXT_DATA__');
+      if (nextData) {
+        const { buildId } = JSON.parse(nextData.innerHTML);
+        if (buildId && post.slug) {
+          // Construct the correct URL with locale if needed
+          const locale = router.locale && router.locale !== 'en' ? `/${router.locale}` : '';
+          await fetch(`/_next/data/${buildId}${locale}/${post.slug}.json?slug=${post.slug}`);
+        }
       }
+    } catch (error) {
+      // Silently fail preload to avoid breaking the UI
+      console.warn('Preload failed:', error);
     }
   };
 
