@@ -2,6 +2,8 @@ import CustomImage from '../components/custom-image';
 import PublicationSubscribeStandOut from '../components/publication-subscribe-standout';
 import { resizeImage } from '../utils/image';
 import { AppProvider } from '../components/contexts/appContext';
+import { NextIntlClientProvider } from 'next-intl';
+import { useRouter } from 'next/router';
 
 import BlogPostPreview from '../components/magazine-blog-post-preview';
 import {
@@ -21,10 +23,12 @@ type Props = {
   publication: PublicationFragment;
   recent3Posts: PostThumbnailFragment[];
   currentMenuId: string;
+  messages: Record<string, any>;
 }
 
 const Newsletter = (props: Props) => {
-  const { recent3Posts, publication, currentMenuId } = props;
+  const { recent3Posts, publication, currentMenuId, messages } = props;
+  const router = useRouter();
 
   const profile = publication.author;
 
@@ -39,50 +43,56 @@ const Newsletter = (props: Props) => {
   const publicationImageUrl = resizeImage(originalImageSrc, { w: 400, h: 400, c: 'face' });
 
   return (
-    <AppProvider publication={publication}>
-      <Header currentMenuId={currentMenuId} isHome={false}/>
-      <div className="blog-page-area mx-auto min-h-screen px-4 pb-8 pt-20 md:px-10 md:pt-20">
-        <div className="blog-page-card container relative z-30 mx-auto grid grid-flow-row grid-cols-8 pb-0 2xl:grid-cols-10">
-          <div className="col-span-full">
-            <span className="mx-auto -mb-10 block h-32 w-32 overflow-hidden rounded-full">
-              <CustomImage
-                originalSrc={originalImageSrc}
-                src={publicationImageUrl}
-                alt={publication.title || profile?.name}
-                className="block w-full"
-                width={400}
-                height={400}
-                priority
-                layout="responsive"
-              />
-            </span>
-            <PublicationSubscribeStandOut />
+    <NextIntlClientProvider
+      locale={router.locale}
+      messages={messages}
+      timeZone="Asia/Ho_Chi_Minh"
+    >
+      <AppProvider publication={publication}>
+        <Header currentMenuId={currentMenuId} isHome={false}/>
+        <div className="blog-page-area mx-auto min-h-screen px-4 pb-8 pt-20 md:px-10 md:pt-20">
+          <div className="blog-page-card container relative z-30 mx-auto grid grid-flow-row grid-cols-8 pb-0 2xl:grid-cols-10">
+            <div className="col-span-full">
+              <span className="mx-auto -mb-10 block h-32 w-32 overflow-hidden rounded-full">
+                <CustomImage
+                  originalSrc={originalImageSrc}
+                  src={publicationImageUrl}
+                  alt={publication.title || profile?.name}
+                  className="block w-full"
+                  width={400}
+                  height={400}
+                  priority
+                  layout="responsive"
+                />
+              </span>
+              <PublicationSubscribeStandOut />
+            </div>
           </div>
+          {recent3Posts && recent3Posts.length > 0 && (
+            <>
+              <div className="blog-more-articles mt-10">
+                <h3 className="mb-3 text-center font-heading text-xl font-bold text-slate-900 dark:text-slate-50">
+                  Recent articles
+                </h3>
+              </div>
+              <div className="blog-articles-container container mx-auto grid grid-cols-1 gap-10 px-4 md:grid-cols-2 lg:grid-cols-3 xl:px-10 xl:py-10 2xl:px-24 2xl:py-5">
+                {recentPosts}
+              </div>
+            </>
+          )}
         </div>
-        {recent3Posts && recent3Posts.length > 0 && (
-          <>
-            <div className="blog-more-articles mt-10">
-              <h3 className="mb-3 text-center font-heading text-xl font-bold text-slate-900 dark:text-slate-50">
-                Recent articles
-              </h3>
-            </div>
-            <div className="blog-articles-container container mx-auto grid grid-cols-1 gap-10 px-4 md:grid-cols-2 lg:grid-cols-3 xl:px-10 xl:py-10 2xl:px-24 2xl:py-5">
-              {recentPosts}
-            </div>
-          </>
-        )}
-      </div>
-      {publication ? (
-				<PublicationFooter
-					authorName={publication.author.name}
-					title={publication.title}
-					imprint={publication.imprint}
-					disableFooterBranding={publication.preferences.disableFooterBranding}
-					isTeam={publication.isTeam}
-					logo={publication.preferences.logo}
-				/>
-				) : null}
-    </AppProvider>
+        {publication ? (
+          <PublicationFooter
+            authorName={publication.author.name}
+            title={publication.title}
+            imprint={publication.imprint}
+            disableFooterBranding={publication.preferences.disableFooterBranding}
+            isTeam={publication.isTeam}
+            logo={publication.preferences.logo}
+          />
+          ) : null}
+      </AppProvider>
+    </NextIntlClientProvider>
   );
 };
 
@@ -90,9 +100,12 @@ export const getServerSideProps: GetServerSideProps<{
   publication: PublicationFragment;
   recent3Posts: PostThumbnailFragment[];
 }> = async (ctx) => {
-  const { res } = ctx;
+  const { res, locale = 'en' } = ctx;
   const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
   const log = _log.with({ host });
+
+  // Load messages for the current locale
+  const messages = (await import(`../messages/${locale}.json`)).default;
 
   const ssrCache = createSSRExchange();
   const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
@@ -146,6 +159,7 @@ export const getServerSideProps: GetServerSideProps<{
       publication,
       recent3Posts: publication.recentPosts.edges.map((edge) => edge.node),
       currentMenuId: 'newsletter',
+      messages,
     },
   };
 };

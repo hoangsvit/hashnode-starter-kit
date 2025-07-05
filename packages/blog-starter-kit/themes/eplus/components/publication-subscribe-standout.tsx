@@ -10,7 +10,7 @@ import { SubscribeToNewsletterDocument } from '../generated/graphql';
 
 
 function PublicationSubscribeStandOut() {
-  const t = useTranslations('common');
+  const t = useTranslations();
   const { publication } = useAppContext();
   const [, subscribeToNewsletter] = useMutation(SubscribeToNewsletterDocument);
 
