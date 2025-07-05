@@ -2,7 +2,7 @@ import CustomImage from '../components/custom-image';
 import PublicationSubscribeStandOut from '../components/publication-subscribe-standout';
 import { resizeImage } from '../utils/image';
 import { AppProvider } from '../components/contexts/appContext';
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import BlogPostPreview from '../components/magazine-blog-post-preview';
@@ -29,6 +29,7 @@ type Props = {
 const Newsletter = (props: Props) => {
   const { recent3Posts, publication, currentMenuId, messages } = props;
   const router = useRouter();
+  const t = useTranslations();
 
   const profile = publication.author;
 
@@ -72,7 +73,7 @@ const Newsletter = (props: Props) => {
             <>
               <div className="blog-more-articles mt-10">
                 <h3 className="mb-3 text-center font-heading text-xl font-bold text-slate-900 dark:text-slate-50">
-                  Recent articles
+                  {t('common.moreContent')}
                 </h3>
               </div>
               <div className="blog-articles-container container mx-auto grid grid-cols-1 gap-10 px-4 md:grid-cols-2 lg:grid-cols-3 xl:px-10 xl:py-10 2xl:px-24 2xl:py-5">
