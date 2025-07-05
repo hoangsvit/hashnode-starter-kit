@@ -23,6 +23,17 @@ export const GlobalFontVariables = () => {
             --font-inter: ${inter.style.fontFamily};
             --font-plus-jakarta-sans: ${plusJakartaSans.style.fontFamily};
           }
+
+          /* Custom text selection color */
+          ::selection {
+            background-color: #f6af41;
+            color: #ffffff;
+          }
+
+          ::-moz-selection {
+            background-color: #f6af41;
+            color: #ffffff;
+          }
         `
       }}
     />
