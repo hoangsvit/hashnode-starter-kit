@@ -6,7 +6,7 @@ import {
 } from '@starter-kit/utils/social/og';
 import request from 'graphql-request';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { getTranslations } from 'next-intl/server';
 import Head from 'next/head';
 import { useRef } from 'react';
 import { twJoin } from 'tailwind-merge';
@@ -168,7 +168,7 @@ const Page = ({ page }: PageProps) => {
 				<meta name="apple-mobile-web-app-capable" content="yes" />
 				<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 				<meta name="format-detection" content="telephone=no" />
-				
+
 				<style dangerouslySetInnerHTML={{ __html: highlightJsMonokaiTheme }}></style>
 			</Head>
 			<StaticPageContent pageContent={page} />
@@ -280,7 +280,7 @@ export default function PostOrPage(props: Props) {
 type Params = {
 	slug: string;
 };
-export const getStaticProps: GetStaticProps<Props, Params> = async ({ params, locale = 'en' }) => {
+export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) => {
 	if (!params) {
 		throw new Error('No params');
 	}
@@ -300,7 +300,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params, lo
 				post: postData.publication.post,
 				morePosts: morePostsData.publication?.posts.edges ?? [],
 				publication: postData.publication,
-				...(await serverSideTranslations(locale, ['common'])),
 			},
 			revalidate: 1,
 		};
@@ -314,7 +313,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params, lo
 				type: 'page',
 				page: pageData.publication.staticPage,
 				publication: pageData.publication,
-				...(await serverSideTranslations(locale, ['common'])),
 			},
 			revalidate: 1,
 		};
@@ -338,17 +336,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 	const postSlugs = (data.publication?.posts.edges ?? []).map((edge) => edge.node.slug);
 
-	// Import i18n config to get all supported locales
-	const i18nConfig = require('../next-i18next.config.js');
-	const supportedLocales = i18nConfig.i18n.locales;
-
 	return {
-		paths: postSlugs.flatMap((slug) => 
-			supportedLocales.map((locale) => ({
-				params: { slug },
-				locale,
-			}))
-		),
+		paths: postSlugs.map((slug) => ({
+			params: { slug },
+		})),
 		fallback: 'blocking',
 	};
 };

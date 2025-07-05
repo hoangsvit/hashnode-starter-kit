@@ -3,8 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import request from 'graphql-request';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslations } from 'next-intl';
 import { Container } from '../components/container';
 import { Layout } from '../components/layout';
 import HnButton from '../components/hn-button';
@@ -27,7 +26,7 @@ interface IdentityPageProps {
 
 export default function IdentityPage({ publication }: Readonly<IdentityPageProps>) {
 	const router = useRouter();
-	const { t } = useTranslation('common');
+	const t = useTranslations('common');
 	const [tokenInput, setTokenInput] = useState<string>('');
 	const [isProcessing, setIsProcessing] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -376,7 +375,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		return {
 			props: {
 				publication,
-				...(await serverSideTranslations(context.locale ?? 'en', ['common'])),
 			},
 		};
 	} catch (error) {

@@ -1,5 +1,4 @@
 const { request, gql } = require('graphql-request');
-const { i18n } = require('./next-i18next.config');
 
 const ANALYTICS_BASE_URL = 'https://hn-ping2.hashnode.com';
 const HASHNODE_ADVANCED_ANALYTICS_URL = 'https://user-analytics.hashnode.com';
@@ -62,6 +61,11 @@ const getRedirectionRules = async () => {
 const config = {
 	transpilePackages: ['@starter-kit/utils'],
 	basePath: getBasePath(),
+	i18n: {
+		locales: ['en', 'vi', 'ja', 'es', 'fr', 'zh', 'hi'],
+		defaultLocale: 'en',
+		localeDetection: false,
+	},
 	experimental: {
 		scrollRestoration: true,
 	},
@@ -89,7 +93,6 @@ const config = {
 			},
 		];
 	},
-	i18n,
 	async redirects() {
 		return await getRedirectionRules();
 	},

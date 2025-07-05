@@ -1,7 +1,6 @@
 import { resizeImage } from '@starter-kit/utils/image';
 import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -35,10 +34,10 @@ export default function Series({
 	slug,
 	currentMenuId,
 }: Required<WithUrqlProps> & Props) {
-	const { t } = useTranslation('common');
-	const title = t('common.seriesPageTitle', { 
-		seriesName: series.name, 
-		publicationTitle: publication.title 
+	const t = useTranslations('common');
+	const title = t('common.seriesPageTitle', {
+		seriesName: series.name,
+		publicationTitle: publication.title
 	});
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
@@ -242,7 +241,6 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx)
 			urqlState: ssrCache.extractData(),
 			initialLimit: INITIAL_LIMIT,
 			currentMenuId: rawCurrentMenuId,
-			...(await serverSideTranslations(locale, ['common'])),
 		},
 	};
 };

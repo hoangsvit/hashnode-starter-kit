@@ -1,6 +1,5 @@
 import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Head from 'next/head';
 import Image from 'next/legacy/image';
 import { useState } from 'react';
@@ -198,6 +197,10 @@ export default function Index(
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
 	const { locale = 'en' } = context;
+
+	// Load messages for the current locale
+	const messages = (await import(`../messages/${locale}.json`)).default;
+
 	const ssrCache = createSSRExchange();
 	const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
 	const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
@@ -266,12 +269,12 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
 	return {
 		props: {
+			messages,
 			publication,
 			initialLimit,
 			urqlState: ssrCache.extractData(),
 			host,
 			isHome: true,
-			...(await serverSideTranslations(locale, ['common'])),
 		},
 	};
 };

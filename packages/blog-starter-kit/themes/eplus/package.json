@@ -37,6 +37,7 @@
 		"mongodb": "3.7.3",
 		"next-axiom": "0.18.0",
 		"next-i18next": "^15.4.2",
+		"next-intl": "^4.3.4",
 		"next-urql": "5.0.2",
 		"react-i18next": "^15.5.3",
 		"react-perfect-scrollbar": "^1.5.8",
