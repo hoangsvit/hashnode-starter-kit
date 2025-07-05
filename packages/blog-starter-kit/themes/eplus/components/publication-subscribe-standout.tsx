@@ -10,7 +10,7 @@ import { SubscribeToNewsletterDocument } from '../generated/graphql';
 
 
 function PublicationSubscribeStandOut() {
-  const t = useTranslations();
+  const t = useTranslations('newsletter');
   const { publication } = useAppContext();
   const [, subscribeToNewsletter] = useMutation(SubscribeToNewsletterDocument);
 
@@ -33,7 +33,7 @@ function PublicationSubscribeStandOut() {
       return;
     }
     if (!isEmail(emailVal)) {
-      setState({ ...state, err: t('newsletter.errorMessage') });
+      setState({ ...state, err: t('errorMessage') });
       return;
     }
     setState({ ...state, submitDisabled: true });
@@ -46,7 +46,7 @@ function PublicationSubscribeStandOut() {
     const _state = { submitDisabled: false, err: '', subscribed: false };
 
     if (!data?.subscribeToNewsletter.status || error) {
-      _state.err = error?.graphQLErrors[0].message || t('newsletter.errorMessage');
+      _state.err = error?.graphQLErrors[0].message || t('errorMessage');
     } else {
       _state.subscribed = true;
       _state.err = '';
@@ -66,10 +66,10 @@ function PublicationSubscribeStandOut() {
   return (
     <div className="my-10 mt-20 flex w-full flex-col items-center pb-10 md:px-5">
       <h3 className="mb-5 text-center font-heading text-2xl font-bold text-slate-900 dark:text-slate-50 md:text-3xl">
-        {t('newsletter.title')}
+        {t('title')}
       </h3>
       <p className="mb-5 text-center text-lg text-slate-700 dark:text-slate-300 md:w-2/3 md:text-xl">
-        {t('newsletter.description')}
+        {t('description')}
       </p>
       {!state.subscribed && (
         <div className="flex flex-row overflow-hidden rounded-lg border border-slate-800 dark:border-slate-200 md:w-2/3">
@@ -77,7 +77,7 @@ function PublicationSubscribeStandOut() {
             type="email"
             ref={email}
             onKeyUp={handleEmailChange}
-            placeholder={t('newsletter.emailPlaceholder')}
+            placeholder={t('emailPlaceholder')}
             className="w-full bg-transparent p-3 text-black outline-none dark:text-white md:p-5 md:text-lg"
           />
           <Button
@@ -87,7 +87,7 @@ function PublicationSubscribeStandOut() {
             disabled={state.submitDisabled}
             className="shrink-0 rounded-none bg-slate-800 px-3 font-bold uppercase tracking-wide text-white hover:bg-slate-700 dark:bg-slate-200 dark:text-black dark:hover:bg-slate-300 md:px-5"
           >
-            {t('newsletter.subscribeButton')}
+            {t('subscribeButton')}
           </Button>
         </div>
       )}
@@ -97,7 +97,7 @@ function PublicationSubscribeStandOut() {
             <PaperPlaneSVG className="[animation-iteration-count: 3] mb-5 h-10 w-10 animate-bounce fill-current" />
           </span>
           <p className="font-semibold ">
-            {t('newsletter.successMessage')}
+            {t('successMessage')}
           </p>
         </div>
       )}
