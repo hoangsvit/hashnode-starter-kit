@@ -61,6 +61,11 @@ const getRedirectionRules = async () => {
 const config = {
 	transpilePackages: ['@starter-kit/utils'],
 	basePath: getBasePath(),
+	i18n: {
+		locales: ['en', 'vi', 'ja', 'es', 'fr', 'zh', 'hi'],
+		defaultLocale: 'en',
+		localeDetection: false,
+	},
 	experimental: {
 		scrollRestoration: true,
 	},

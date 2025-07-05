@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { twJoin } from 'tailwind-merge';
+import { useTranslations } from 'next-intl';
 
 interface UserAvatarProps {
 	user?: {
@@ -19,6 +20,7 @@ interface UserAvatarProps {
 
 export const UserAvatar = ({ user, publicationId, size = 'md', showDropdown = false, onLogout, onLogin }: UserAvatarProps) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const t = useTranslations('userMenu');
 
 	const sizeClasses = {
 		sm: 'w-8 h-8',
@@ -66,12 +68,12 @@ export const UserAvatar = ({ user, publicationId, size = 'md', showDropdown = fa
 						: 'border-gray-300 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500'
 				)}
 				onClick={toggleDropdown}
-				title={isLoggedIn ? `${user.name} ${user.username ? `(@${user.username})` : ''}` : 'Click to login'}
+				title={isLoggedIn ? `${user.name} ${user.username ? `(@${user.username})` : ''}` : t('clickToLogin')}
 			>
 				{isLoggedIn && user.profilePicture ? (
 					<Image
 						src={user.profilePicture}
-						alt={`${user.name} avatar`}
+						alt={t('userAvatar', { name: user.name })}
 						width={size === 'sm' ? 32 : size === 'md' ? 40 : 48}
 						height={size === 'sm' ? 32 : size === 'md' ? 40 : 48}
 						className="rounded-full object-cover"
@@ -120,7 +122,7 @@ export const UserAvatar = ({ user, publicationId, size = 'md', showDropdown = fa
 							<svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
 							</svg>
-							Viết bài mới
+							{t('writeNewPost')}
 						</a>
 
 						{publicationId && (
@@ -134,7 +136,7 @@ export const UserAvatar = ({ user, publicationId, size = 'md', showDropdown = fa
 								<svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
 								</svg>
-								Dashboard
+								{t('dashboard')}
 							</a>
 						)}
 
@@ -148,7 +150,7 @@ export const UserAvatar = ({ user, publicationId, size = 'md', showDropdown = fa
 							<svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 								<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
 							</svg>
-							Đăng xuất
+							{t('logout')}
 						</button>
 					</div>
 				</div>

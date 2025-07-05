@@ -6,6 +6,7 @@ import PublicationSocialLinks from './publication-social-links';
 import PublicationLogo from './publication-logo';
 import { CloseSVG } from './icons/svgs';
 import CustomScrollArea from './scroll-area';
+import { DarkModeToggle } from './dark-mode-toggle';
 
 import { PublicationFragment } from '../generated/graphql';
 import { twJoin } from 'tailwind-merge';
@@ -100,6 +101,12 @@ function PublicationSidebar(props: Props) {
                 enabledPages={enabledPages}
                 navbarItems={navbarItems}
               />
+
+              {/* Dark Mode Toggle */}
+              <div className="mt-6 mb-6">
+                <h2 className="mb-4 text-sm font-semibold uppercase text-slate-500 dark:text-slate-400">Theme</h2>
+                <DarkModeToggle showLabel={true} />
+              </div>
 
               {userHasSocialLinks ? (
                 <>

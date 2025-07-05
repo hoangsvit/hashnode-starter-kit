@@ -2,7 +2,10 @@ import moment from 'dayjs';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
+import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
 
 import { BookOpenSVG, FileLineChartSVG, PinSVG } from './icons/svgs';
 import { getBlurHash, resizeImage } from '../utils/image';
@@ -21,6 +24,9 @@ function BlogPostPreview(props: {
   pinnedPostId?: string;
 }) {
   const { post, publication, pinnedPostId } = props;
+  const t = useTranslations('common');
+  const router = useRouter();
+  const currentLocale = router.locale || 'en';
   const postURL = `/${post.slug}`;
   const {
     preferences: { layout },
@@ -30,12 +36,19 @@ function BlogPostPreview(props: {
   const postCoverImageURL = post.coverImage?.url ?? getDefaultPostCoverImageUrl();
 
   const preload = async () => {
-    const nextData = document.getElementById('__NEXT_DATA__');
-    if (nextData) {
-      const { buildId } = JSON.parse(nextData.innerHTML);
-      if (buildId) {
-        fetch(`/_next/data/${buildId}/${post.slug}.json?slug=${post.slug}`);
+    try {
+      const nextData = document.getElementById('__NEXT_DATA__');
+      if (nextData) {
+        const { buildId } = JSON.parse(nextData.innerHTML);
+        if (buildId && post.slug) {
+          // Construct the correct URL with locale if needed
+          const locale = router.locale && router.locale !== 'en' ? `/${router.locale}` : '';
+          await fetch(`/_next/data/${buildId}${locale}/${post.slug}.json?slug=${post.slug}`);
+        }
       }
+    } catch (error) {
+      // Silently fail preload to avoid breaking the UI
+      console.warn('Preload failed:', error);
     }
   };
 
@@ -55,7 +68,7 @@ function BlogPostPreview(props: {
     >
       {layout !== 'grid' && post.id === pinnedPostId && (
         <div className="blog-article-card-label mb-1 flex flex-row items-center break-words font-heading font-medium leading-snug text-blue-600 dark:text-blue-500">
-          <span>Pinned</span>
+          <span>{t('pinned')}</span>
           <PinSVG className="ml-1 h-6 w-6 stroke-current" />
         </div>
       )}
@@ -101,23 +114,28 @@ function BlogPostPreview(props: {
             )}
             {layout === 'grid' && post.id === pinnedPostId && (
               <div className="blog-article-card-label mr-2 flex flex-row items-center break-words font-medium leading-snug text-blue-600 dark:text-blue-500">
-                <span>Pinned</span>
+                <span>{t('pinned')}</span>
                 <PinSVG className="ml-1 h-6 w-6 stroke-current" />
               </div>
             )}
-            <Link href={postURL} aria-label={post.title} className="blog-post-card-time mr-4">
-              {moment(post.publishedAt).format('ll')}
+            <Link
+              href={postURL}
+              aria-label={post.title}
+              className="blog-post-card-time tooltip-handle mr-4"
+              data-title={formatDateTooltip(post.publishedAt, currentLocale)}
+            >
+              {formatDate(post.publishedAt, currentLocale, 'localized')}
             </Link>
             {features.readTime.isEnabled && post.readTimeInMinutes ? (
-              <Link href={postURL} aria-label={`${post.title} min read`} className="mr-4 flex flex-row items-center">
+              <Link href={postURL} aria-label={`${post.title} ${t('readTime')}`} className="mr-4 flex flex-row items-center">
                 <BookOpenSVG className="mr-1 h-4 w-4 fill-current" />
-                <span>{post.readTimeInMinutes} min read </span>
+                <span>{post.readTimeInMinutes} {t('readTime')}</span>
               </Link>
             ) : null}
             {post.views && features.viewCount.isEnabled ? (
-              <Link href={postURL} aria-label={`${post.views} views`} className="mr-2 flex flex-row items-center">
+              <Link href={postURL} aria-label={`${post.views} ${t('views')}`} className="mr-2 flex flex-row items-center">
                 <FileLineChartSVG className="mr-1 h-4 w-4 fill-current" />
-                <span>{kFormatter(post.views)} views</span>
+                <span>{kFormatter(post.views)} {t('views')}</span>
               </Link>
             ) : null}
           </div>

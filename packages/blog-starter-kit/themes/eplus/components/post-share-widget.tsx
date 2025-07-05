@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { twJoin, twMerge } from 'tailwind-merge';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import {
     Content as DropdownContent,
     Item as DropdownItem,
@@ -28,6 +30,26 @@ import { createDraftPreviewUrl, createPostUrl } from '../utils/urls';
 import PostFloatingBarTooltipWrapper from './post-floating-bar-tooltip-wrapper';
 import { PostFullFragment } from '../generated/graphql';
 
+// Helper function to add ref parameter to external URLs
+const addRefToExternalUrl = (url: string, locale?: string): string => {
+  if (!url.startsWith('http')) return url; // Skip internal links
+
+  try {
+    const urlObj = new URL(url);
+    let refDomain = 'eplus.dev';
+
+    // Add locale to ref domain if not default language
+    if (locale && locale !== 'en') {
+      refDomain = `eplus.dev/${locale}`;
+    }
+
+    urlObj.searchParams.set('ref', refDomain);
+    return urlObj.toString();
+  } catch {
+    return url; // Return original URL if parsing fails
+  }
+};
+
 type DraftType = Post & { pendingScheduledDateArrival: boolean };
 
 type PostShareWidgetProps = {
@@ -42,6 +64,8 @@ type PostShareWidgetProps = {
 
 const PostShareWidget = (props: PostShareWidgetProps) => {
   const { shareText, post, draft } = props;
+  const t = useTranslations('share');
+  const router = useRouter();
   const [_, copyToClipboard] = useCopyToClipboard();
   const [isShareOpen, setIsShareOpen] = useState(false);
 
@@ -53,11 +77,11 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
     throw new Error('Provide at least Post or Draft');
   }
 
-  const entity: PostFullFragment | DraftType = post! || draft!;
+  const entity: PostFullFragment | DraftType = post || draft;
 
   const getAbsolutePostURL = (): string => {
     if (post) {
-      return createPostUrl({...entity!, partOfPublication: true}, entity!.publication);
+      return createPostUrl({...entity, partOfPublication: true}, entity.publication);
     }
 
     if (draft) {
@@ -68,10 +92,12 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
   };
 
   const absolutePostURL = getAbsolutePostURL();
+  const currentLocale = router.locale || 'en';
 
   const copyPermalink = () => {
     copyToClipboard(absolutePostURL);
-    showToast('success', `Copied ${post ? 'article permalink' : 'draft preview link'} `);
+    const message = post ? t('copiedPermalink') : t('copiedDraftLink');
+    showToast('success', message);
   };
 
   useEffect(() => {
@@ -80,9 +106,9 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
 
   return (
     <DropdownRoot open={isShareOpen} onOpenChange={setIsShareOpen}>
-      <PostFloatingBarTooltipWrapper label="Share this article">
+      <PostFloatingBarTooltipWrapper label={t('shareThisArticle')}>
         <DropdownTrigger
-          aria-label="Share this article"
+          aria-label={t('shareThisArticle')}
           className="outline-none! cursor-pointer rounded-full p-2 hover:bg-slate-100 dark:hover:bg-slate-800"
         >
           <ShareSVGV2 className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
@@ -101,22 +127,22 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
                 'flex flex-wrap rounded px-2 text-sm font-normal dark:hover:bg-slate-800',
               )}
               onClick={copyPermalink}
-              aria-label={`Copy ${post ? 'article permalink' : 'draft link'}`}
+              aria-label={post ? t('copyPermalink') : t('copyDraftLink')}
             >
               <span className="flex h-5 w-5 items-center justify-center">
                 <LinkSVGV2 className="h-5 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
               {/* Draft link is technically not a permalink so changed the wording for draft preview links, toast message is also adjusted accordingly */}
               <span className="px-2 font-normal text-slate-700 dark:text-slate-100">
-                {post ? 'Permalink' : 'Draft link'}
+                {post ? t('permalink') : t('draftLink')}
               </span>
             </Button>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
             <a
-              href={`https://twitter.com/share?url=${encodeURIComponent(
+              href={addRefToExternalUrl(`https://twitter.com/share?url=${encodeURIComponent(
                 `${absolutePostURL}?ref=twitter-share`,
-              )}&text=${encodeURIComponent(shareText)}`}
+              )}&text=${encodeURIComponent(shareText)}`, currentLocale)}
               onClick={() => {}}
               target="_blank"
               rel="noopener"
@@ -125,14 +151,14 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <TwitterXSVG className="h-7 w-4 stroke-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">Twitter</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('twitter')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
             <a
-              href={`http://www.reddit.com/submit?url=${encodeURIComponent(absolutePostURL)}&title=${encodeURIComponent(
+              href={addRefToExternalUrl(`http://www.reddit.com/submit?url=${encodeURIComponent(absolutePostURL)}&title=${encodeURIComponent(
                 entity.title,
-              )}`}
+              )}`, currentLocale)}
               onClick={() => {}}
               target="_blank"
               rel="noopener"
@@ -141,12 +167,12 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <RedditSVGV2 className="h-7 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">Reddit</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('reddit')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
             <a
-              href={`https://www.linkedin.com/cws/share?url=${encodeURIComponent(absolutePostURL)}`}
+              href={addRefToExternalUrl(`https://www.linkedin.com/cws/share?url=${encodeURIComponent(absolutePostURL)}`, currentLocale)}
               onClick={() => {}}
               target="_blank"
               rel="noopener"
@@ -155,14 +181,14 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <LinkedInSVGV2 className="h-7 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">LinkedIn</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('linkedin')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
             <a
-              href={`http://news.ycombinator.com/submitlink?u=${encodeURIComponent(
+              href={addRefToExternalUrl(`http://news.ycombinator.com/submitlink?u=${encodeURIComponent(
                 absolutePostURL,
-              )}&t=${encodeURIComponent(entity.title)}`}
+              )}&t=${encodeURIComponent(entity.title)}`, currentLocale)}
               onClick={() => {}}
               target="_blank"
               rel="noopener"
@@ -171,12 +197,12 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <HackernewsSVGV2 className="h-5 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">Hacker News</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('hackerNews')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(absolutePostURL)}`}
+              href={addRefToExternalUrl(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(absolutePostURL)}`, currentLocale)}
               onClick={() => {}}
               target="_blank"
               rel="noopener"
@@ -185,14 +211,14 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <FacebookSVGRound className="h-5 w-4 fill-current stroke-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">Facebook</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('facebook')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
             <a
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(entity.title)} ${encodeURIComponent(
+              href={addRefToExternalUrl(`https://api.whatsapp.com/send?text=${encodeURIComponent(entity.title)} ${encodeURIComponent(
                 absolutePostURL,
-              )}`}
+              )}`, currentLocale)}
               onClick={() => {}}
               target="_blank"
               rel="noopener"
@@ -201,7 +227,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <WhatsappSVG className="h-5 w-4 fill-current stroke-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">WhatsApp</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('whatsapp')}</span>
             </a>
           </DropdownItem>
         </DropdownContent>

@@ -1,13 +1,15 @@
 import PostAuthorInfo from './post-author-info';
 import { useAppContext } from './contexts/appContext';
 import { PostFullFragment } from '../generated/graphql';
+import { useTranslations } from 'next-intl';
 
 function AboutAuthor() {
+  const t = useTranslations('userMenu');
   const { post: _post } = useAppContext();
   const post = _post as unknown as PostFullFragment;
   const { publication, author } = post;
   let coAuthors = post.coAuthors || [];
-  
+
   const allAuthors = publication?.isTeam ? [author, ...coAuthors] : [author];
 
   return (
@@ -15,7 +17,7 @@ function AboutAuthor() {
       <div className="flex-1 px-2">
         <div className="flex flex-col flex-wrap items-start md:flex-nowrap">
           <h3 className="mb-4 w-full border-b-1-1/2 pb-2 text-base font-medium tracking-wider text-slate-500 dark:border-slate-800 dark:text-slate-400 ">
-            Written by
+            {t('writtenBy')}
           </h3>
           <div className="flex w-full flex-col gap-12">
             {allAuthors.map((_author) => {

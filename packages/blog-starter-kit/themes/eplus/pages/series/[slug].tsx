@@ -1,7 +1,9 @@
 import { resizeImage } from '@starter-kit/utils/image';
 import { GetServerSideProps } from 'next';
+import { useTranslations } from 'next-intl';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useState } from 'react';
 import { twJoin } from 'tailwind-merge';
 import { useQuery } from 'urql';
@@ -23,7 +25,6 @@ type Props = {
 	publication: PublicationFragment;
 	series: NonNullable<NonNullable<SeriesPageInitialQuery['publication']>['series']>;
 	slug: string;
-	initialLimit: number;
 	currentMenuId: string;
 };
 
@@ -33,6 +34,7 @@ export default function Series({
 	slug,
 	currentMenuId,
 }: Required<WithUrqlProps> & Props) {
+	const t = useTranslations();
 	const title = `${series.name} - ${publication.title}`;
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
@@ -82,7 +84,7 @@ export default function Series({
 							<div className="flex flex-col-reverse flex-wrap items-start md:flex-row">
 								<div className={twJoin('pr-8', series.coverImage ? 'w-full md:w-1/2' : 'w-full')}>
 									<span className="blog-series-label mb-2 font-semibold uppercase tracking-tight text-slate-600 dark:text-slate-400">
-										Series
+										{t('common.series')}
 									</span>
 									<h1 className="blog-series-title font-heading mb-2 text-3xl font-bold text-slate-900 dark:text-white md:text-4xl xl:text-5xl">
 										{series.name}
@@ -116,13 +118,15 @@ export default function Series({
 
 						{posts.length === 0 && publication.isTeam ? (
 							<div className="mb-6 flex w-full flex-col items-center rounded border-2 border-dashed p-6 dark:border-slate-800">
-								<img
+								<Image
 									className="mb-5 block w-56"
-									alt="No posts"
+									alt={t('common.noPostsImage')}
 									src="https://cdn.hashnode.com/res/hashnode/image/upload/v1584017401345/LrrwlBZC0.png"
+									width={224}
+									height={224}
 								/>
 								<p className="text-2xl font-bold leading-snug tracking-tight text-slate-700 dark:text-slate-400">
-									No posts yet
+									{t('common.noArticlesYet')}
 								</p>
 							</div>
 						) : null}
@@ -131,7 +135,7 @@ export default function Series({
 							<div className="my-10 flex flex-col items-center justify-center">
 								<hr className="w-full border-t dark:border-slate-800" />
 								<p className="-mt-5 bg-white p-2 font-medium text-slate-600 dark:bg-slate-900 dark:text-slate-400">
-									Articles in this series
+									{t('series.postsInSeries')}
 								</p>
 							</div>
 						)}
@@ -152,7 +156,6 @@ export default function Series({
 					disableFooterBranding={publication.preferences.disableFooterBranding}
 					isTeam={publication.isTeam}
 					logo={publication.preferences.logo}
-					darkMode={publication.preferences.darkMode}
 				/>
 			</Layout>
 		</AppProvider>
@@ -163,14 +166,44 @@ type Params = {
 	slug: string;
 };
 
+const findCurrentMenuId = (
+	publication: PublicationFragment,
+	series: NonNullable<NonNullable<SeriesPageInitialQuery['publication']>['series']>,
+	requestHost: string | string[],
+	resolvedPath: string
+): string => {
+	const menu = publication.preferences.navbarItems || [];
+
+	for (const menuItem of menu) {
+		if (menuItem.type === 'series' && menuItem.series && menuItem.series.id === series.id) {
+			return menuItem.id || '';
+		}
+		// check for links that could be mapped to the series page
+		if (menuItem.type === 'link' && menuItem.url) {
+			const { pathname, host } = new URL(menuItem.url);
+			const isLinkOnSameDomain = requestHost === host;
+			const pathnameMatches = resolvedPath === pathname;
+
+			if (pathnameMatches && isLinkOnSameDomain) {
+				return menuItem.id.toString();
+			}
+		}
+	}
+
+	return '';
+};
+
 export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx) => {
-	const { req, query, resolvedUrl, params } = ctx;
-	const slug = params!.slug;
+	const { req, query, resolvedUrl, params, locale = 'en' } = ctx;
+	const slug = params.slug;
 	const requestHost = query['x-host'] || req.headers.host;
 	const [resolvedPath] = resolvedUrl.split('?');
 	const ssrCache = createSSRExchange();
 	const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
-	let rawCurrentMenuId = '';
+
+	// Load messages for the current locale
+	const messages = (await import(`../../messages/${locale}.json`)).default;
+
 	const publicationInfo = await urqlClient
 		.query(
 			SeriesPageInitialDocument,
@@ -205,29 +238,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx)
 		};
 	}
 
-	if (publication && series) {
-		const menu = publication.preferences.navbarItems || [];
-
-		for (let i = 0; i < menu.length; i++) {
-			const menuItem = menu[i];
-
-			if (menuItem.type === 'series' && menuItem.series && menuItem.series.id === series.id) {
-				rawCurrentMenuId = menuItem.id!;
-				break;
-			}
-			// check for links that could be mapped to the series page
-			if (menuItem.type === 'link' && menuItem.url && !rawCurrentMenuId) {
-				const { pathname, host } = new URL(menuItem.url);
-				const isLinkOnSameDomain = requestHost === host;
-				const pathnameMatches = resolvedPath === pathname;
-
-				if (pathnameMatches && isLinkOnSameDomain) {
-					rawCurrentMenuId = menuItem.id.toString();
-					break;
-				}
-			}
-		}
-	}
+	const currentMenuId = findCurrentMenuId(publication, series, requestHost, resolvedPath);
 
 	return {
 		props: {
@@ -235,8 +246,8 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async (ctx)
 			series,
 			slug,
 			urqlState: ssrCache.extractData(),
-			initialLimit: INITIAL_LIMIT,
-			currentMenuId: rawCurrentMenuId,
+			currentMenuId,
+			messages,
 		},
 	};
 };

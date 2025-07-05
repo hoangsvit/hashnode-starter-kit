@@ -12,15 +12,30 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
-const variableConstant = 'variable';
-const fontInterVar = inter.variable.replace(variableConstant, 'Inter');
-const fontPlusJakartaSansVar = plusJakartaSans.variable.replace(variableConstant, 'Plus_Jakarta_Sans');
+export const GlobalFontVariables = () => {
+  // Always render the actual font variables to avoid hydration mismatch
+  // The fallback fonts are already defined in the font configuration
+  return (
+    <style
+      dangerouslySetInnerHTML={{
+        __html: `
+          html {
+            --font-inter: ${inter.style.fontFamily};
+            --font-plus-jakarta-sans: ${plusJakartaSans.style.fontFamily};
+          }
 
-export const GlobalFontVariables = () => (
-  <style jsx global>{`
-    html {
-      --font-inter: ${fontInterVar};
-      --font-plus-jakarta-sans: ${fontPlusJakartaSansVar};
-    }
-  `}</style>
-);
+          /* Custom text selection color */
+          ::selection {
+            background-color: #f6af41;
+            color: #ffffff;
+          }
+
+          ::-moz-selection {
+            background-color: #f6af41;
+            color: #ffffff;
+          }
+        `
+      }}
+    />
+  );
+};
