@@ -4,6 +4,7 @@ import { resizeImage } from '../utils/image';
 import { AppProvider } from '../components/contexts/appContext';
 import { NextIntlClientProvider, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import styles from '../styles/newsletter.module.css';
 
 import BlogPostPreview from '../components/magazine-blog-post-preview';
 import {
@@ -49,50 +50,52 @@ const Newsletter = (props: Props) => {
       messages={messages}
       timeZone="Asia/Ho_Chi_Minh"
     >
-      <AppProvider publication={publication}>
-        <Header currentMenuId={currentMenuId} isHome={false}/>
-        <div className="blog-page-area mx-auto min-h-screen px-4 pb-8 pt-20 md:px-10 md:pt-20">
-          <div className="blog-page-card container relative z-30 mx-auto grid grid-flow-row grid-cols-8 pb-0 2xl:grid-cols-10">
-            <div className="col-span-full">
-              <span className="mx-auto -mb-10 block h-32 w-32 overflow-hidden rounded-full">
-                <CustomImage
-                  originalSrc={originalImageSrc}
-                  src={publicationImageUrl}
-                  alt={publication.title || profile?.name}
-                  className="block w-full"
-                  width={400}
-                  height={400}
-                  priority
-                  layout="responsive"
-                />
-              </span>
-              <PublicationSubscribeStandOut />
+      <div className={`${styles.newsletterPage} min-h-screen transition-colors duration-300`}>
+        <AppProvider publication={publication}>
+          <Header currentMenuId={currentMenuId} isHome={false}/>
+          <div className="blog-page-area mx-auto min-h-screen px-4 pb-8 pt-20 md:px-10 md:pt-20">
+            <div className={`${styles.newsletterCard} blog-page-card container relative z-30 mx-auto grid grid-flow-row grid-cols-8 pb-0 2xl:grid-cols-10`}>
+              <div className="col-span-full">
+                <span className={`${styles.profileImage} mx-auto -mb-10 block h-32 w-32 overflow-hidden border-4 border-white dark:border-slate-700`}>
+                  <CustomImage
+                    originalSrc={originalImageSrc}
+                    src={publicationImageUrl}
+                    alt={publication.title || profile?.name}
+                    className="block w-full"
+                    width={400}
+                    height={400}
+                    priority
+                    layout="responsive"
+                  />
+                </span>
+                <PublicationSubscribeStandOut />
+              </div>
             </div>
+            {recent3Posts && recent3Posts.length > 0 && (
+              <>
+                <div className="blog-more-articles mt-10">
+                  <h3 className="mb-3 text-center font-heading text-xl font-bold text-slate-900 dark:text-slate-50">
+                    {t('moreContent')}
+                  </h3>
+                </div>
+                <div className={`${styles.articlesGrid} container mx-auto px-4 xl:px-10 2xl:px-24`}>
+                  {recentPosts}
+                </div>
+              </>
+            )}
           </div>
-          {recent3Posts && recent3Posts.length > 0 && (
-            <>
-              <div className="blog-more-articles mt-10">
-                <h3 className="mb-3 text-center font-heading text-xl font-bold text-slate-900 dark:text-slate-50">
-                  {t('moreContent')}
-                </h3>
-              </div>
-              <div className="blog-articles-container container mx-auto grid grid-cols-1 gap-10 px-4 md:grid-cols-2 lg:grid-cols-3 xl:px-10 xl:py-10 2xl:px-24 2xl:py-5">
-                {recentPosts}
-              </div>
-            </>
-          )}
-        </div>
-        {publication ? (
-          <PublicationFooter
-            authorName={publication.author.name}
-            title={publication.title}
-            imprint={publication.imprint}
-            disableFooterBranding={publication.preferences.disableFooterBranding}
-            isTeam={publication.isTeam}
-            logo={publication.preferences.logo}
-          />
-          ) : null}
-      </AppProvider>
+          {publication ? (
+            <PublicationFooter
+              authorName={publication.author.name}
+              title={publication.title}
+              imprint={publication.imprint}
+              disableFooterBranding={publication.preferences.disableFooterBranding}
+              isTeam={publication.isTeam}
+              logo={publication.preferences.logo}
+            />
+            ) : null}
+        </AppProvider>
+      </div>
     </NextIntlClientProvider>
   );
 };
