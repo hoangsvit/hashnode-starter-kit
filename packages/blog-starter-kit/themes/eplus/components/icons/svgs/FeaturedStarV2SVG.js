@@ -1,9 +1,7 @@
 import React from 'react';
 
-export default class FeaturedStarV2SVG extends React.Component {
-  render() {
-    return (
-      <svg className={this.props.className} viewBox="0 0 1200 1200">
+const FeaturedStarV2SVG = ({ className, ...props }) => (
+<svg className={className} viewBox="0 0 1200 1200">
         <defs>
           <style>{`.cls-1{fill:#fff;}.cls-2{fill:#f67171;}.cls-3{fill:#3c81f4;}.cls-4{fill:#da2626;}.cls-5{fill:#f7f8f9;}.cls-6{fill:#f8ca15;}.cls-7{fill:#4338c8;}.cls-8{fill:#333;}`}</style>
         </defs>
@@ -81,6 +79,6 @@ export default class FeaturedStarV2SVG extends React.Component {
           d="M386.15,472.72h0a4.63,4.63,0,0,1-4.52-3.64l-24-109.7-90.29-22.81a4.63,4.63,0,0,1,0-9l90.28-22.79,24-109.69a4.63,4.63,0,0,1,9,0l24.05,109.7,90.34,22.79a4.63,4.63,0,0,1,0,9l-90.34,22.81-24.05,109.7A4.61,4.61,0,0,1,386.15,472.72ZM287.38,332.08l75.28,19a4.61,4.61,0,0,1,3.38,3.48l2.69,12.07,17.43,79.78,20.13-91.84a4.62,4.62,0,0,1,3.39-3.49l75.33-19-65.42-16.5h0l-9.91-2.5a4.63,4.63,0,0,1-3.39-3.5l-20.13-91.85-20.11,91.85a4.65,4.65,0,0,1-3.39,3.5Z"
         />
       </svg>
-    );
-  }
-}
+);
+
+export default FeaturedStarV2SVG;

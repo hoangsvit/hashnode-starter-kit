@@ -1,9 +1,7 @@
 import React from 'react';
 
-export default class HamburgerSVG extends React.Component {
-	render() {
-		return (
-			<svg className={this.props.className} fill="none" viewBox="0 0 24 24">
+const HamburgerSVG = ({ className, ...props }) => (
+<svg className={className} fill="none" viewBox="0 0 24 24">
 				<path
 					stroke="currentColor"
 					stroke-linecap="round"
@@ -12,6 +10,6 @@ export default class HamburgerSVG extends React.Component {
 					d="M20.989 11.997H3M20.989 18H3M21 6H3"
 				/>
 			</svg>
-		);
-	}
-}
+);
+
+export default HamburgerSVG;
