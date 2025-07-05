@@ -11,7 +11,7 @@ type Props = {
 };
 
 function OtherPostsOfAccount(props: Props) {
-  const t = useTranslations('common');
+  const t = useTranslations('userMenu');
   const { morePosts } = props;
 
   if (!morePosts || morePosts.length === 0) {

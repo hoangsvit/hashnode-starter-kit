@@ -51,7 +51,7 @@ type Props = {
 const PublicationSearch = (props: Props) => {
   let timeoutHandler: any;
   const { publication, toggleSearchUI, triggerRef } = props;
-  const t = useTranslations('common');
+  const t = useTranslations();
 
   const [searchActive, setSearchActive] = useState(false);
   const [after, setAfter] = useState<string | null>(null);
@@ -285,7 +285,7 @@ const PublicationSearch = (props: Props) => {
               {!fetching && !isResultEmpty && pageInfo?.hasNextPage && <Waypoint onEnter={fetchMore} topOffset="-5%" />}
               {isEndOfFeed && (
                 <div className="self-center py-6 text-center font-heading font-semibold text-slate-700 dark:text-slate-300">
-                  <p className="text-md">{t('reachedEnd')}</p>
+                  <p className="text-md">{t('common.reachedEnd')}</p>
                 </div>
               )}
             </div>

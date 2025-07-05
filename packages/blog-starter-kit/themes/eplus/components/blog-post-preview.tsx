@@ -61,7 +61,7 @@ function BlogPostPreview(props: {
     >
       {layout !== 'grid' && post.id === pinnedPostId && (
         <div className="blog-article-card-label mb-1 flex flex-row items-center break-words font-heading font-medium leading-snug text-blue-600 dark:text-blue-500">
-          <span>{t('common.pinned')}</span>
+          <span>{t('pinned')}</span>
           <PinSVG className="ml-1 h-6 w-6 stroke-current" />
         </div>
       )}
@@ -107,7 +107,7 @@ function BlogPostPreview(props: {
             )}
             {layout === 'grid' && post.id === pinnedPostId && (
               <div className="blog-article-card-label mr-2 flex flex-row items-center break-words font-medium leading-snug text-blue-600 dark:text-blue-500">
-                <span>{t('common.pinned')}</span>
+                <span>{t('pinned')}</span>
                 <PinSVG className="ml-1 h-6 w-6 stroke-current" />
               </div>
             )}
@@ -120,15 +120,15 @@ function BlogPostPreview(props: {
               {formatDate(post.publishedAt, currentLocale, 'localized')}
             </Link>
             {features.readTime.isEnabled && post.readTimeInMinutes ? (
-              <Link href={postURL} aria-label={`${post.title} ${t('common.readTime')}`} className="mr-4 flex flex-row items-center">
+              <Link href={postURL} aria-label={`${post.title} ${t('readTime')}`} className="mr-4 flex flex-row items-center">
                 <BookOpenSVG className="mr-1 h-4 w-4 fill-current" />
-                <span>{post.readTimeInMinutes} {t('common.readTime')}</span>
+                <span>{post.readTimeInMinutes} {t('readTime')}</span>
               </Link>
             ) : null}
             {post.views && features.viewCount.isEnabled ? (
-              <Link href={postURL} aria-label={`${post.views} ${t('common.views')}`} className="mr-2 flex flex-row items-center">
+              <Link href={postURL} aria-label={`${post.views} ${t('views')}`} className="mr-2 flex flex-row items-center">
                 <FileLineChartSVG className="mr-1 h-4 w-4 fill-current" />
-                <span>{kFormatter(post.views)} {t('common.views')}</span>
+                <span>{kFormatter(post.views)} {t('views')}</span>
               </Link>
             ) : null}
           </div>

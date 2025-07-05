@@ -34,7 +34,7 @@ export default function Series({
 	slug,
 	currentMenuId,
 }: Required<WithUrqlProps> & Props) {
-	const t = useTranslations('common');
+	const t = useTranslations();
 	const title = t('common.seriesPageTitle', {
 		seriesName: series.name,
 		publicationTitle: publication.title
