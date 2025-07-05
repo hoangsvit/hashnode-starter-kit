@@ -33,16 +33,16 @@ import { PostFullFragment } from '../generated/graphql';
 // Helper function to add ref parameter to external URLs
 const addRefToExternalUrl = (url: string, locale?: string): string => {
   if (!url.startsWith('http')) return url; // Skip internal links
-  
+
   try {
     const urlObj = new URL(url);
     let refDomain = 'eplus.dev';
-    
+
     // Add locale to ref domain if not default language
     if (locale && locale !== 'en') {
       refDomain = `eplus.dev/${locale}`;
     }
-    
+
     urlObj.searchParams.set('ref', refDomain);
     return urlObj.toString();
   } catch {
@@ -64,7 +64,7 @@ type PostShareWidgetProps = {
 
 const PostShareWidget = (props: PostShareWidgetProps) => {
   const { shareText, post, draft } = props;
-  const t = useTranslations('common');
+  const t = useTranslations('share');
   const router = useRouter();
   const [_, copyToClipboard] = useCopyToClipboard();
   const [isShareOpen, setIsShareOpen] = useState(false);
@@ -96,7 +96,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
 
   const copyPermalink = () => {
     copyToClipboard(absolutePostURL);
-    const message = post ? t('share.copiedPermalink') : t('share.copiedDraftLink');
+    const message = post ? t('copiedPermalink') : t('copiedDraftLink');
     showToast('success', message);
   };
 
@@ -106,9 +106,9 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
 
   return (
     <DropdownRoot open={isShareOpen} onOpenChange={setIsShareOpen}>
-      <PostFloatingBarTooltipWrapper label={t('share.shareThisArticle')}>
+      <PostFloatingBarTooltipWrapper label={t('shareThisArticle')}>
         <DropdownTrigger
-          aria-label={t('share.shareThisArticle')}
+          aria-label={t('shareThisArticle')}
           className="outline-none! cursor-pointer rounded-full p-2 hover:bg-slate-100 dark:hover:bg-slate-800"
         >
           <ShareSVGV2 className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
@@ -127,14 +127,14 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
                 'flex flex-wrap rounded px-2 text-sm font-normal dark:hover:bg-slate-800',
               )}
               onClick={copyPermalink}
-              aria-label={post ? t('share.copyPermalink') : t('share.copyDraftLink')}
+              aria-label={post ? t('copyPermalink') : t('copyDraftLink')}
             >
               <span className="flex h-5 w-5 items-center justify-center">
                 <LinkSVGV2 className="h-5 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
               {/* Draft link is technically not a permalink so changed the wording for draft preview links, toast message is also adjusted accordingly */}
               <span className="px-2 font-normal text-slate-700 dark:text-slate-100">
-                {post ? t('share.permalink') : t('share.draftLink')}
+                {post ? t('permalink') : t('draftLink')}
               </span>
             </Button>
           </DropdownItem>
@@ -151,7 +151,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <TwitterXSVG className="h-7 w-4 stroke-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('share.twitter')}</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('twitter')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
@@ -167,7 +167,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <RedditSVGV2 className="h-7 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('share.reddit')}</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('reddit')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
@@ -181,7 +181,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <LinkedInSVGV2 className="h-7 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('share.linkedin')}</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('linkedin')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
@@ -197,7 +197,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <HackernewsSVGV2 className="h-5 w-4 fill-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('share.hackerNews')}</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('hackerNews')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
@@ -211,7 +211,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <FacebookSVGRound className="h-5 w-4 fill-current stroke-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('share.facebook')}</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('facebook')}</span>
             </a>
           </DropdownItem>
           <DropdownItem className="outline-none!" asChild>
@@ -227,7 +227,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
               <span className="flex h-5 w-5 items-center justify-center">
                 <WhatsappSVG className="h-5 w-4 fill-current stroke-current text-slate-600 dark:text-slate-200" />
               </span>
-              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('share.whatsapp')}</span>
+              <span className="px-2 font-normal text-slate-700 dark:text-slate-100">{t('whatsapp')}</span>
             </a>
           </DropdownItem>
         </DropdownContent>
