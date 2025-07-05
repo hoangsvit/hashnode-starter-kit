@@ -1,9 +1,7 @@
 import React from 'react';
 
-export default class NoCommentsDarkSVG extends React.Component {
-  render() {
-    return (
-      <svg className={this.props.className} viewBox="0 0 155 111" fill="none" xmlns="http://www.w3.org/2000/svg">
+const NoCommentsDarkSVG = ({ className, ...props }) => (
+<svg className={className} viewBox="0 0 155 111" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M3.62427 6.80603L4.56018 7.74194"
           stroke="#475569"
@@ -304,6 +302,6 @@ export default class NoCommentsDarkSVG extends React.Component {
           fill="#475569"
         />{' '}
       </svg>
-    );
-  }
-}
+);
+
+export default NoCommentsDarkSVG;

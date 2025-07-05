@@ -35,7 +35,11 @@ export default class ProfileImage extends React.Component {
         className={`relative block h-full w-full`}
       >
         <Image
-          className={twMerge(this.props.className, `relative z-20 block w-full rounded-full`)}
+          className={twMerge(
+            this.props.className,
+            `relative z-20 block w-full rounded-full`,
+            process.env.NEXT_PUBLIC_BLUR_IMAGES === 'true' ? 'dev-mode-blur-image' : ''
+          )}
           src={
             user && user.profilePicture
               ? resizeImage(user.profilePicture, { w: this.props.width || 70, h: this.props.height || 70, c: 'face' })

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import request from 'graphql-request';
+import { useTranslations } from 'next-intl';
 import { Container } from '../components/container';
 import { Layout } from '../components/layout';
 import HnButton from '../components/hn-button';
@@ -25,6 +26,7 @@ interface IdentityPageProps {
 
 export default function IdentityPage({ publication }: Readonly<IdentityPageProps>) {
 	const router = useRouter();
+	const t = useTranslations('identity');
 	const [tokenInput, setTokenInput] = useState<string>('');
 	const [isProcessing, setIsProcessing] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string>('');
@@ -44,7 +46,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 
 	const handleTokenSubmit = useCallback(async () => {
 		if (!tokenInput.trim()) {
-			setErrorMessage('Please enter your Hashnode Personal Access Token');
+			setErrorMessage(t('enterToken'));
 			return;
 		}
 
@@ -53,14 +55,14 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 
 		// Basic token validation - Personal Access Token should be at least 30 characters
 		if (token.length < 30) {
-			setErrorMessage('Token is too short. Personal Access Token from Hashnode is usually at least 30 characters long.');
+			setErrorMessage(t('tokenTooShort'));
 			return;
 		}
 
 		// Check if token contains only valid characters (letters, numbers, hyphens, and underscores)
 		const tokenPattern = /^[A-Za-z0-9\-_]+$/;
 		if (!tokenPattern.test(token)) {
-			setErrorMessage('Invalid token format. Personal Access Token should only contain letters, numbers, hyphens and underscores.');
+			setErrorMessage(t('invalidFormat'));
 			return;
 		}
 
@@ -74,11 +76,11 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 			}
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-			setErrorMessage(`An error occurred during token verification: ${errorMessage}`);
+			setErrorMessage(`${t('errorOccurred')}: ${errorMessage}`);
 		} finally {
 			setIsProcessing(false);
 		}
-	}, [tokenInput, login]);
+	}, [tokenInput, login, t]);
 
 	const handleRetry = () => {
 		handleTokenSubmit();
@@ -95,7 +97,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 				<div className="text-center">
 					<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
 					<p className="text-neutral-600 dark:text-neutral-400">
-						Checking authentication...
+						{t('checkingAuth')}
 					</p>
 				</div>
 							)}
@@ -124,35 +126,35 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 
 							{/* Title */}
 							<h1 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
-								Identity Verification
+								{t('title')}
 							</h1>
 							<p className="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
-								Enter your Hashnode Personal Access Token to verify your identity
+								{t('description')}
 							</p>
 
 							{/* Instructions - only show when not authenticated */}
 							{!isAuthenticated && (
 								<div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
 									<h3 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-2">
-										💡 How to get your Hashnode Personal Access Token?
+										💡 {t('howToGetToken')}
 									</h3>
 									<div className="text-xs text-blue-800 dark:text-blue-200 space-y-1">
-										<p>1. Log in to your Hashnode account</p>
+										<p>1. {t('step1')}</p>
 										<p>
-											2. Go to{' '}
+											2. {t('step2')}{' '}
 											<a
 												href="https://hashnode.com/settings/developer"
 												target="_blank"
 												rel="noopener noreferrer"
 												className="text-blue-600 underline hover:text-blue-800 dark:text-blue-300 dark:hover:text-blue-400"
 											>
-												Settings → Developer → Personal Access Tokens
+												{t('settingsDeveloper')}
 											</a>
 										</p>
-										<p>3. Click &quot;Generate New Token&quot;</p>
-										<p>4. Name your token and select required permissions</p>
-										<p>5. Copy the generated token and paste it here</p>
-										<p className="text-yellow-700 dark:text-yellow-300 font-medium">⚠️ Note: Token is only shown once!</p>
+										<p>3. {t('step3')}</p>
+										<p>4. {t('step4')}</p>
+										<p>5. {t('step5')}</p>
+										<p className="text-yellow-700 dark:text-yellow-300 font-medium">⚠️ {t('tokenWarning')}</p>
 									</div>
 								</div>
 							)}
@@ -163,14 +165,14 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 									<div className="space-y-4">
 										<div>
 											<label htmlFor="token" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-												Hashnode Personal Access Token
+												{t('tokenLabel')}
 											</label>
 											<input
 												id="token"
 												type="password"
 												value={tokenInput}
 												onChange={(e) => setTokenInput(e.target.value)}
-												placeholder="Enter your Personal Access Token..."
+												placeholder={t('tokenPlaceholder')}
 												className="w-full px-3 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-neutral-800 dark:text-neutral-100"
 												disabled={isProcessing}
 											/>
@@ -189,7 +191,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 											disabled={isProcessing || !tokenInput.trim()}
 											className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-400 text-white px-6 py-2 rounded-lg transition-colors"
 										>
-											{isProcessing ? 'Verifying...' : 'Verify Identity'}
+											{isProcessing ? t('verifying') : t('verifyIdentity')}
 										</HnButton>
 									</div>
 								</div>
@@ -200,7 +202,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 									<div className="flex flex-col items-center space-y-4">
 										<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
 										<p className="text-neutral-600 dark:text-neutral-400">
-											Verifying token with Hashnode...
+											{t('verifyingToken')}
 										</p>
 									</div>
 								</div>
@@ -210,21 +212,21 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 								<div className="mb-6">
 									<div className="text-green-600 text-4xl mb-4">✅</div>
 									<h2 className="text-xl font-semibold text-green-600 dark:text-green-400 mb-4">
-										Identity Verified Successfully!
+										{t('verifiedSuccess')}
 									</h2>
 
 									{/* User information display */}
 									<div className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6 mb-4 text-left">
 										<div className="flex items-center justify-between mb-4">
 											<h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-												Account Information
+												{t('accountInfo')}
 											</h3>
 											<HnButton
 												onClick={logout}
 												variant="transparent"
 												className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm"
 											>
-												🚪 Logout
+												🚪 {t('logout')}
 											</HnButton>
 										</div>
 
@@ -252,7 +254,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 												{/* Bio */}
 												{user.bio && (
 													<div className="p-3 bg-white dark:bg-neutral-700 rounded-lg">
-														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Bio:</span>
+														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">{t('bio')}:</span>
 														<p className="text-neutral-900 dark:text-neutral-100 mt-1">
 															{user.bio}
 														</p>
@@ -262,7 +264,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 												{/* Tagline */}
 												{user.tagline && (
 													<div className="p-3 bg-white dark:bg-neutral-700 rounded-lg">
-														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Tagline:</span>
+														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">{t('tagline')}:</span>
 														<p className="text-neutral-900 dark:text-neutral-100 mt-1">
 															{user.tagline}
 														</p>
@@ -272,7 +274,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 												{/* Location */}
 												{user.location && (
 													<div className="p-3 bg-white dark:bg-neutral-700 rounded-lg">
-														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Location:</span>
+														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">{t('location')}:</span>
 														<span className="text-neutral-900 dark:text-neutral-100 ml-2">
 															{user.location}
 														</span>
@@ -282,16 +284,16 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 												{/* Social stats */}
 												{(user.followersCount !== undefined || user.followingsCount !== undefined) && (
 													<div className="p-3 bg-white dark:bg-neutral-700 rounded-lg">
-														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Social:</span>
+														<span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">{t('social')}:</span>
 														<div className="text-neutral-900 dark:text-neutral-100 mt-1">
 															{user.followersCount !== undefined && (
 																<span className="mr-4">
-																	{user.followersCount} followers
+																	{user.followersCount} {t('followers')}
 																</span>
 															)}
 															{user.followingsCount !== undefined && (
 																<span>
-																	{user.followingsCount} following
+																	{user.followingsCount} {t('following')}
 																</span>
 															)}
 														</div>
@@ -303,7 +305,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 
 									<div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 mb-4">
 										<p className="text-green-700 dark:text-green-300 text-sm text-center">
-											You will be redirected in 5 seconds...
+											{t('redirecting')}
 										</p>
 									</div>
 								</div>
@@ -314,7 +316,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 								<div className="mb-6">
 									<div className="text-red-600 text-4xl mb-4">❌</div>
 									<h2 className="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
-										Identity Verification Failed
+										{t('verificationFailed')}
 									</h2>
 									<div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
 										<p className="text-red-700 dark:text-red-300 text-sm">
@@ -326,7 +328,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 										disabled={isProcessing}
 										className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
 									>
-										Try Again
+										{t('tryAgain')}
 									</HnButton>
 								</div>
 							)}
@@ -338,7 +340,7 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 									variant="transparent"
 									className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100"
 								>
-									← Back to Home
+									← {t('backToHome')}
 								</HnButton>
 							</div>
 						</div>
@@ -352,7 +354,10 @@ export default function IdentityPage({ publication }: Readonly<IdentityPageProps
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	// No need to check guid anymore as user will enter token directly
+	const { locale = 'en' } = context;
+
+	// Load messages for the current locale
+	const messages = (await import(`../messages/${locale}.json`)).default;
 
 	try {
 		const data = await request<PublicationByHostQuery, PublicationByHostQueryVariables>(
@@ -373,6 +378,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		return {
 			props: {
 				publication,
+				messages,
 			},
 		};
 	} catch (error) {

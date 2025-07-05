@@ -5,6 +5,9 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState, Fragment } from 'react';
 import { twJoin } from 'tailwind-merge';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
+import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
 
 import { resizeImage } from '@starter-kit/utils/image';
 // @ts-ignore
@@ -15,6 +18,19 @@ import { getBlurHash, imageReplacer } from '../utils/image';
 import CoAuthorsModal from './co-authors-modal';
 import CustomImage from './custom-image';
 import ProfileImage from './profile-image';
+
+// Helper function to add ref parameter to external URLs
+const addRefToExternalUrl = (url: string): string => {
+  if (!url.startsWith('http')) return url; // Skip internal links
+
+  try {
+    const urlObj = new URL(url);
+    urlObj.searchParams.set('ref', 'eplus.dev');
+    return urlObj.toString();
+  } catch {
+    return url; // Return original URL if parsing fails
+  }
+};
 import TocRenderDesign from './toc-render-design';
 import useCopyCodeButton from '../hooks/useCopyCodeButton';
 
@@ -44,6 +60,9 @@ const PublicationSubscribeStandOut = dynamic(() => import('./publication-subscri
 });
 
 export const PostHeader = ({ post, morePosts }: Props) => {
+	const t = useTranslations();
+	const router = useRouter();
+	const currentLocale = router.locale || 'en';
 	const postContentEle = useRef<HTMLDivElement>(null);
 
 	// Add copy button functionality to code blocks
@@ -197,8 +216,10 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 							)}
 							{!post.coAuthors?.length && (
 								<a
-									href={`https://hashnode.com/@${post.author.username}`}
+									href={addRefToExternalUrl(`https://hashnode.com/@${post.author.username}`)}
 									className="ml-2 font-semibold text-slate-600 dark:text-white md:ml-0"
+									target="_blank"
+									rel="noopener noreferrer"
 								>
 									<span>{post.author.name}</span>
 								</a>
@@ -213,7 +234,7 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 										<span className="font-normal">
 											{' '}
 											<br className="block sm:hidden" />
-											with {post.coAuthors.length} co-author{post.coAuthors.length === 1 ? '' : 's'}
+											{t('common.with')} {post.coAuthors.length} {t('common.coAuthor')}{post.coAuthors.length === 1 ? '' : 's'}
 										</span>
 									)}
 								</button>
@@ -224,16 +245,16 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 							<Link
 								href={absolutePostURL}
 								className="tooltip-handle text-slate-700 dark:text-slate-400"
-								data-title={`${moment(post.publishedAt).format('MMM D, YYYY HH:mm')}`}
+								data-title={formatDateTooltip(post.publishedAt, currentLocale)}
 							>
-								<span>{moment(post.publishedAt).format('MMM D, YYYY')}</span>
+								<span>{formatDate(post.publishedAt, currentLocale, 'short')}</span>
 							</Link>
 							{post.publication?.features?.readTime?.isEnabled && (
 								<>
 									<span className="mx-3 block font-bold text-slate-500">&middot;</span>
 									<p className="flex flex-row items-center text-slate-700 dark:text-slate-400">
 										<BookOpenSVG className="mr-2 h-5 w-5 fill-current opacity-75" />
-										<span>{post.readTimeInMinutes} min read</span>
+										<span>{post.readTimeInMinutes} {t('common.readTime')}</span>
 									</p>
 								</>
 							)}
@@ -319,7 +340,7 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 			</div>
 			{/* More posts from current post's author/publication rendered here */}
 			{/* TODO: Below breaking on failed nw request */}
-			{!post.series && <OtherPostsOfAccount post={post} morePosts={top3FilteredPosts} />}
+			{!post.series && <OtherPostsOfAccount morePosts={top3FilteredPosts} />}
 			{showCommentsSheet && (
 				<PostCommentsSidebar
 					hideSidebar={() => setShowCommentsSheet(false)}

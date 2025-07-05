@@ -12,8 +12,12 @@ import PublicationSocialLinks from './publication-social-links';
 import useStickyNavScroll from './use-sticky-nav-scroll';
 
 import { PublicationFragment } from '../generated/graphql';
-import { Button } from './custom-button';
 import PublicationLogo from './publication-logo';
+import { UserAvatar } from './user-avatar';
+import { LanguageSwitcher } from './language-switcher';
+import { DarkModeToggle } from './dark-mode-toggle';
+import { useAuth } from '../hooks/useAuth';
+import { useRouter } from 'next/router';
 
 type Props = {
 	publication: Pick<PublicationFragment, 'id' | 'title' | 'links' | 'url' | 'features' | 'isTeam' | 'author' | 'preferences'>;
@@ -21,6 +25,12 @@ type Props = {
 
 const PostPageNavbar = forwardRef<HTMLElement, Props>((props, ref) => {
 	const { publication } = props;
+	const { user, logout } = useAuth();
+	const router = useRouter();
+
+	const handleLogin = () => {
+		router.push('/identity', '/identity', { locale: router.locale });
+	};
 
 	useStickyNavScroll({ elRef: ref });
 
@@ -39,7 +49,7 @@ const PostPageNavbar = forwardRef<HTMLElement, Props>((props, ref) => {
 						tooltipText="Home"
 					>
 						<Link
-							href="/"
+							href={router.locale === 'en' ? '/' : `/${router.locale}/`}
 							aria-label="Back to blog home"
 							className={twJoin('blog-back-to-home-button', commonIconBtnStyles, 'mr-2 p-3')}
 						>
@@ -63,7 +73,26 @@ const PostPageNavbar = forwardRef<HTMLElement, Props>((props, ref) => {
 					)}
 				>
 					<HeaderBlogSearch publication={publication} />
-					<Button as="a" href="#" type="primary" label="Sign up" />
+
+					{/* User Avatar - always show */}
+					<div className="ml-3">
+						<UserAvatar
+							user={user}
+							publicationId={publication.id}
+							size="md"
+							showDropdown={true}
+							onLogout={logout}
+							onLogin={handleLogin}
+						/>
+					</div>
+
+					{/* Dark mode toggle button */}
+					<DarkModeToggle className="ml-2" />
+
+					{/* Language Switcher */}
+					<div className="ml-2">
+						<LanguageSwitcher />
+					</div>
 				</div>
 			</div>
 

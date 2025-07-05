@@ -110,5 +110,11 @@ export const imageReplacer = (content, lazyLoad = false) => {
   if (lazyLoad) {
     content = content.replace(/<img/g, '<img loading="lazy"');
   }
+  
+  // Add blur class if NEXT_PUBLIC_BLUR_IMAGES is enabled
+  if (process.env.NEXT_PUBLIC_BLUR_IMAGES === 'true') {
+    content = content.replace(/<img([^>]*)>/g, '<img$1 class="dev-mode-blur-image">');
+  }
+  
   return content;
 };

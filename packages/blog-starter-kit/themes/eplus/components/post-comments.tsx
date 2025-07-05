@@ -1,10 +1,13 @@
 import moment from 'dayjs';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { twJoin } from 'tailwind-merge';
 import { formatDate } from '../utils';
+import { formatDateTooltip } from '../utils/dateFormatter';
 import Autolinker from '../utils/autolinker';
 import { imageReplacer } from '../utils/image';
 import { useAppContext } from './contexts/appContext';
@@ -17,6 +20,9 @@ moment.extend(relativeTime);
 moment.extend(localizedFormat);
 
 export const PostComments = () => {
+	const t = useTranslations('common');
+	const router = useRouter();
+	const currentLocale = router.locale || 'en';
 	const { post } = useAppContext();
 	if (!post) return null;
 	const discussionUrl = `https://hashnode.com/discussions/post/${post.id}`;
@@ -76,7 +82,7 @@ export const PostComments = () => {
 
 										{checkIfCommentByAuthor(comment) && (
 											<span className="block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium leading-normal text-green-700 dark:bg-green-800 dark:text-green-50">
-												Author
+												{t('author')}
 											</span>
 										)}
 									</p>
@@ -92,7 +98,8 @@ export const PostComments = () => {
                         {formattedDate}
                       </a> */}
 									<span
-										title={moment(comment.dateAdded).format('MMM D, YYYY HH:mm')}
+										className="tooltip-handle"
+										title={formatDateTooltip(comment.dateAdded, currentLocale)}
 										aria-label="Response added at"
 									>
 										{formatDate(comment.dateAdded)}
@@ -143,7 +150,7 @@ export const PostComments = () => {
 			<div className="relative z-50 flex flex-row flex-wrap items-center justify-between border-b bg-white p-4 dark:border-slate-800 dark:bg-transparent">
 				<div className="flex w-full flex-row items-center dark:text-slate-200 md:w-auto">
 					<h3 className="text-xl font-medium tracking-tight text-slate-900 dark:text-slate-100">
-						Comments{' '}
+						{t('comments.title')}{' '}
 						{post.responseCount > 0 ? (
 							<span>({(post.responseCount || 0) + (post.replyCount || 0)})</span>
 						) : (
@@ -161,7 +168,7 @@ export const PostComments = () => {
 					type="outline"
 					rel="noopener noreferrer"
 					icon={<HashnodeSVG className="h-5 w-5 stroke-current" />}
-					label="Add a comment"
+					label={t('userMenu.addComment')}
 					secondaryIcon={<ExternalArrowSVG className="h-4 w-4 stroke-current" />}
 					className="border-primary-600 dark:border-primary-500 text-primary-600 dark:text-primary-500 !font-normal"
 				/>

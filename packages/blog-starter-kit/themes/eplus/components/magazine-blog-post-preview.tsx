@@ -1,28 +1,38 @@
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
 import CustomImage from './custom-image';
 import { BookOpenSVG, ChartMixedSVG } from './icons/svgs';
 import { getDefaultPostCoverImageUrl } from '../utils/commonUtils';
 import { blurImageDimensions } from '../utils/const/images';
-import { getBlurHash, resizeImage } from '../utils/image';
-import { kFormatter } from '../utils/image';
+import { getBlurHash, resizeImage, kFormatter } from '../utils/image';
 import { PostThumbnailFragment, PublicationFragment } from '../generated/graphql';
 
-function BlogPostPreview(props: {
+function BlogPostPreview(props: Readonly<{
   post: PostThumbnailFragment;
   publication: Pick<PublicationFragment, 'features'>;
-}) {
+}>) {
   const { post, publication } = props;
+  const t = useTranslations('common');
+  const router = useRouter();
   const postURL = `/${post.slug}`;
   const postCoverImageURL = post.coverImage?.url ?? getDefaultPostCoverImageUrl();
 
   const preload = async () => {
-    const nextData = document.getElementById('__NEXT_DATA__');
-    if (nextData) {
-      const { buildId } = JSON.parse(nextData.innerHTML);
-      if (buildId) {
-        fetch(`/_next/data/${buildId}/${post.slug}.json?slug=${post.slug}`);
+    try {
+      const nextData = document.getElementById('__NEXT_DATA__');
+      if (nextData) {
+        const { buildId } = JSON.parse(nextData.innerHTML);
+        if (buildId && post.slug) {
+          // Construct the correct URL with locale if needed
+          const locale = router.locale && router.locale !== 'en' ? `/${router.locale}` : '';
+          await fetch(`/_next/data/${buildId}${locale}/${post.slug}.json?slug=${post.slug}`);
+        }
       }
+    } catch (error) {
+      // Silently fail preload to avoid breaking the UI
+      console.warn('Preload failed:', error);
     }
   };
 
@@ -64,28 +74,29 @@ function BlogPostPreview(props: {
       <div className="blog-article-card-author-strip mx-4 flex flex-row flex-wrap items-center">
         <div className="flex flex-col items-start leading-snug">
           <a
-            className="block font-semibold text-slate-700 dark:text-slate-400"
+            className="block font-semibold text-slate-700 transition-colors duration-200 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             href={`https://hashnode.com/@${post.author.username}`}
             onMouseOver={preload}
             onFocus={() => undefined}
+            aria-label={`View ${post.author.name}'s profile on Hashnode`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {post.author.name}
           </a>
           <div className="blog-article-card-article-meta flex flex-row text-sm">
             {publication.features.readTime.isEnabled && post.readTimeInMinutes ? (
-              <>
-                <p className="text-slate-500 dark:text-slate-400">
-                  <Link
-                    href={postURL}
-                    className="flex flex-row items-center"
-                    onMouseOver={preload}
-                    onFocus={() => undefined}
-                  >
-                    <BookOpenSVG className="mr-2 h-4 w-4 fill-current" />
-                    <span>{post.readTimeInMinutes} min read</span>
-                  </Link>
-                </p>
-              </>
+              <p className="text-slate-500 dark:text-slate-400">
+                <Link
+                  href={postURL}
+                  className="flex flex-row items-center"
+                  onMouseOver={preload}
+                  onFocus={() => undefined}
+                >
+                  <BookOpenSVG className="mr-2 h-4 w-4 fill-current" />
+                  <span>{post.readTimeInMinutes} {t('readTime')}</span>
+                </Link>
+              </p>
             ) : null}
             {post.readTimeInMinutes && Number(post.views) > 0 && publication.features.viewCount.isEnabled ? (
               <p className="mx-2 font-bold text-slate-500 dark:text-slate-400">&middot;</p>
@@ -99,7 +110,7 @@ function BlogPostPreview(props: {
                   onFocus={() => undefined}
                 >
                   <ChartMixedSVG className="mr-2 h-4 w-4 fill-current" />
-                  <span>{kFormatter(post.views)} views</span>
+                  <span>{kFormatter(post.views)} {t('views')}</span>
                 </Link>
               </p>
             ) : null}

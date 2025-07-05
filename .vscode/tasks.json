@@ -50,12 +50,12 @@
 			}
 		},
 		{
-			"label": "hashnode",
+			"label": "eplus - start",
 			"type": "shell",
-			"command": "pnpm dev",
+			"command": "pnpm start",
 			"group": "none",
 			"options": {
-				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/hashnode"
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/eplus"
 			},
 			"presentation": {
 				"reveal": "always",
@@ -64,26 +64,12 @@
 			}
 		},
 		{
-			"label": "enterprise",
+			"label": "eplus - check translations",
 			"type": "shell",
-			"command": "pnpm dev",
+			"command": "pnpm check-translations",
 			"group": "none",
 			"options": {
-				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/enterprise"
-			},
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "one"
-			}
-		},
-		{
-			"label": "personal",
-			"type": "shell",
-			"command": "pnpm dev",
-			"group": "none",
-			"options": {
-				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/personal"
+				"cwd": "${workspaceFolder}/packages/blog-starter-kit/themes/eplus"
 			},
 			"presentation": {
 				"reveal": "always",

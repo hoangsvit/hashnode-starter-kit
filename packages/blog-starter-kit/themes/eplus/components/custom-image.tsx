@@ -1,4 +1,5 @@
 import { ImgHTMLAttributes } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 import Image, { ImageProps } from 'next/legacy/image';
 
@@ -31,6 +32,7 @@ function CustomImage(props: Props) {
     layout,
     placeholder,
     blurDataURL,
+    className,
     ...restOfTheProps
   } = originalRestOfTheProps; // Destructured next/image props on purpose, so that unwanted props don't end up in <img />
 
@@ -38,16 +40,21 @@ function CustomImage(props: Props) {
     return null;
   }
 
-  const isGif = originalSrc.substr(-4) === '.gif';
+  const isGif = originalSrc.endsWith('.gif');
   const isHashnodeCDNImage = src.indexOf('cdn.hashnode.com') > -1;
+  
+  // Add blur class if NEXT_PUBLIC_BLUR_IMAGES is enabled
+  const shouldBlurImages = process.env.NEXT_PUBLIC_BLUR_IMAGES === 'true';
+  const blurClass = shouldBlurImages ? 'dev-mode-blur-image' : '';
+  const mergedClassName = twMerge(className, blurClass);
 
   if (isGif || !isHashnodeCDNImage) {
     // restOfTheProps will contain all props excluding the next/image props
-    return <img {...restOfTheProps} alt={alt} src={src || originalSrc} />;
+    return <img {...restOfTheProps} alt={alt} src={src ?? originalSrc} className={mergedClassName} />;
   }
 
-  // Notes we are passing whole props object here
-  return <Image {...originalRestOfTheProps} src={src || originalSrc} />;
+  // Notes we are passing whole props object here with merged className
+  return <Image {...originalRestOfTheProps} src={src ?? originalSrc} className={mergedClassName} />;
 }
 
 export default CustomImage;

@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { getHashId } from '../utils/commonUtils';
@@ -17,6 +18,7 @@ const PostComments = dynamic(() =>
 );
 
 function ResponseList(props: Props) {
+	const t = useTranslations('common');
 	const { currentFilter } = props;
 	const { post: _post } = useAppContext();
 	const post = _post as any;
@@ -56,11 +58,11 @@ function ResponseList(props: Props) {
 					target="_blank"
 					rel="noopener noreferrer"
 					icon={<HashnodeSVG className="h-5 w-5 stroke-current" />}
-					label="Add a comment"
+					label={t('userMenu.addComment')}
 					secondaryIcon={<ExternalArrowSVG className="h-4 w-4 stroke-current" />}
 				/>
 				<NoCommentsLightSVG className="h-40 w-40" />
-				<p>No comments yet</p>
+				<p>{t('comments.noComments')}</p>
 			</div>
 		);
 	}
