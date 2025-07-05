@@ -160,6 +160,7 @@
 		"clickToLogin": "Click to login",
 		"writtenBy": "Written by",
 		"moreArticles": "More articles",
-		"addComment": "Add a comment"
+		"addComment": "Add a comment",
+		"userAvatar": "{{name}} avatar"
 	}
 }

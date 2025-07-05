@@ -160,6 +160,7 @@
 		"clickToLogin": "Haz clic para iniciar sesión",
 		"writtenBy": "Escrito por",
 		"moreArticles": "Más artículos",
-		"addComment": "Añadir comentario"
+		"addComment": "Añadir comentario",
+		"userAvatar": "Avatar de {{name}}"
 	}
 }

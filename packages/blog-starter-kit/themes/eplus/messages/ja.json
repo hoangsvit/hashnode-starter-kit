@@ -160,6 +160,7 @@
 		"clickToLogin": "ログインするにはクリック",
 		"writtenBy": "著者",
 		"moreArticles": "その他の記事",
-		"addComment": "コメントを追加"
+		"addComment": "コメントを追加",
+		"userAvatar": "{{name}}のアバター"
 	}
 }
