@@ -160,6 +160,7 @@
 		"clickToLogin": "Nhấp để đăng nhập",
 		"writtenBy": "Được viết bởi",
 		"moreArticles": "Bài viết khác",
-		"addComment": "Thêm bình luận"
+		"addComment": "Thêm bình luận",
+		"userAvatar": "Ảnh đại diện của {{name}}"
 	}
 }

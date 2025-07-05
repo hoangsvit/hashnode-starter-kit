@@ -160,6 +160,7 @@
 		"clickToLogin": "Cliquez pour vous connecter",
 		"writtenBy": "Écrit par",
 		"moreArticles": "Plus d'articles",
-		"addComment": "Ajouter un commentaire"
+		"addComment": "Ajouter un commentaire",
+		"userAvatar": "Avatar de {{name}}"
 	}
 }
