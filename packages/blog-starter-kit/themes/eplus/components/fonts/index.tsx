@@ -12,36 +12,16 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
-const variableConstant = 'variable';
-const fontInterVar = inter.variable?.replace(variableConstant, 'Inter') || '--font-inter';
-const fontPlusJakartaSansVar = plusJakartaSans.variable?.replace(variableConstant, 'Plus_Jakarta_Sans') || '--font-plus-jakarta-sans';
-
 export const GlobalFontVariables = () => {
-  // Check if fonts are loaded properly
-  if (typeof window === 'undefined') {
-    // Server-side: return minimal styles
-    return (
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            html {
-              --font-inter: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-              --font-plus-jakarta-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            }
-          `
-        }}
-      />
-    );
-  }
-  
-  // Client-side: use the font variables
+  // Always render the actual font variables to avoid hydration mismatch
+  // The fallback fonts are already defined in the font configuration
   return (
     <style
       dangerouslySetInnerHTML={{
         __html: `
           html {
-            --font-inter: ${fontInterVar};
-            --font-plus-jakarta-sans: ${fontPlusJakartaSansVar};
+            --font-inter: ${inter.style.fontFamily};
+            --font-plus-jakarta-sans: ${plusJakartaSans.style.fontFamily};
           }
         `
       }}
