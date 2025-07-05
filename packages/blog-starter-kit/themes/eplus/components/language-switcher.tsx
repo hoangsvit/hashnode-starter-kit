@@ -49,24 +49,13 @@ export const LanguageSwitcher = () => {
         asPath
       });
 
-      // Xử lý URL cho locale mới
-      let targetAsPath = asPath;
-
-      // Nếu chuyển sang tiếng Anh (default locale)
-      if (newLocale === 'en') {
-        // Loại bỏ locale prefix nếu có
-        if (router.locale && router.locale !== 'en') {
-          targetAsPath = asPath.replace(new RegExp(`^/${router.locale}`), '') || '/';
-        }
-      }
-
       // Sử dụng router.push với locale option để Next.js xử lý i18n routing
       await router.push(
         {
           pathname,
           query,
         },
-        targetAsPath,
+        asPath,
         {
           locale: newLocale,
           scroll: false // Giữ nguyên scroll position
