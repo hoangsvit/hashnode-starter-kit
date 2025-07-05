@@ -4,7 +4,7 @@ import { PostFullFragment } from '../generated/graphql';
 import { useTranslations } from 'next-intl';
 
 function AboutAuthor() {
-  const t = useTranslations('common');
+  const t = useTranslations('userMenu');
   const { post: _post } = useAppContext();
   const post = _post as unknown as PostFullFragment;
   const { publication, author } = post;
