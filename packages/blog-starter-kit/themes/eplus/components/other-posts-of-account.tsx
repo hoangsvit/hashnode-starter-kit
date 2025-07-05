@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { resizeImage } from '../utils/image';
 import ProfileImage from './profile-image';
 import CustomImage from './custom-image';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 };
 
 function OtherPostsOfAccount(props: Props) {
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const { morePosts } = props;
 
   if (!morePosts || morePosts.length === 0) {
@@ -96,7 +96,7 @@ function OtherPostsOfAccount(props: Props) {
   return (
     <div className="blog-more-articles mt-10 mb-20">
       <h3 className="blog-more-articles-title mb-5 text-center font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-        {t('common.moreArticles')}
+        {t('moreArticles')}
       </h3>
       <div className="blog-more-articles-wrapper container mx-auto grid grid-flow-row grid-cols-6 px-4 xl:grid-cols-9 xl:gap-6 2xl:px-0">
         {morePostsRendered}

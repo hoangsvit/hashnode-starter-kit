@@ -2,7 +2,7 @@ import moment from 'dayjs';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
 import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
@@ -24,7 +24,7 @@ function BlogPostPreview(props: {
   pinnedPostId?: string;
 }) {
   const { post, publication, pinnedPostId } = props;
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const router = useRouter();
   const currentLocale = router.locale || 'en';
   const postURL = `/${post.slug}`;
@@ -111,9 +111,9 @@ function BlogPostPreview(props: {
                 <PinSVG className="ml-1 h-6 w-6 stroke-current" />
               </div>
             )}
-            <Link 
-              href={postURL} 
-              aria-label={post.title} 
+            <Link
+              href={postURL}
+              aria-label={post.title}
               className="blog-post-card-time tooltip-handle mr-4"
               data-title={formatDateTooltip(post.publishedAt, currentLocale)}
             >

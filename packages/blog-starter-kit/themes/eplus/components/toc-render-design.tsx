@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ChevronDownSVG_16x16, ChevronRightSVG_16x16, ChevronUpSVG_16x16 } from './icons/svgs';
 import { useTocModalStore } from './toc-sheet';
 
@@ -31,7 +31,7 @@ function TocRow(props: TocRowProps) {
 	const { children, node, modal } = props;
 	const [childrenVisibility, setChildrenVisibility] = useState(false);
 	const { hide: hideTocModal } = useTocModalStore();
-	const { t } = useTranslation('common');
+	const t = useTranslations('toc');
 
 	// Phân cấp màu sắc tinh tế và thanh lịch
 	const getLevelStyles = (level: number) => {
@@ -61,7 +61,7 @@ function TocRow(props: TocRowProps) {
 					<button
 						type="button"
 						className="flex-shrink-0 p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
-						aria-label={childrenVisibility ? `${t('toc.collapse')} ${node.title}` : `${t('toc.expand')} ${node.title}`}
+						aria-label={childrenVisibility ? `${t('collapse')} ${node.title}` : `${t('expand')} ${node.title}`}
 						aria-expanded={childrenVisibility}
 						onClick={() => {
 							setChildrenVisibility((prevVisibility: boolean) => !prevVisibility);
@@ -175,7 +175,7 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 	const [tocFullVisibility, setTocFullVisibility] = useState<boolean>(false);
 	const [isOverflowing, setIsOverflowing] = useState(false);
 	const router = useRouter();
-	const { t } = useTranslation('common');
+	const t = useTranslations('toc');
 	const { pathname } = router;
 	const isDraftPreview = pathname.indexOf('/preview') === 0;
 	const tocContainerRef = useRef<HTMLDivElement>(null);
@@ -200,7 +200,7 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 				{modal || (
 					<div className="mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
 						<h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
-							{t('toc.title')}
+							{t('title')}
 						</h2>
 					</div>
 				)}
@@ -215,7 +215,7 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 							/>
 						</div>
 						<h3 className="text-center text-sm text-slate-700">
-							{t('toc.noHeadings')} {isDraftPreview ? t('toc.draft') : t('toc.article')}.
+							{t('noHeadings')} {isDraftPreview ? t('draft') : t('article')}.
 						</h3>
 					</div>
 				) : (
@@ -244,12 +244,12 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 					>
 						{tocFullVisibility ? (
 							<>
-								<span>{t('toc.showLess')}</span>
+								<span>{t('showLess')}</span>
 								<ChevronUpSVG_16x16 className="inline h-3 w-3 stroke-current ml-1" />
 							</>
 						) : (
 							<>
-								<span>{t('toc.showMore')}</span>
+								<span>{t('showMore')}</span>
 								<ChevronDownSVG_16x16 className="inline h-3 w-3 stroke-current ml-1" />
 							</>
 						)}

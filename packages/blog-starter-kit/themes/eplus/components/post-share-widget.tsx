@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { twJoin, twMerge } from 'tailwind-merge';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import {
     Content as DropdownContent,
@@ -64,7 +64,7 @@ type PostShareWidgetProps = {
 
 const PostShareWidget = (props: PostShareWidgetProps) => {
   const { shareText, post, draft } = props;
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const router = useRouter();
   const [_, copyToClipboard] = useCopyToClipboard();
   const [isShareOpen, setIsShareOpen] = useState(false);

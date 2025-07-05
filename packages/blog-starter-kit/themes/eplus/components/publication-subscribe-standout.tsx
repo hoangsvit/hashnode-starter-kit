@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 import isEmail from 'validator/lib/isEmail';
 import { useAppContext } from './contexts/appContext';
@@ -10,7 +10,7 @@ import { SubscribeToNewsletterDocument } from '../generated/graphql';
 
 
 function PublicationSubscribeStandOut() {
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const { publication } = useAppContext();
   const [, subscribeToNewsletter] = useMutation(SubscribeToNewsletterDocument);
 

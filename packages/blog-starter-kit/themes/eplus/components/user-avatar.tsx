@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { twJoin } from 'tailwind-merge';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 interface UserAvatarProps {
 	user?: {
@@ -20,7 +20,7 @@ interface UserAvatarProps {
 
 export const UserAvatar = ({ user, publicationId, size = 'md', showDropdown = false, onLogout, onLogin }: UserAvatarProps) => {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-	const { t } = useTranslation('common');
+	const t = useTranslations('common');
 
 	const sizeClasses = {
 		sm: 'w-8 h-8',
