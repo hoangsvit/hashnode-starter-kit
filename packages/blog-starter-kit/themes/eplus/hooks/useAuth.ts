@@ -39,6 +39,19 @@ export const useAuth = (): UseAuthReturn => {
 				const storedUser = localStorage.getItem('hashnode_user');
 				return storedUser ? JSON.parse(storedUser) : null;
 			} catch (error) {
+				console.error('Failed to get stored user:', error);
+				return null;
+			}
+		}
+		return null;
+	}, []);
+
+	const getStoredToken = useCallback(() => {
+		if (typeof window !== 'undefined') {
+			try {
+				return localStorage.getItem('hashnode_token');
+			} catch (error) {
+				console.error('Failed to get stored token:', error);
 				return null;
 			}
 		}
@@ -58,11 +71,22 @@ export const useAuth = (): UseAuthReturn => {
 	const clearStoredUser = useCallback(() => {
 		if (typeof window !== 'undefined') {
 			localStorage.removeItem('hashnode_user');
+			localStorage.removeItem('hashnode_token');
 		}
 	}, []);
 
 	const checkAuth = useCallback(async () => {
 		try {
+			const token = getStoredToken();
+
+			// Only check authentication if token exists
+			if (!token) {
+				setUser(null);
+				clearStoredUser();
+				setIsLoading(false);
+				return;
+			}
+
 			const response = await fetch('/api/check-auth', {
 				method: 'GET',
 				credentials: 'include',
@@ -88,7 +112,7 @@ export const useAuth = (): UseAuthReturn => {
 		} finally {
 			setIsLoading(false);
 		}
-	}, [storeUser, clearStoredUser]);
+	}, [storeUser, clearStoredUser, getStoredToken]);
 
 	const login = useCallback(
 		async (token: string): Promise<{ success: boolean; error?: string }> => {
@@ -107,12 +131,16 @@ export const useAuth = (): UseAuthReturn => {
 					if (result.success && result.user) {
 						setUser(result.user);
 						storeUser(result.user);
+						// Store token after successful login
+						if (typeof window !== 'undefined') {
+							localStorage.setItem('hashnode_token', token);
+						}
 						return { success: true };
 					}
 				}
 
 				const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-				return { success: false, error: errorData.message || 'Login failed' };
+				return { success: false, error: errorData.message ?? 'Login failed' };
 			} catch (error) {
 				const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 				return { success: false, error: errorMessage };
@@ -138,15 +166,22 @@ export const useAuth = (): UseAuthReturn => {
 	useEffect(() => {
 		// First check localStorage for immediate UI update
 		const storedUser = getStoredUser();
-		if (storedUser) {
+		const storedToken = getStoredToken();
+
+		if (storedUser && storedToken) {
 			setUser(storedUser);
 			setIsLoading(false);
 			// Still verify with server in background
 			checkAuth();
-		} else {
+		} else if (storedToken) {
+			// Has token but no stored user, check authentication
 			checkAuth();
+		} else {
+			// No token means no authentication, don't call checkAuth
+			setUser(null);
+			setIsLoading(false);
 		}
-	}, [getStoredUser, checkAuth]);
+	}, [getStoredUser, getStoredToken, checkAuth]);
 
 	return {
 		user,

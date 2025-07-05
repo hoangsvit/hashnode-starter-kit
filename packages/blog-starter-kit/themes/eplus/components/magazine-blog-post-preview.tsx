@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
 import CustomImage from './custom-image';
 import { BookOpenSVG, ChartMixedSVG } from './icons/svgs';
@@ -15,16 +16,24 @@ function BlogPostPreview(props: {
 }) {
   const { post, publication } = props;
   const t = useTranslations('common');
+  const router = useRouter();
   const postURL = `/${post.slug}`;
   const postCoverImageURL = post.coverImage?.url ?? getDefaultPostCoverImageUrl();
 
   const preload = async () => {
-    const nextData = document.getElementById('__NEXT_DATA__');
-    if (nextData) {
-      const { buildId } = JSON.parse(nextData.innerHTML);
-      if (buildId) {
-        fetch(`/_next/data/${buildId}/${post.slug}.json?slug=${post.slug}`);
+    try {
+      const nextData = document.getElementById('__NEXT_DATA__');
+      if (nextData) {
+        const { buildId } = JSON.parse(nextData.innerHTML);
+        if (buildId && post.slug) {
+          // Construct the correct URL with locale if needed
+          const locale = router.locale && router.locale !== 'en' ? `/${router.locale}` : '';
+          await fetch(`/_next/data/${buildId}${locale}/${post.slug}.json?slug=${post.slug}`);
+        }
       }
+    } catch (error) {
+      // Silently fail preload to avoid breaking the UI
+      console.warn('Preload failed:', error);
     }
   };
 
@@ -66,10 +75,13 @@ function BlogPostPreview(props: {
       <div className="blog-article-card-author-strip mx-4 flex flex-row flex-wrap items-center">
         <div className="flex flex-col items-start leading-snug">
           <a
-            className="block font-semibold text-slate-700 dark:text-slate-400"
+            className="block font-semibold text-slate-700 transition-colors duration-200 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
             href={`https://hashnode.com/@${post.author.username}`}
             onMouseOver={preload}
             onFocus={() => undefined}
+            aria-label={`View ${post.author.name}'s profile on Hashnode`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {post.author.name}
           </a>
