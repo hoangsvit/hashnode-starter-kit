@@ -6,14 +6,13 @@ import CustomImage from './custom-image';
 import { BookOpenSVG, ChartMixedSVG } from './icons/svgs';
 import { getDefaultPostCoverImageUrl } from '../utils/commonUtils';
 import { blurImageDimensions } from '../utils/const/images';
-import { getBlurHash, resizeImage } from '../utils/image';
-import { kFormatter } from '../utils/image';
+import { getBlurHash, resizeImage, kFormatter } from '../utils/image';
 import { PostThumbnailFragment, PublicationFragment } from '../generated/graphql';
 
-function BlogPostPreview(props: {
+function BlogPostPreview(props: Readonly<{
   post: PostThumbnailFragment;
   publication: Pick<PublicationFragment, 'features'>;
-}) {
+}>) {
   const { post, publication } = props;
   const t = useTranslations('common');
   const router = useRouter();
@@ -87,19 +86,17 @@ function BlogPostPreview(props: {
           </a>
           <div className="blog-article-card-article-meta flex flex-row text-sm">
             {publication.features.readTime.isEnabled && post.readTimeInMinutes ? (
-              <>
-                <p className="text-slate-500 dark:text-slate-400">
-                  <Link
-                    href={postURL}
-                    className="flex flex-row items-center"
-                    onMouseOver={preload}
-                    onFocus={() => undefined}
-                  >
-                    <BookOpenSVG className="mr-2 h-4 w-4 fill-current" />
-                    <span>{post.readTimeInMinutes} {t('readTime')}</span>
-                  </Link>
-                </p>
-              </>
+              <p className="text-slate-500 dark:text-slate-400">
+                <Link
+                  href={postURL}
+                  className="flex flex-row items-center"
+                  onMouseOver={preload}
+                  onFocus={() => undefined}
+                >
+                  <BookOpenSVG className="mr-2 h-4 w-4 fill-current" />
+                  <span>{post.readTimeInMinutes} {t('readTime')}</span>
+                </Link>
+              </p>
             ) : null}
             {post.readTimeInMinutes && Number(post.views) > 0 && publication.features.viewCount.isEnabled ? (
               <p className="mx-2 font-bold text-slate-500 dark:text-slate-400">&middot;</p>
