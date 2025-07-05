@@ -12,7 +12,6 @@ import {
 } from '../generated/graphql';
 import { createHeaders, createSSRExchange, getUrqlClientConfig } from '../lib/api/client';
 import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { log as _log } from 'next-axiom';
 import { initUrqlClient } from 'next-urql';
 import { Header } from '../components/header';
@@ -147,7 +146,6 @@ export const getServerSideProps: GetServerSideProps<{
       publication,
       recent3Posts: publication.recentPosts.edges.map((edge) => edge.node),
       currentMenuId: 'newsletter',
-      ...(await serverSideTranslations(ctx.locale || 'en', ['common'])),
     },
   };
 };

@@ -1,6 +1,5 @@
 import Head from 'next/head';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { twJoin } from 'tailwind-merge';
 import { useState } from 'react';
 import { useQuery } from 'urql';
@@ -30,7 +29,7 @@ type Props = {
 };
 
 export default function Post({ publication, posts, tag, slug, currentMenuId }: Props) {
-	const { t } = useTranslation('common');
+	const t = useTranslations('common');
 	const title = `#${tag.name} - ${publication.title}`;
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
@@ -53,7 +52,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 					<title>{title}</title>
 					<link rel="canonical" href={`${publication.url}/tag/${tag.slug}`} />
 					<meta name="description" content={`${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.about')} ${tag.name}.`} />
-					
+
 					{/* Basic SEO meta tags */}
 					<meta name="keywords" content={`${tag.name}, ${tag.slug}, ${publication.title}, blog, articles`} />
 					<meta name="author" content={publication.author.name} />
@@ -111,7 +110,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 											"item": publication.url
 										},
 										{
-											"@type": "ListItem", 
+											"@type": "ListItem",
 											"position": 2,
 											"name": `${t('tags.title')}: ${tag.name}`,
 											"item": `${publication.url}/tag/${tag.slug}`
@@ -235,10 +234,10 @@ export const getServerSideProps: any = async (ctx: any) => { // TODO: type needs
   const { data } = await urqlClient
     .query(
       TagInitialDocument,
-      { 
+      {
 		host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
-		slug: slug, 
-		first: INITIAL_LIMIT, after: null 
+		slug: slug,
+		first: INITIAL_LIMIT, after: null
 	},
       {
         fetchOptions: {
@@ -288,7 +287,6 @@ export const getServerSideProps: any = async (ctx: any) => { // TODO: type needs
       tag,
 	  slug: slug,
 	  currentMenuId: currentMenu,
-      ...(await serverSideTranslations(locale, ['common'])),
     },
   };
 }

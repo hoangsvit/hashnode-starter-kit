@@ -35,7 +35,6 @@ import Autolinker from "../../utils/autolinker";
 import DraftFloatingMenu from '../../components/draft-floating-menu';
 import { markdownToHtml } from '@starter-kit/utils/renderer/markdownToHtml';
 import TocRenderDesign from '../../components/toc-render-design';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { formatDate, formatDateTooltip } from '../../utils/dateFormatter';
 
 type Props = {
@@ -46,12 +45,12 @@ type Props = {
 export default function Post({ publication, draft }: Props) {
 	const router = useRouter();
 	const headerRef = useRef<HTMLElement | null>(null);
-	
+
 	// Setup dayjs locale based on current locale
 	const currentLocale = router.locale || 'en';
 	moment.extend(localizedFormat);
 	moment.locale(currentLocale);
-	
+
 	if (!draft) {
 		return <ErrorPage statusCode={404} />;
 	}
@@ -241,10 +240,9 @@ type Params = {
 	params: {
 		id: string;
 	};
-	locale?: string;
 };
 
-export async function getStaticProps({ params, locale }: Params) {
+export async function getStaticProps({ params }: Params) {
 	const [dataDraft, dataPublication] = await Promise.all([
 		request<DraftByIdQuery, DraftByIdQueryVariables>(
 			process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT,
@@ -261,12 +259,11 @@ export async function getStaticProps({ params, locale }: Params) {
 			},
 		),
 	]);
-	
+
 	const publication = dataPublication.publication;
 	const draft = dataDraft.draft;
 	return {
 		props: {
-			...(await serverSideTranslations(locale ?? 'en', ['common'])),
 			draft,
 			publication,
 		},
