@@ -5,7 +5,7 @@ import { twJoin } from 'tailwind-merge';
 import moment from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useCopyCodeButton from '../hooks/useCopyCodeButton';
 import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
@@ -30,7 +30,7 @@ const PublicationSubscribeStandOut = dynamic(
 );
 
 function PostView(props: any) {
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const router = useRouter();
   const currentLocale = router.locale || 'en';
   const postContentEle = useRef<HTMLDivElement>(null);
@@ -133,7 +133,7 @@ function PostView(props: any) {
                         <span className="mx-3 block font-bold text-slate-500">&middot;</span>
                         <p className="flex flex-row items-center text-slate-700 dark:text-slate-400">
                         <BookOpenSVG className="mr-2 h-5 w-5 fill-current opacity-75" />
-                        <span>{post.readTimeInMinutes} {t('common.readTime')}</span>
+                        <span>{post.readTimeInMinutes} {t('readTime')}</span>
                         </p>
                     </>
                     )}

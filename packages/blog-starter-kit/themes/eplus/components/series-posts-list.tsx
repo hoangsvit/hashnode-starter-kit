@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect, useRef } from 'react';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { SeriesFragment } from '../generated/graphql';
 import CustomImage from './custom-image';
@@ -15,7 +15,7 @@ interface SeriesPostsListProps {
 }
 
 export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProps) => {
-	const { t } = useTranslation('common');
+	const t = useTranslations('common');
 	const router = useRouter();
 	const currentLocale = router.locale || 'en';
 	const [isVisible, setIsVisible] = useState(false);
@@ -56,7 +56,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 		<div ref={containerRef} className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-700">
 			<div className="mb-6">
 				<h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-					{t('common.postsInSeries')}: {series.name}
+					{t('postsInSeries')}: {series.name}
 				</h2>
 				{series.description?.html && (
 					<div
@@ -113,7 +113,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 								{isCurrentPost && (
 									<div className="absolute top-2 right-2">
 										<span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-											{t('common.currentPost')}
+											{t('currentPost')}
 										</span>
 									</div>
 								)}
@@ -200,7 +200,7 @@ export const SeriesPostsList = ({ series, currentPostSlug }: SeriesPostsListProp
 						href={`/series/${series.slug}`}
 						className="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
 					>
-						{t('common.viewAllPostsInSeries')}
+						{t('viewAllPostsInSeries')}
 						<svg
 							className="ml-2 h-4 w-4"
 							fill="none"

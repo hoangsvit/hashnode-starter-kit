@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, MutableRefObject } from 'react';
 import dayjs from 'dayjs';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { twJoin, twMerge } from 'tailwind-merge';
 import { useQuery } from 'urql';
@@ -51,7 +51,7 @@ type Props = {
 const PublicationSearch = (props: Props) => {
   let timeoutHandler: any;
   const { publication, toggleSearchUI, triggerRef } = props;
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
 
   const [searchActive, setSearchActive] = useState(false);
   const [after, setAfter] = useState<string | null>(null);
@@ -243,7 +243,7 @@ const PublicationSearch = (props: Props) => {
                               <>
                                 <span className="mx-2 inline-block font-bold opacity-50">&middot;</span>
                                 <p className="inline-block">
-                                  {post.reactionCount} {post.reactionCount === 1 ? t('common.views').slice(0, -1) : t('common.views')}
+                                  {post.reactionCount} {post.reactionCount === 1 ? t('views').slice(0, -1) : t('views')}
                                 </p>
                               </>
                             )}
@@ -285,7 +285,7 @@ const PublicationSearch = (props: Props) => {
               {!fetching && !isResultEmpty && pageInfo?.hasNextPage && <Waypoint onEnter={fetchMore} topOffset="-5%" />}
               {isEndOfFeed && (
                 <div className="self-center py-6 text-center font-heading font-semibold text-slate-700 dark:text-slate-300">
-                  <p className="text-md">{t('common.reachedEnd')}</p>
+                  <p className="text-md">{t('reachedEnd')}</p>
                 </div>
               )}
             </div>

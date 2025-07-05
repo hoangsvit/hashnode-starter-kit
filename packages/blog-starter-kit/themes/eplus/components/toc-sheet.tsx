@@ -2,7 +2,7 @@ import { CloseSVG, ListSVG } from './icons/svgs';
 import { create } from 'zustand';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 import Button from './hn-button';
 import { useStickyNavElement } from './use-sticky-nav-scroll';
@@ -32,7 +32,7 @@ export const useTocModalStore = create<{
 
 function TocSheet({ list }: { readonly list: any[] }) {
   const { isVisible: isTocModalVisible, show: openTocModal, hide: closeModal } = useTocModalStore();
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
 
   const openTocModalWithEvent = async () => {
     openTocModal();
@@ -41,13 +41,13 @@ function TocSheet({ list }: { readonly list: any[] }) {
   return (
     <>
       <Tooltip.Provider>
-        <PostFloatingBarTooltipWrapper label={t('common.tableOfContents')}>
+        <PostFloatingBarTooltipWrapper label={t('tableOfContents')}>
           <Tooltip.Trigger asChild>
             <Button
               onClick={openTocModalWithEvent}
               variant="transparent"
               className="rounded-full p-2 hover:bg-slate-100 dark:hover:bg-slate-800"
-              aria-label={t('common.openTableOfContents')}
+              aria-label={t('openTableOfContents')}
             >
               <ListSVG className="h-4 w-4 fill-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
             </Button>
@@ -70,7 +70,7 @@ function TocSheet({ list }: { readonly list: any[] }) {
               <>
                 <div className="z-50 flex w-full items-center justify-between p-4 pb-0">
                   <DialogPrimitive.DialogTitle className="py-2 text-sm font-medium uppercase text-slate-500 dark:text-slate-400">
-                    {t('common.tableOfContents')}
+                    {t('tableOfContents')}
                   </DialogPrimitive.DialogTitle>
 
                   <DialogPrimitive.Close className="" asChild>
@@ -79,7 +79,7 @@ function TocSheet({ list }: { readonly list: any[] }) {
                         type="button"
                         className="p-1 text-sm text-slate-600 focus:outline-none focus-visible:ring focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-slate-300 dark:focus-visible:ring-offset-slate-800"
                         onClick={closeModal}
-                        aria-label={t('common.closeTableOfContents')}
+                        aria-label={t('closeTableOfContents')}
                         variant="transparent"
                       >
                         <CloseSVG className="h-5 w-5 fill-current" />

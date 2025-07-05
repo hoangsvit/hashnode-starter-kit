@@ -1,8 +1,9 @@
 import cuid from 'cuid';
 import Image from 'next/legacy/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 import CustomImage from './custom-image';
 import { BookOpenSVG, ChartMixedSVG, PinSVG } from './icons/svgs';
@@ -19,7 +20,8 @@ const FeaturedPosts = (props: {
   };
 }) => {
   const { publication, posts } = props;
-  const { t } = useTranslation('common');
+  const router = useRouter();
+  const t = useTranslations('common');
   const limit = 3;
   const padding = limit - posts.length;
 
@@ -28,7 +30,8 @@ const FeaturedPosts = (props: {
     if (nextData) {
       const { buildId } = JSON.parse(nextData.innerHTML);
       if (buildId) {
-        fetch(`/_next/data/${buildId}/${slug}.json?slug=${slug}`);
+        const locale = router.locale || 'en';
+        fetch(`/_next/data/${buildId}/${locale}/${slug}.json?slug=${slug}`);
       }
     }
   };
@@ -89,7 +92,7 @@ const FeaturedPosts = (props: {
               </h1>
               {isPinnedToBlog && (
                 <div className="blog-article-card-label mx-4 mb-1 flex flex-row items-center break-words font-heading font-medium leading-snug text-blue-600 dark:text-blue-500">
-                  <span>{t('common.pinned')}</span>
+                  <span>{t('pinned')}</span>
                   <PinSVG className="ml-1 h-6 w-6 stroke-current" />
                 </div>
               )}
@@ -131,27 +134,25 @@ const FeaturedPosts = (props: {
                           onFocus={() => undefined}
                         >
                           <BookOpenSVG className="mr-2 h-4 w-4 fill-current" />
-                          <span>{post.readTimeInMinutes} {t('common.readTime')}</span>
+                          <span>{post.readTimeInMinutes} {t('readTime')}</span>
                         </Link>
                       </p>
                     ) : null}
-                    {post.readTimeInMinutes && Number(post.views) > 0 && publication.features.viewCount.isEnabled && (
+                    {Boolean(post.readTimeInMinutes && Number(post.views) > 0 && publication.features.viewCount.isEnabled) && (
                       <p className="mx-2 font-bold text-slate-500 dark:text-slate-400">&middot;</p>
                     )}
                     {Number(post.views) > 0 && publication.features.viewCount.isEnabled && (
-                      <>
-                        <p className="text-slate-500 dark:text-slate-400">
-                          <Link
-                            href={postURL}
-                            className="flex flex-row items-center"
-                            onMouseOver={preload(post.slug)}
-                            onFocus={() => undefined}
-                          >
-                            <ChartMixedSVG className="mr-2 h-4 w-4 fill-current" />
-                            <span>{kFormatter(post.views)} {t('common.views')}</span>
-                          </Link>
-                        </p>
-                      </>
+                      <p className="text-slate-500 dark:text-slate-400">
+                        <Link
+                          href={postURL}
+                          className="flex flex-row items-center"
+                          onMouseOver={preload(post.slug)}
+                          onFocus={() => undefined}
+                        >
+                          <ChartMixedSVG className="mr-2 h-4 w-4 fill-current" />
+                          <span>{kFormatter(post.views)} {t('views')}</span>
+                        </Link>
+                      </p>
                     )}
                   </div>
                 </div>

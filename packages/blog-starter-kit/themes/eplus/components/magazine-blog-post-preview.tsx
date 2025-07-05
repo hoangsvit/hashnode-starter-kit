@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 import CustomImage from './custom-image';
 import { BookOpenSVG, ChartMixedSVG } from './icons/svgs';
@@ -14,7 +14,7 @@ function BlogPostPreview(props: {
   publication: Pick<PublicationFragment, 'features'>;
 }) {
   const { post, publication } = props;
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const postURL = `/${post.slug}`;
   const postCoverImageURL = post.coverImage?.url ?? getDefaultPostCoverImageUrl();
 
@@ -84,7 +84,7 @@ function BlogPostPreview(props: {
                     onFocus={() => undefined}
                   >
                     <BookOpenSVG className="mr-2 h-4 w-4 fill-current" />
-                    <span>{post.readTimeInMinutes} {t('common.readTime')}</span>
+                    <span>{post.readTimeInMinutes} {t('readTime')}</span>
                   </Link>
                 </p>
               </>
@@ -101,7 +101,7 @@ function BlogPostPreview(props: {
                   onFocus={() => undefined}
                 >
                   <ChartMixedSVG className="mr-2 h-4 w-4 fill-current" />
-                  <span>{kFormatter(post.views)} {t('common.views')}</span>
+                  <span>{kFormatter(post.views)} {t('views')}</span>
                 </Link>
               </p>
             ) : null}

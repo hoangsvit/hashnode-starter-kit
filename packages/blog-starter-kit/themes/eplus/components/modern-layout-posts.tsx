@@ -1,5 +1,5 @@
 import { Waypoint } from 'react-waypoint';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 
 import Button from './hn-button';
 import { ChevronDownSVG } from './icons/svgs';
@@ -20,7 +20,7 @@ const PublicationPosts = (props: {
   fetchedOnce: boolean;
 }) => {
   const { posts, publication, fetchMore, fetching, fetchedOnce } = props;
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const { edges, pageInfo } = posts;
 
   const slicedPosts = edges.map((edge) => edge.node).slice(3);
@@ -73,7 +73,7 @@ const PublicationPosts = (props: {
               className="w-full justify-center px-4 py-2 text-lg text-blue-600 dark:text-blue-500"
               onClick={fetchMore}
             >
-              <span>{t('common.loadMore')}</span>
+              <span>{t('loadMore')}</span>
               <ChevronDownSVG className="ml-3 h-5 w-5 fill-current" />
             </Button>
           </div>
@@ -82,7 +82,7 @@ const PublicationPosts = (props: {
       {fetchedOnce && pageInfo.hasNextPage ? <Waypoint onEnter={fetchMore} topOffset="-20%" /> : null}
       {fetchedOnce && !pageInfo.hasNextPage ? (
         <div className="blog-posts-end-card mt-10 px-16 py-8 text-center font-heading font-bold text-slate-700 dark:text-slate-300">
-          <p className="text-2xl">{t('common.reachedEnd')}</p>
+          <p className="text-2xl">{t('reachedEnd')}</p>
         </div>
       ) : null}
     </div>

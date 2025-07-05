@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 import { getHashId } from '../utils/commonUtils';
@@ -18,7 +18,7 @@ const PostComments = dynamic(() =>
 );
 
 function ResponseList(props: Props) {
-	const { t } = useTranslation('common');
+	const t = useTranslations('common');
 	const { currentFilter } = props;
 	const { post: _post } = useAppContext();
 	const post = _post as any;

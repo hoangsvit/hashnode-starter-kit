@@ -1,5 +1,5 @@
 import moment from 'dayjs';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -20,7 +20,7 @@ moment.extend(relativeTime);
 moment.extend(localizedFormat);
 
 export const PostComments = () => {
-	const { t } = useTranslation('common');
+	const t = useTranslations('common');
 	const router = useRouter();
 	const currentLocale = router.locale || 'en';
 	const { post } = useAppContext();
@@ -82,7 +82,7 @@ export const PostComments = () => {
 
 										{checkIfCommentByAuthor(comment) && (
 											<span className="block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium leading-normal text-green-700 dark:bg-green-800 dark:text-green-50">
-												{t('common.author')}
+												{t('author')}
 											</span>
 										)}
 									</p>

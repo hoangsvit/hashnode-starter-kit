@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
+import { useTranslations } from 'next-intl';
 import { ChevronDownSVG } from './icons/svgs';
 import { Fragment, useState, useCallback, useEffect } from 'react';
 
@@ -15,7 +15,7 @@ const languages = [
 
 export const LanguageSwitcher = () => {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const t = useTranslations('common');
   const [isOpen, setIsOpen] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
 
@@ -88,14 +88,14 @@ export const LanguageSwitcher = () => {
             ? 'opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-800'
             : 'text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800'
         }`}
-        aria-label={t('common.switchLanguage')}
+        aria-label={t('switchLanguage')}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
         {isChanging ? (
           <>
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900 dark:border-gray-100"></div>
-            <span className="hidden sm:inline">{t('common.switchLanguage')}...</span>
+            <span className="hidden sm:inline">{t('switchLanguage')}...</span>
           </>
         ) : (
           <>
