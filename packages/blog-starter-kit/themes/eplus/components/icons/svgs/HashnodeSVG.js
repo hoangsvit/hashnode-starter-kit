@@ -1,9 +1,7 @@
 import React from 'react';
 
-export default class HashnodeSVG extends React.Component {
-	render() {
-		return (
-			<svg className={this.props.className} fill="none" viewBox="0 0 24 24">
+const HashnodeSVG = ({ className, ...props }) => (
+<svg className={className} fill="none" viewBox="0 0 24 24">
 				<path
 					stroke="currentColor"
 					strokeWidth="1.5"
@@ -15,6 +13,6 @@ export default class HashnodeSVG extends React.Component {
 					d="M15.107 12a3.107 3.107 0 1 1-6.214 0 3.107 3.107 0 0 1 6.214 0Z"
 				/>
 			</svg>
-		);
-	}
-}
+);
+
+export default HashnodeSVG;

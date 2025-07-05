@@ -1,9 +1,7 @@
 import React from 'react';
 
-export default class NoCommentsLightSVG extends React.Component {
-  render() {
-    return (
-      <svg className={this.props.className} viewBox="0 0 147 106" xmlns="http://www.w3.org/2000/svg">
+const NoCommentsLightSVG = ({ className, ...props }) => (
+<svg className={className} viewBox="0 0 147 106" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M56.7686 0.219971V17.032"
           stroke="#94A3B8"
@@ -168,6 +166,6 @@ export default class NoCommentsLightSVG extends React.Component {
           strokeLinejoin="round"
         />
       </svg>
-    );
-  }
-}
+);
+
+export default NoCommentsLightSVG;
