@@ -51,6 +51,8 @@
 		"likeThisPost": "J'aime cet article",
 		"writeComment": "Écrire un commentaire",
 		"openComments": "Ouvrir les commentaires",
+		"openLikers": "Ouvrir la liste des j'aime",
+		"likers": "Personnes qui aiment",
 		"comment": "commentaire",
 		"comments": "commentaires",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
@@ -97,6 +99,16 @@
 	"comments": {
 		"title": "Commentaires",
 		"noComments": "Pas encore de commentaires"
+	},
+	"likers": {
+		"title": "J'aime",
+		"noLikers": "Pas encore de j'aime",
+		"reactions": "réactions",
+		"reaction": "réaction"
+	},
+	"responses": {
+		"comments": "Commentaires",
+		"likers": "J'aime"
 	},
 	"share": {
 		"shareThisArticle": "Partager cet article",

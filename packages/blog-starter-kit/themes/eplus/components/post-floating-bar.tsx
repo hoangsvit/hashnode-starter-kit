@@ -15,6 +15,7 @@ function PostFloatingMenu(props: {
   readonly shareText: string;
   readonly showPaymentModal?: () => void;
   readonly openComments?: () => void;
+  readonly openLikers?: () => void;
   readonly list: readonly any[];
 }) {
   const {
@@ -22,6 +23,7 @@ function PostFloatingMenu(props: {
     shareText,
     showPaymentModal,
     openComments,
+    openLikers,
     list,
   } = props;
 
@@ -140,6 +142,28 @@ function PostFloatingMenu(props: {
                   </span>
                   {post?.responseCount > 0 && (
                     <span className="ml-0.5 pr-2">{kFormatter(post.responseCount + (post.replyCount || 0))}</span>
+                  )}
+                </button>
+              </div>
+            )}
+          </PostFloatingBarTooltipWrapper>
+
+          <Separator className="mx-2 h-5" />
+
+          <PostFloatingBarTooltipWrapper label={t('common.openLikers')}>
+            {post?.likedBy && (
+              <div>
+                <button
+                  type="button"
+                  onClick={openLikers}
+                  aria-label={`${t('common.openLikers')}: ${post.likedBy.totalDocuments}`}
+                  className="outline-none! flex cursor-pointer items-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  <span className="rounded-full p-2">
+                    <LoveSVG className="h-4 w-4 stroke-current text-slate-800 dark:text-slate-50 sm:h-5 sm:w-5 2xl:h-6 2xl:w-6" />
+                  </span>
+                  {post.likedBy.totalDocuments > 0 && (
+                    <span className="ml-0.5 pr-2">{kFormatter(post.likedBy.totalDocuments)}</span>
                   )}
                 </button>
               </div>

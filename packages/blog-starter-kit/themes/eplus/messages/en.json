@@ -51,6 +51,8 @@
 		"likeThisPost": "Like this post",
 		"writeComment": "Write a comment",
 		"openComments": "Open comments",
+		"openLikers": "Open likers",
+		"likers": "Likers",
 		"comment": "comment",
 		"comments": "comments",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
@@ -97,6 +99,16 @@
 	"comments": {
 		"title": "Comments",
 		"noComments": "No comments yet"
+	},
+	"likers": {
+		"title": "Likers",
+		"noLikers": "No likes yet",
+		"reactions": "reactions",
+		"reaction": "reaction"
+	},
+	"responses": {
+		"comments": "Comments",
+		"likers": "Likers"
 	},
 	"share": {
 		"shareThisArticle": "Share this article",

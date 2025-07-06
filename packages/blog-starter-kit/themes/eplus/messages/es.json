@@ -51,6 +51,8 @@
 		"likeThisPost": "Me gusta esta publicación",
 		"writeComment": "Escribir comentario",
 		"openComments": "Abrir comentarios",
+		"openLikers": "Abrir lista de me gusta",
+		"likers": "Personas que dieron me gusta",
 		"comment": "comentario",
 		"comments": "comentarios",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
@@ -97,6 +99,16 @@
 	"comments": {
 		"title": "Comentarios",
 		"noComments": "Aún no hay comentarios"
+	},
+	"likers": {
+		"title": "Me gusta",
+		"noLikers": "Aún no hay me gusta",
+		"reactions": "reacciones",
+		"reaction": "reacción"
+	},
+	"responses": {
+		"comments": "Comentarios",
+		"likers": "Me gusta"
 	},
 	"share": {
 		"shareThisArticle": "Compartir este artículo",

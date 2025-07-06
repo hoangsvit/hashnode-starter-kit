@@ -51,6 +51,8 @@
 		"likeThisPost": "इस पोस्ट को पसंद करें",
 		"writeComment": "टिप्पणी लिखें",
 		"openComments": "टिप्पणियां खोलें",
+		"openLikers": "पसंद करने वालों की सूची खोलें",
+		"likers": "पसंद करने वाले",
 		"comment": "टिप्पणी",
 		"comments": "टिप्पणियां",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
@@ -97,6 +99,16 @@
 	"comments": {
 		"title": "टिप्पणियां",
 		"noComments": "अभी तक कोई टिप्पणी नहीं"
+	},
+	"likers": {
+		"title": "पसंद करने वाले",
+		"noLikers": "अभी तक कोई लाइक नहीं",
+		"reactions": "प्रतिक्रियाएं",
+		"reaction": "प्रतिक्रिया"
+	},
+	"responses": {
+		"comments": "टिप्पणियां",
+		"likers": "पसंद करने वाले"
 	},
 	"share": {
 		"shareThisArticle": "इस आर्टिकल को शेयर करें",

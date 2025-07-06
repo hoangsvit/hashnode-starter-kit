@@ -4,35 +4,50 @@ import { useEffect, useState } from 'react';
 
 import { getHashId } from '../utils/commonUtils';
 import { useAppContext } from './contexts/appContext';
-import { Button } from './custom-button';
-import { ExternalArrowSVG, HashnodeSVG } from './icons';
 import { NoCommentsLightSVG } from './icons/svgs';
 
 interface Props {
-	isPublicationPost: boolean;
-	currentFilter: string;
+	readonly isPublicationPost: boolean;
+	readonly currentFilter: string;
+	readonly initialTab?: ResponseTab;
 }
 
 const PostComments = dynamic(() =>
 	import('../components/post-comments').then((mod) => mod.PostComments),
 );
 
+const PostLikers = dynamic(() =>
+	import('../components/post-likers').then((mod) => mod.PostLikers),
+);
+
+type ResponseTab = 'comments' | 'likers';
+
 function ResponseList(props: Props) {
 	const t = useTranslations();
-	const { currentFilter } = props;
+	const { currentFilter, initialTab = 'comments' } = props;
 	const { post: _post } = useAppContext();
 	const post = _post as any;
-	const [isLoading, setLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const [initialResponsesLoaded, setInitialResponsesLoaded] = useState(false);
 	const hashId = getHashId();
+
+	const hasComments = post.responseCount > 0;
+	const hasLikers = post.likedBy?.totalDocuments > 0;
+
+	const [activeTab, setActiveTab] = useState<ResponseTab>(initialTab);
+
+	// Update tab when initialTab changes (when popup opens)
+	useEffect(() => {
+		setActiveTab(initialTab);
+	}, [initialTab]);
 
 	useEffect(() => {
 		(async () => {
 			if (post.responseCount === 0) {
 				return;
 			}
-			setLoading(true);
-			setLoading(false);
+			setIsLoading(true);
+			setIsLoading(false);
 			if (!initialResponsesLoaded) {
 				setInitialResponsesLoaded(true);
 			}
@@ -46,34 +61,67 @@ function ResponseList(props: Props) {
 			}
 			el.scrollIntoView();
 		})();
-	}, [currentFilter]);
+	}, [currentFilter, hashId, initialResponsesLoaded, post.responseCount]);
 
-	if (post.responseCount === 0) {
-		const discussionUrl = `https://hashnode.com/discussions/post/${post.id}`;
-		return (
-			<div className="flex h-3/5 flex-col items-center justify-center text-sm text-slate-500 dark:text-slate-400">
-				<Button
-					as="a"
-					href={discussionUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					icon={<HashnodeSVG className="h-5 w-5 stroke-current" />}
-					label={t('userMenu.addComment')}
-					secondaryIcon={<ExternalArrowSVG className="h-4 w-4 stroke-current" />}
-				/>
-				<NoCommentsLightSVG className="h-40 w-40" />
-				<p>{t('comments.noComments')}</p>
-			</div>
-		);
-	}
+	// Luôn hiển thị popup với tabs
 
 	return (
-		<div className="mx-2 pb-10 lg:mx-0" id="comments-list">
-			<PostComments />
+		<div className="mx-2 pb-10 lg:mx-0" id="responses-list">
+			{/* Tabs */}
+			<div className="flex border-b border-slate-200 dark:border-slate-700">
+				<button
+					onClick={() => setActiveTab('comments')}
+					className={`px-4 py-2 text-sm font-medium ${
+						activeTab === 'comments'
+							? 'border-b-2 border-blue-500 text-blue-600 dark:text-blue-400'
+							: 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+					}`}
+				>
+					{t('responses.comments')} {hasComments && `(${post.responseCount + post.replyCount})`}
+				</button>
+				<button
+					onClick={() => setActiveTab('likers')}
+					className={`px-4 py-2 text-sm font-medium ${
+						activeTab === 'likers'
+							? 'border-b-2 border-blue-500 text-blue-600 dark:text-blue-400'
+							: 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+					}`}
+				>
+					{t('responses.likers')} {hasLikers && `(${post.likedBy?.totalDocuments ?? 0})`}
+				</button>
+			</div>
+
+			{/* Tab Content */}
+			{activeTab === 'comments' && (
+				<div>
+					{hasComments ? (
+						<PostComments />
+					) : (
+						<div className="flex h-3/5 flex-col items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+							<NoCommentsLightSVG className="h-40 w-40" />
+							<p>{t('comments.noComments')}</p>
+						</div>
+					)}
+				</div>
+			)}
+
+			{activeTab === 'likers' && (
+				<div>
+					{hasLikers ? (
+						<PostLikers />
+					) : (
+						<div className="flex h-3/5 flex-col items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+							<NoCommentsLightSVG className="h-40 w-40" />
+							<p>{t('likers.noLikers')}</p>
+						</div>
+					)}
+				</div>
+			)}
+
 			{isLoading &&
 				[...Array(3).keys()].map((val: number) => (
 					<div
-						key={`comments-list-loader-${val}`}
+						key={`responses-list-loader-${val}`}
 						className="border-b-1/2 animate-pulse dark:border-slate-700"
 					>
 						<div className="px-4 py-5">

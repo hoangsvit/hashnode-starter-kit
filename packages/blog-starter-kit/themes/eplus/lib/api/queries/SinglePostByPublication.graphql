@@ -157,6 +157,7 @@ fragment PostFull on Post {
 	likedBy(first: 25) {
 		totalDocuments
 		edges {
+			reactionCount
 			node {
 				id
 				name
