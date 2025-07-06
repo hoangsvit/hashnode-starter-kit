@@ -18,7 +18,7 @@ const PostComments = dynamic(() =>
 );
 
 function ResponseList(props: Props) {
-	const t = useTranslations('common');
+	const t = useTranslations();
 	const { currentFilter } = props;
 	const { post: _post } = useAppContext();
 	const post = _post as any;
