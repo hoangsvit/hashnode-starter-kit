@@ -3,7 +3,7 @@ import { useAuth } from './useAuth';
 
 interface LikeCommentInput {
 	commentId: string;
-	likesCount: number; // This should be 1-10, not the total count
+	likesCount: number; // The new total count (current + 1)
 	currentLikeCount?: number; // Pass current count for mock response
 }
 
@@ -19,6 +19,9 @@ export const useLikeComment = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const { user } = useAuth();
+
+	// Set like limit per user
+	const LIKE_LIMIT = 10; // Maximum likes per user per comment
 
 	const likeComment = useCallback(
 		async (input: LikeCommentInput): Promise<LikeCommentResponse | null> => {
@@ -47,7 +50,7 @@ export const useLikeComment = () => {
 				const variables = {
 					input: {
 						commentId: input.commentId,
-						likesCount: input.likesCount,
+						// likesCount: input.likesCount, // Temporarily disabled
 					},
 				};
 
@@ -90,8 +93,8 @@ export const useLikeComment = () => {
 				return {
 					comment: {
 						id: input.commentId,
-						totalReactions: (input.currentLikeCount || 0) + 1, // Increment the current count
-						myTotalReactions: 1, // User has now liked it
+						totalReactions: (input.currentLikeCount || 0) + input.likesCount, // Increment by likesCount
+						myTotalReactions: 0, // Keep button enabled for more likes
 					},
 				};
 			} finally {
@@ -102,28 +105,38 @@ export const useLikeComment = () => {
 	);
 
 	const toggleLike = useCallback(
-		async (commentId: string, currentlyLiked: boolean, currentLikeCount: number) => {
-			// Only allow liking, not unliking
-			if (currentlyLiked) {
+		async (
+			commentId: string,
+			currentlyLiked: boolean,
+			currentLikeCount: number,
+			userLikeCount: number = 0,
+		) => {
+			// Check if user has reached the like limit
+			const LIKE_LIMIT = 10; // Maximum likes per user per comment
+			if (userLikeCount >= LIKE_LIMIT) {
 				return {
 					success: false,
 					newLikeCount: currentLikeCount,
-					isLiked: currentlyLiked,
+					isLiked: true, // Lock the button
+					reachedLimit: true,
 				};
 			}
 
-			// Send a fixed value of 1 for the like (not the total count)
+			// Allow liking multiple times, just show loading state
+			// Send the new total count (current + 1)
 			const result = await likeComment({
 				commentId,
-				likesCount: 1, // Fixed value for adding a like
+				likesCount: currentLikeCount + 1, // Total count + 1
 				currentLikeCount, // Pass current count for mock response
 			});
 
 			if (result) {
+				const newUserLikeCount = userLikeCount + 1;
 				return {
 					success: true,
-					newLikeCount: result.comment.totalReactions,
-					isLiked: result.comment.myTotalReactions > 0,
+					newLikeCount: result.comment.totalReactions, // Use actual count from response
+					isLiked: newUserLikeCount >= LIKE_LIMIT, // Lock if reached limit
+					reachedLimit: newUserLikeCount >= LIKE_LIMIT,
 				};
 			}
 
