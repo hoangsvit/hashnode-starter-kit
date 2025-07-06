@@ -98,7 +98,8 @@
 	},
 	"comments": {
 		"title": "评论",
-		"noComments": "还没有评论"
+		"noComments": "还没有评论",
+		"commentsDisabled": "作者已禁用此文章的评论功能"
 	},
 	"likers": {
 		"title": "点赞者",
