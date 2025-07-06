@@ -87,42 +87,35 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
 
   return (      <div className="w-full">
       <div className="flex flex-row flex-nowrap items-center gap-4">
-        {totalReplies > 0 && (
-          <div className="flex items-center">
-            <Button
-              variant="transparent"
-              onClick={toggleAllReplies}
-              className="flex flex-row items-center rounded-full p-1 text-sm font-medium text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:text-slate-200 dark:hover:bg-slate-800 dark:focus:ring-offset-slate-900 transition-colors duration-200"
-              aria-label={hideShowAllBox ? "Hide replies" : "Show replies"}
-            >
-              <CommentSVGV2 className="h-5 w-5 stroke-current" />
-            </Button>
-            <button
-              type="button"
-              onClick={toggleAllReplies}
-              className={twJoin(
-                'p-1 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:text-slate-300 dark:focus:ring-offset-slate-900 transition-colors duration-200',
-                hideShowAllBox && 'hover:underline',
-              )}
-              aria-label={hideShowAllBox ? "Hide replies" : `Show ${totalReplies} replies`}
-            >
-              <span>{!hideShowAllBox ? totalReplies : 'Hide replies'}</span>
-            </button>
-          </div>
-        )}
-
-        {/* Reply Button - Always show, but disabled if not authenticated */}
+        {/* Combined Button - Show replies count and Reply action */}
         <button
           type="button"
           onClick={user ? handleReplyClick : undefined}
           disabled={!user}
-          className="flex items-center gap-1 px-2 py-1 text-sm text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-slate-300"
+          className="flex items-center gap-1 px-2 py-1 text-sm text-slate-600 hover:text-slate-800 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-slate-100 dark:hover:bg-slate-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 rounded-md disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-slate-300"
           aria-label={user ? (t('comments.reply') || 'Reply to comment') : (t('auth.loginToReply') || 'Login to reply')}
           title={!user ? (t('auth.loginToReply') || 'Login to reply') : undefined}
         >
           <CommentSVGV2 className="h-4 w-4 stroke-current" />
-          <span className="font-medium">{t('comments.reply') || 'Reply'}</span>
+          <span className="font-medium">
+            {totalReplies > 0 ? `${totalReplies} • ` : ''}
+            {t('comments.reply') || 'Reply'}
+          </span>
         </button>
+
+        {/* Show/Hide all replies button - only show when there are multiple replies */}
+        {totalReplies > 1 && (
+          <button
+            type="button"
+            onClick={toggleAllReplies}
+            className="text-sm text-blue-500 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors duration-200"
+            aria-label={hideShowAllBox ? "Hide replies" : `Show all ${totalReplies} replies`}
+          >
+            <span className="font-medium">
+              {hideShowAllBox ? 'Hide replies' : `Show all ${totalReplies} replies`}
+            </span>
+          </button>
+        )}
       </div>
 
       {totalReplies > 0 && (
