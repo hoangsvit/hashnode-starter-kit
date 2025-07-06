@@ -48,10 +48,18 @@
 		"loadMore": "Charger plus",
 		"reachedEnd": "Vous avez atteint la fin ! 👋",
 		"noPostsImage": "Aucun article",
+		"likeThisPost": "J'aime cet article",
+		"writeComment": "Écrire un commentaire",
+		"openComments": "Ouvrir les commentaires",
+		"openLikers": "Ouvrir la liste des j'aime",
+		"likers": "Personnes qui aiment",
+		"comment": "commentaire",
+		"comments": "commentaires",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "Articles dans la série",
 		"currentPost": "Article actuel",
-		"viewAllPostsInSeries": "Voir tous les articles de la série"
+		"viewAllPostsInSeries": "Voir tous les articles de la série",
+		"cancel": "Annuler"
 	},
 	"navigation": {
 		"home": "Accueil",
@@ -91,7 +99,40 @@
 	},
 	"comments": {
 		"title": "Commentaires",
-		"noComments": "Pas encore de commentaires"
+		"noComments": "Pas encore de commentaires",
+		"commentsDisabled": "L'auteur a désactivé les commentaires pour cet article",
+		"writeComment": "Écrire un commentaire...",
+		"writeReply": "Écrire une réponse...",
+		"markdownSupported": "Markdown pris en charge",
+		"postComment": "Publier le commentaire",
+		"posting": "Publication en cours...",
+		"loginRequired": "Connexion requise",
+		"loginToComment": "Vous devez vous connecter pour commenter",
+		"login": "Se connecter",
+		"checkingAuth": "Vérification de l'authentification...",
+		"reply": "Répondre",
+		"replies": "réponses",
+		"hideReplies": "Masquer les réponses",
+		"showAllReplies": "Afficher toutes",
+		"showMoreReplies": "Afficher plus de réponses",
+		"markdownTip": "Utilisez Ctrl+B pour gras, Ctrl+I pour italique, Ctrl+K pour liens",
+		"nothingToPreview": "Rien à prévisualiser",
+		"write": "Écrire",
+		"preview": "Aperçu",
+		"cancel": "Annuler",
+		"like": "J'aime",
+		"unlike": "Je n'aime plus",
+		"alreadyLiked": "Déjà aimé"
+	},
+	"likers": {
+		"title": "J'aime",
+		"noLikers": "Pas encore de j'aime",
+		"reactions": "réactions",
+		"reaction": "réaction"
+	},
+	"responses": {
+		"comments": "Commentaires",
+		"likers": "J'aime"
 	},
 	"share": {
 		"shareThisArticle": "Partager cet article",
@@ -152,6 +193,9 @@
 		"noHeadings": "Aucun titre dans l'",
 		"article": "article",
 		"draft": "brouillon"
+	},
+	"auth": {
+		"loginToReply": "Se connecter pour répondre"
 	},
 	"userMenu": {
 		"writeNewPost": "Écrire un nouveau post",

@@ -9,7 +9,7 @@ import { Layout } from '../components/layout';
 import HnButton from '../components/hn-button';
 import { AppProvider } from '../components/contexts/appContext';
 import { UserAvatar } from '../components/user-avatar';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../hooks/useAuthOptimized';
 import {
 	PublicationFragment,
 	PublicationByHostDocument,

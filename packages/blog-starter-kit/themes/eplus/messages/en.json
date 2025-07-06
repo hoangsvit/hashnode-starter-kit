@@ -48,10 +48,18 @@
 		"loadMore": "Load more",
 		"reachedEnd": "You've reached the end! 👋",
 		"noPostsImage": "No posts",
+		"likeThisPost": "Like this post",
+		"writeComment": "Write a comment",
+		"openComments": "Open comments",
+		"openLikers": "Open likers",
+		"likers": "Likers",
+		"comment": "comment",
+		"comments": "comments",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "Posts in series",
 		"currentPost": "Current Post",
-		"viewAllPostsInSeries": "View all posts in series"
+		"viewAllPostsInSeries": "View all posts in series",
+		"cancel": "Cancel"
 	},
 	"navigation": {
 		"home": "Home",
@@ -91,7 +99,40 @@
 	},
 	"comments": {
 		"title": "Comments",
-		"noComments": "No comments yet"
+		"noComments": "No comments yet",
+		"commentsDisabled": "The comments have been disabled by the author for this article",
+		"writeComment": "Write a comment...",
+		"writeReply": "Write a reply...",
+		"markdownSupported": "Markdown is supported",
+		"postComment": "Post Comment",
+		"posting": "Posting...",
+		"loginRequired": "Login Required",
+		"loginToComment": "You need to login to post a comment",
+		"login": "Login",
+		"checkingAuth": "Checking authentication...",
+		"reply": "Reply",
+		"replies": "replies",
+		"hideReplies": "Hide replies",
+		"showAllReplies": "Show all",
+		"showMoreReplies": "Show more replies",
+		"markdownTip": "Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+K for links",
+		"nothingToPreview": "Nothing to preview",
+		"write": "Write",
+		"preview": "Preview",
+		"cancel": "Cancel",
+		"like": "Like",
+		"unlike": "Unlike",
+		"alreadyLiked": "Already liked"
+	},
+	"likers": {
+		"title": "Likers",
+		"noLikers": "No likes yet",
+		"reactions": "reactions",
+		"reaction": "reaction"
+	},
+	"responses": {
+		"comments": "Comments",
+		"likers": "Likers"
 	},
 	"share": {
 		"shareThisArticle": "Share this article",
@@ -152,6 +193,9 @@
 		"noHeadings": "No headings in the",
 		"article": "article",
 		"draft": "draft"
+	},
+	"auth": {
+		"loginToReply": "Login to reply"
 	},
 	"userMenu": {
 		"writeNewPost": "Write new post",

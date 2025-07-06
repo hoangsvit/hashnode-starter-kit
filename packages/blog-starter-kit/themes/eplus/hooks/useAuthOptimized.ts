@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-	isAuthenticatedByCookie,
-	needsAuthVerification,
-	setAuthFlag,
 	clearAuthFlags,
 	createUserDataHash,
 	getCachedUserDataHash,
-	setCachedUserDataHash
+	isAuthenticatedByCookie,
+	needsAuthVerification,
+	setAuthFlag,
+	setCachedUserDataHash,
 } from '../utils/auth-cookies';
 
 interface User {
@@ -38,63 +38,62 @@ interface UseAuthReturn {
 	checkAuth: () => Promise<void>;
 }
 
-export const useAuth = (): UseAuthReturn => {
+// Constants
+const CHECK_INTERVAL = 30000; // 30 seconds minimum between checks
+const VERIFY_INTERVAL = 30 * 60 * 1000; // 30 minutes for server verification
+
+/**
+ * Optimized authentication hook with cookie-based fast checks
+ */
+export const useAuthOptimized = (): UseAuthReturn => {
 	const [user, setUser] = useState<User | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const isCheckingAuth = useRef(false);
 	const lastCheckTime = useRef(0);
 	const isInitializedRef = useRef(false);
-	const CHECK_INTERVAL = 30000; // 30 seconds minimum between checks
-	const VERIFY_INTERVAL = 30 * 60 * 1000; // 30 minutes for server verification
 
-	const getStoredUser = useCallback(() => {
-		if (typeof window !== 'undefined') {
-			try {
-				const storedUser = localStorage.getItem('hashnode_user');
-				return storedUser ? JSON.parse(storedUser) : null;
-			} catch (error) {
-				console.error('Failed to get stored user:', error);
-				return null;
-			}
-		}
-		return null;
-	}, []);
+	// Helper functions
+	const getStoredUser = useCallback((): User | null => {
+		if (typeof window === 'undefined') return null;
 
-	const storeUser = useCallback((userData: User) => {
-		if (typeof window !== 'undefined') {
-			try {
-				localStorage.setItem('hashnode_user', JSON.stringify(userData));
-				// Set authentication flag and user data hash
-				setAuthFlag(true);
-				setCachedUserDataHash(createUserDataHash(userData));
-			} catch (error) {
-				console.error('Failed to store user info:', error);
-			}
+		try {
+			const storedUser = localStorage.getItem('hashnode_user');
+			return storedUser ? JSON.parse(storedUser) : null;
+		} catch (error) {
+			console.error('Failed to get stored user:', error);
+			return null;
 		}
 	}, []);
 
-	const clearStoredUser = useCallback(() => {
-		if (typeof window !== 'undefined') {
-			localStorage.removeItem('hashnode_user');
-			localStorage.removeItem('hashnode_token');
-			clearAuthFlags();
+	const storeUser = useCallback((userData: User): void => {
+		if (typeof window === 'undefined') return;
+
+		try {
+			localStorage.setItem('hashnode_user', JSON.stringify(userData));
+			// Store token after successful login
+			setAuthFlag(true);
+			setCachedUserDataHash(createUserDataHash(userData));
+		} catch (error) {
+			console.error('Failed to store user info:', error);
 		}
+	}, []);
+
+	const clearStoredUser = useCallback((): void => {
+		if (typeof window === 'undefined') return;
+
+		localStorage.removeItem('hashnode_user');
+		localStorage.removeItem('hashnode_token');
+		clearAuthFlags();
 	}, []);
 
 	/**
 	 * Fast authentication check using cookie flags
 	 */
-	const isQuickAuthenticated = useCallback(() => {
-		// Check if user is authenticated according to cookie flags
-		if (!isAuthenticatedByCookie()) {
-			return false;
-		}
+	const isQuickAuthenticated = useCallback((): boolean => {
+		if (!isAuthenticatedByCookie()) return false;
 
-		// Check if we have stored user data
 		const storedUser = getStoredUser();
-		if (!storedUser) {
-			return false;
-		}
+		if (!storedUser) return false;
 
 		// Verify user data integrity using hash
 		const currentHash = createUserDataHash(storedUser);
@@ -108,23 +107,61 @@ export const useAuth = (): UseAuthReturn => {
 		return true;
 	}, [getStoredUser]);
 
-	const checkAuth = useCallback(async () => {
-		// Prevent multiple simultaneous auth checks
+	/**
+	 * Check if auth verification should be throttled
+	 */
+	const shouldSkipAuthCheck = useCallback((): boolean => {
 		if (isCheckingAuth.current) {
 			console.log('🔄 Auth check already in progress, skipping...');
-			return;
+			return true;
 		}
 
-		// Throttle auth checks to avoid too frequent calls
 		const now = Date.now();
 		if (now - lastCheckTime.current < CHECK_INTERVAL) {
 			console.log('🕒 Auth check throttled, skipping...');
-			return;
+			return true;
 		}
+
+		return false;
+	}, []);
+
+	/**
+	 * Perform server-side authentication verification
+	 */
+	const verifyWithServer = useCallback(async (): Promise<{ success: boolean; user?: User }> => {
+		console.log('🌐 Making auth API call for server verification...');
+
+		try {
+			const response = await fetch('/api/check-auth', {
+				method: 'GET',
+				credentials: 'include',
+			});
+
+			if (response.ok) {
+				const result = await response.json();
+				if (result.authenticated && result.user) {
+					console.log('✅ Server auth check successful');
+					return { success: true, user: result.user };
+				}
+			}
+
+			console.log('❌ Server auth check failed - HTTP error:', response.status);
+			return { success: false };
+		} catch (error) {
+			console.error('❌ Server auth check failed with error:', error);
+			return { success: false };
+		}
+	}, []);
+
+	/**
+	 * Handle authentication check with optimized flow
+	 */
+	const checkAuth = useCallback(async (): Promise<void> => {
+		if (shouldSkipAuthCheck()) return;
 
 		console.log('🔍 Starting auth check...');
 		isCheckingAuth.current = true;
-		lastCheckTime.current = now;
+		lastCheckTime.current = Date.now();
 
 		try {
 			// First, check cookie flags for quick validation
@@ -147,32 +184,14 @@ export const useAuth = (): UseAuthReturn => {
 				}
 			}
 
-			console.log('🌐 Making auth API call for server verification...');
-			const response = await fetch('/api/check-auth', {
-				method: 'GET',
-				credentials: 'include',
-			});
+			// Perform server verification
+			const verificationResult = await verifyWithServer();
 
-			if (response.ok) {
-				const result = await response.json();
-				if (result.authenticated && result.user) {
-					console.log('✅ Server auth check successful');
-					setUser(result.user);
-					storeUser(result.user);
-				} else {
-					console.log('❌ Server auth check failed - invalid response');
-					setUser(null);
-					clearStoredUser();
-				}
-			} else {
-				console.log('❌ Server auth check failed - HTTP error:', response.status);
-				setUser(null);
-				clearStoredUser();
-			}
-		} catch (error) {
-			console.error('❌ Auth check failed with error:', error);
-			// Don't clear user on network errors if we have valid cookie flags
-			if (isAuthenticatedByCookie()) {
+			if (verificationResult.success && verificationResult.user) {
+				setUser(verificationResult.user);
+				storeUser(verificationResult.user);
+			} else if (isAuthenticatedByCookie()) {
+				// Handle verification failure - keep cached user if cookie exists
 				console.log('🔄 Network error but auth cookie exists, keeping stored user');
 				const storedUser = getStoredUser();
 				if (storedUser) {
@@ -186,8 +205,18 @@ export const useAuth = (): UseAuthReturn => {
 			setIsLoading(false);
 			isCheckingAuth.current = false;
 		}
-	}, [storeUser, clearStoredUser, getStoredUser, isQuickAuthenticated, VERIFY_INTERVAL]);
+	}, [
+		shouldSkipAuthCheck,
+		isQuickAuthenticated,
+		verifyWithServer,
+		getStoredUser,
+		storeUser,
+		clearStoredUser,
+	]);
 
+	/**
+	 * Login function
+	 */
 	const login = useCallback(
 		async (token: string): Promise<{ success: boolean; error?: string }> => {
 			try {
@@ -223,7 +252,10 @@ export const useAuth = (): UseAuthReturn => {
 		[storeUser],
 	);
 
-	const logout = useCallback(async () => {
+	/**
+	 * Logout function
+	 */
+	const logout = useCallback(async (): Promise<void> => {
 		try {
 			await fetch('/api/logout', {
 				method: 'POST',
@@ -237,9 +269,11 @@ export const useAuth = (): UseAuthReturn => {
 		}
 	}, [clearStoredUser]);
 
+	/**
+	 * Initialize authentication on mount
+	 */
 	useEffect(() => {
-		// Use a ref to prevent multiple initialization calls
-		const initAuth = async () => {
+		const initAuth = async (): Promise<void> => {
 			if (isInitializedRef.current) return;
 			isInitializedRef.current = true;
 
@@ -270,7 +304,7 @@ export const useAuth = (): UseAuthReturn => {
 		return () => {
 			isInitializedRef.current = false;
 		};
-	}, [checkAuth, getStoredUser, isQuickAuthenticated, VERIFY_INTERVAL]); // Include dependencies
+	}, [checkAuth, getStoredUser, isQuickAuthenticated]);
 
 	return {
 		user,
@@ -281,3 +315,6 @@ export const useAuth = (): UseAuthReturn => {
 		checkAuth,
 	};
 };
+
+// Export as default for backward compatibility
+export const useAuth = useAuthOptimized;

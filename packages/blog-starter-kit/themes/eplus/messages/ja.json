@@ -48,10 +48,18 @@
 		"loadMore": "さらに読み込む",
 		"reachedEnd": "最後まで読みました！👋",
 		"noPostsImage": "投稿なし",
+		"likeThisPost": "この投稿にいいね",
+		"writeComment": "コメントを書く",
+		"openComments": "コメントを開く",
+		"openLikers": "いいねリストを開く",
+		"likers": "いいねした人",
+		"comment": "コメント",
+		"comments": "コメント",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "シリーズの投稿",
 		"currentPost": "現在の投稿",
-		"viewAllPostsInSeries": "シリーズの全投稿を表示"
+		"viewAllPostsInSeries": "シリーズの全投稿を表示",
+		"cancel": "キャンセル"
 	},
 	"navigation": {
 		"home": "ホーム",
@@ -91,7 +99,40 @@
 	},
 	"comments": {
 		"title": "コメント",
-		"noComments": "まだコメントがありません"
+		"noComments": "まだコメントがありません",
+		"commentsDisabled": "著者がこの記事のコメントを無効にしました",
+		"writeComment": "コメントを書く...",
+		"writeReply": "返信を書く...",
+		"markdownSupported": "Markdown対応",
+		"postComment": "コメントを投稿",
+		"posting": "投稿中...",
+		"loginRequired": "ログインが必要",
+		"loginToComment": "コメントするにはログインが必要です",
+		"login": "ログイン",
+		"checkingAuth": "認証を確認中...",
+		"reply": "返信",
+		"replies": "返信",
+		"hideReplies": "返信を隠す",
+		"showAllReplies": "すべて表示",
+		"showMoreReplies": "もっと返信を表示",
+		"markdownTip": "Ctrl+B で太字、Ctrl+I で斜体、Ctrl+K でリンク",
+		"nothingToPreview": "プレビューする内容がありません",
+		"write": "書く",
+		"preview": "プレビュー",
+		"cancel": "キャンセル",
+		"like": "いいね",
+		"unlike": "いいね取消",
+		"alreadyLiked": "いいね済み"
+	},
+	"likers": {
+		"title": "いいね",
+		"noLikers": "まだいいねがありません",
+		"reactions": "リアクション",
+		"reaction": "リアクション"
+	},
+	"responses": {
+		"comments": "コメント",
+		"likers": "いいね"
 	},
 	"share": {
 		"shareThisArticle": "この記事を共有",
@@ -152,6 +193,9 @@
 		"noHeadings": "見出しがありません",
 		"article": "記事",
 		"draft": "下書き"
+	},
+	"auth": {
+		"loginToReply": "返信するにはログイン"
 	},
 	"userMenu": {
 		"writeNewPost": "新しい投稿を書く",

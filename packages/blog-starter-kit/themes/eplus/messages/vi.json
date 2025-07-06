@@ -48,10 +48,18 @@
 		"loadMore": "Tải thêm",
 		"reachedEnd": "Bạn đã đến cuối rồi! 👋",
 		"noPostsImage": "Không có bài viết",
+		"likeThisPost": "Thích bài viết này",
+		"writeComment": "Viết bình luận",
+		"openComments": "Mở bình luận",
+		"openLikers": "Mở danh sách người thích",
+		"likers": "Người thích",
+		"comment": "bình luận",
+		"comments": "bình luận",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "Bài viết trong chuỗi",
 		"currentPost": "Bài hiện tại",
-		"viewAllPostsInSeries": "Xem tất cả bài viết trong chuỗi"
+		"viewAllPostsInSeries": "Xem tất cả bài viết trong chuỗi",
+		"cancel": "Hủy"
 	},
 	"navigation": {
 		"home": "Trang chủ",
@@ -91,7 +99,40 @@
 	},
 	"comments": {
 		"title": "Bình luận",
-		"noComments": "Chưa có bình luận nào"
+		"noComments": "Chưa có bình luận nào",
+		"commentsDisabled": "Tác giả đã tắt bình luận cho bài viết này",
+		"writeComment": "Viết bình luận...",
+		"writeReply": "Viết phản hồi...",
+		"markdownSupported": "Hỗ trợ Markdown",
+		"postComment": "Đăng bình luận",
+		"posting": "Đang đăng...",
+		"loginRequired": "Cần đăng nhập",
+		"loginToComment": "Bạn cần đăng nhập để viết bình luận",
+		"login": "Đăng nhập",
+		"checkingAuth": "Đang kiểm tra xác thực...",
+		"reply": "Trả lời",
+		"replies": "phản hồi",
+		"hideReplies": "Ẩn phản hồi",
+		"showAllReplies": "Hiển thị tất cả",
+		"showMoreReplies": "Hiển thị thêm phản hồi",
+		"markdownTip": "Dùng Ctrl+B cho in đậm, Ctrl+I cho in nghiêng, Ctrl+K cho liên kết",
+		"nothingToPreview": "Không có gì để xem trước",
+		"write": "Viết",
+		"preview": "Xem trước",
+		"cancel": "Hủy",
+		"like": "Thích",
+		"unlike": "Bỏ thích",
+		"alreadyLiked": "Đã thích"
+	},
+	"likers": {
+		"title": "Người thích",
+		"noLikers": "Chưa có ai thích",
+		"reactions": "phản ứng",
+		"reaction": "phản ứng"
+	},
+	"responses": {
+		"comments": "Bình luận",
+		"likers": "Người thích"
 	},
 	"share": {
 		"shareThisArticle": "Chia sẻ bài viết này",
@@ -152,6 +193,9 @@
 		"noHeadings": "Không có tiêu đề trong",
 		"article": "bài viết",
 		"draft": "bản nháp"
+	},
+	"auth": {
+		"loginToReply": "Đăng nhập để trả lời"
 	},
 	"userMenu": {
 		"writeNewPost": "Viết bài mới",

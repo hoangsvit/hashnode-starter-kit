@@ -48,10 +48,18 @@
 		"loadMore": "Cargar más",
 		"reachedEnd": "¡Has llegado al final! 👋",
 		"noPostsImage": "Sin publicaciones",
+		"likeThisPost": "Me gusta esta publicación",
+		"writeComment": "Escribir comentario",
+		"openComments": "Abrir comentarios",
+		"openLikers": "Abrir lista de me gusta",
+		"likers": "Personas que dieron me gusta",
+		"comment": "comentario",
+		"comments": "comentarios",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "Publicaciones en la serie",
 		"currentPost": "Publicación actual",
-		"viewAllPostsInSeries": "Ver todas las publicaciones de la serie"
+		"viewAllPostsInSeries": "Ver todas las publicaciones de la serie",
+		"cancel": "Cancelar"
 	},
 	"navigation": {
 		"home": "Inicio",
@@ -91,7 +99,40 @@
 	},
 	"comments": {
 		"title": "Comentarios",
-		"noComments": "Aún no hay comentarios"
+		"noComments": "Aún no hay comentarios",
+		"commentsDisabled": "El autor ha deshabilitado los comentarios para este artículo",
+		"writeComment": "Escribir un comentario...",
+		"writeReply": "Escribir una respuesta...",
+		"markdownSupported": "Soporta Markdown",
+		"postComment": "Publicar comentario",
+		"posting": "Publicando...",
+		"loginRequired": "Inicio de sesión requerido",
+		"loginToComment": "Necesitas iniciar sesión para comentar",
+		"login": "Iniciar sesión",
+		"checkingAuth": "Verificando autenticación...",
+		"reply": "Responder",
+		"replies": "respuestas",
+		"hideReplies": "Ocultar respuestas",
+		"showAllReplies": "Mostrar todas",
+		"showMoreReplies": "Mostrar más respuestas",
+		"markdownTip": "Usa Ctrl+B para negrita, Ctrl+I para cursiva, Ctrl+K para enlaces",
+		"nothingToPreview": "No hay nada que previsualizar",
+		"write": "Escribir",
+		"preview": "Vista previa",
+		"cancel": "Cancelar",
+		"like": "Me gusta",
+		"unlike": "Quitar me gusta",
+		"alreadyLiked": "Ya me gusta"
+	},
+	"likers": {
+		"title": "Me gusta",
+		"noLikers": "Aún no hay me gusta",
+		"reactions": "reacciones",
+		"reaction": "reacción"
+	},
+	"responses": {
+		"comments": "Comentarios",
+		"likers": "Me gusta"
 	},
 	"share": {
 		"shareThisArticle": "Compartir este artículo",
@@ -152,6 +193,9 @@
 		"noHeadings": "No hay encabezados en el",
 		"article": "artículo",
 		"draft": "borrador"
+	},
+	"auth": {
+		"loginToReply": "Iniciar sesión para responder"
 	},
 	"userMenu": {
 		"writeNewPost": "Escribir nueva publicación",
