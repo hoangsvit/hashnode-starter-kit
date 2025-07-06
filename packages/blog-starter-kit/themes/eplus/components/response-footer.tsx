@@ -1,14 +1,16 @@
 import { useState, useCallback, memo } from 'react';
 import { twJoin } from 'tailwind-merge';
+import { useTranslations } from 'next-intl';
 
 import ResponseReplyCard from './response-reply-card';
 import Button from './hn-button';
-import { Response } from '../types';
 import { CommentSVGV2 } from './icons/svgs';
+import { ReplyInput } from './reply-input';
+import { useAuth } from '../hooks/useAuth';
 
 interface Props {
   isPublicationPost: boolean;
-  response: Response;
+  response: any; // Accept any comment type (could be GraphQL Comment or old Response type)
   draftId?: string;
   isValidating?: boolean;
 }
@@ -17,12 +19,18 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
   const { isPublicationPost, response, draftId, isValidating = false } = props;
   const [repliesToShow, setRepliesToShow] = useState(1);
   const [hideShowAllBox, setHideShowAllBox] = useState(false);
-  
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  const [newReplies, setNewReplies] = useState<any[]>([]);
+  const { user } = useAuth();
+  const t = useTranslations();
+
+  const totalReplies = response.replies.edges.length + newReplies.length;
+
   const showAllReplies = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    setRepliesToShow(response.replies.edges.length);
+    setRepliesToShow(totalReplies);
     setHideShowAllBox(true);
-  }, [response.replies.edges.length]);
+  }, [totalReplies]);
 
   const hideAllReplies = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -31,16 +39,39 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
   }, []);
 
   const toggleAllReplies = useCallback((e: React.MouseEvent) => {
-    if (response.replies.edges.length > 1) {
+    if (totalReplies > 1) {
       if (!hideShowAllBox) {
         showAllReplies(e);
       } else {
         hideAllReplies(e);
       }
     }
-  }, [response.replies.edges.length, hideShowAllBox, showAllReplies, hideAllReplies]);
+  }, [totalReplies, hideShowAllBox, showAllReplies, hideAllReplies]);
 
-  const replies = response.replies.edges.slice(-1 * repliesToShow).map((reply: any) => (
+  const handleReplyClick = useCallback(() => {
+    setShowReplyInput(!showReplyInput);
+  }, [showReplyInput]);
+
+  const handleReplyAdded = useCallback((newReply?: any) => {
+    setShowReplyInput(false);
+    if (newReply) {
+      // Add the new reply to local state
+      setNewReplies(prev => [...prev, newReply]);
+      // Show all replies including the new one
+      setRepliesToShow(totalReplies + 1);
+      setHideShowAllBox(false);
+    }
+  }, [totalReplies]);
+
+  const handleReplyCancel = useCallback(() => {
+    setShowReplyInput(false);
+  }, []);
+
+  // Combine existing replies with new replies
+  const allReplies = [...response.replies.edges, ...newReplies.map(reply => ({ node: reply }))];
+  const repliesToDisplay = allReplies.slice(-1 * repliesToShow);
+
+  const replies = repliesToDisplay.map((reply: any) => (
     <div key={reply.node.id.toString()}>
       <div className="my-1.5 ml-3.5 h-6 w-px border dark:border-slate-600" />
       <ResponseReplyCard
@@ -54,10 +85,9 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
     </div>
   ));
 
-  return (
-    <div className="w-full">
+  return (      <div className="w-full">
       <div className="flex flex-row flex-nowrap items-center gap-4">
-        {response.replies.edges.length > 0 && (
+        {totalReplies > 0 && (
           <div className="flex items-center">
             <Button
               variant="transparent"
@@ -74,17 +104,31 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
                 'p-1 text-sm text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:text-slate-300 dark:focus:ring-offset-slate-900 transition-colors duration-200',
                 hideShowAllBox && 'hover:underline',
               )}
-              aria-label={hideShowAllBox ? "Hide replies" : `Show ${response.replies.edges.length} replies`}
+              aria-label={hideShowAllBox ? "Hide replies" : `Show ${totalReplies} replies`}
             >
-              <span>{!hideShowAllBox ? response.replies.edges.length : 'Hide replies'}</span>
+              <span>{!hideShowAllBox ? totalReplies : 'Hide replies'}</span>
             </button>
           </div>
         )}
+
+        {/* Reply Button - Always show, but disabled if not authenticated */}
+        <button
+          type="button"
+          onClick={user ? handleReplyClick : undefined}
+          disabled={!user}
+          className="flex items-center gap-1 px-2 py-1 text-sm text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-slate-600 dark:disabled:hover:text-slate-300"
+          aria-label={user ? (t('comments.reply') || 'Reply to comment') : (t('auth.loginToReply') || 'Login to reply')}
+          title={!user ? (t('auth.loginToReply') || 'Login to reply') : undefined}
+        >
+          <CommentSVGV2 className="h-4 w-4 stroke-current" />
+          <span className="font-medium">{t('comments.reply') || 'Reply'}</span>
+        </button>
       </div>
-      {response.replies.edges.length > 0 && (
+
+      {totalReplies > 0 && (
         <div className="ml-3 min-w-0">
           {replies}
-          {response.replies.edges.length > 1 && !hideShowAllBox && (
+          {totalReplies > 1 && !hideShowAllBox && (
             <button
               type="button"
               onClick={showAllReplies}
@@ -95,6 +139,15 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
             </button>
           )}
         </div>
+      )}
+
+      {/* Reply Input */}
+      {showReplyInput && (
+        <ReplyInput
+          commentId={response.id}
+          onReplyAdded={handleReplyAdded}
+          onCancel={handleReplyCancel}
+        />
       )}
     </div>
   );
