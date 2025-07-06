@@ -20,7 +20,7 @@ moment.extend(relativeTime);
 moment.extend(localizedFormat);
 
 export const PostComments = () => {
-	const t = useTranslations('common');
+	const t = useTranslations();
 	const router = useRouter();
 	const currentLocale = router.locale || 'en';
 	const { post } = useAppContext();
@@ -82,7 +82,7 @@ export const PostComments = () => {
 
 										{checkIfCommentByAuthor(comment) && (
 											<span className="block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium leading-normal text-green-700 dark:bg-green-800 dark:text-green-50">
-												{t('author')}
+												{t('common.author')}
 											</span>
 										)}
 									</p>

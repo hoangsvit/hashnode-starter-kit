@@ -58,7 +58,8 @@
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "सीरीज में पोस्ट",
 		"currentPost": "मौजूदा पोस्ट",
-		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें"
+		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें",
+		"cancel": "रद्द करें"
 	},
 	"navigation": {
 		"home": "होम",
@@ -99,7 +100,15 @@
 	"comments": {
 		"title": "टिप्पणियां",
 		"noComments": "अभी तक कोई टिप्पणी नहीं",
-		"commentsDisabled": "लेखक ने इस लेख के लिए टिप्पणियां बंद कर दी हैं"
+		"commentsDisabled": "लेखक ने इस लेख के लिए टिप्पणियां बंद कर दी हैं",
+		"writeComment": "टिप्पणी लिखें...",
+		"markdownSupported": "Markdown समर्थित",
+		"postComment": "टिप्पणी पोस्ट करें",
+		"posting": "पोस्ट हो रहा है...",
+		"loginRequired": "लॉगिन आवश्यक",
+		"loginToComment": "टिप्पणी करने के लिए आपको लॉगिन करना होगा",
+		"login": "लॉगिन",
+		"checkingAuth": "प्रमाणीकरण जांच रहे हैं..."
 	},
 	"likers": {
 		"title": "पसंद करने वाले",
