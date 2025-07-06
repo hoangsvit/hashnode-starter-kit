@@ -6,11 +6,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	try {
-		// Clear HTTP-only cookie by setting it with expired date
+		// Clear all authentication cookies by setting them with expired date
 		const isProduction = process.env.NODE_ENV === 'production';
-		const clearCookie = `hashnode_token=; HttpOnly; SameSite=Strict; Max-Age=0; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT${isProduction ? '; Secure' : ''}`;
+		const expiredDate = 'Thu, 01 Jan 1970 00:00:00 GMT';
 
-		res.setHeader('Set-Cookie', clearCookie);
+		const clearCookies = [
+			// Clear HTTP-only token cookie
+			`hashnode_token=; HttpOnly; SameSite=Strict; Max-Age=0; Path=/; Expires=${expiredDate}${isProduction ? '; Secure' : ''}`,
+			// Clear client-accessible authentication flag
+			`is_authenticated=; SameSite=Strict; Max-Age=0; Path=/; Expires=${expiredDate}${isProduction ? '; Secure' : ''}`,
+			// Clear last authentication check timestamp
+			`last_auth_check=; SameSite=Strict; Max-Age=0; Path=/; Expires=${expiredDate}${isProduction ? '; Secure' : ''}`,
+		];
+
+		res.setHeader('Set-Cookie', clearCookies);
 
 		return res.status(200).json({
 			success: true,

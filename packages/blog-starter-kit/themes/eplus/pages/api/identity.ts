@@ -156,13 +156,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
 		// Set HTTP-only cookie with Personal Access Token (2 years expiration)
 		// Max-Age: 63072000 seconds = 2 years (365 * 24 * 60 * 60 * 2)
-		const cookieValue = `hashnode_token=${personalAccessToken}; HttpOnly; SameSite=Strict; Max-Age=63072000; Path=/`;
-
-		// Only set Secure flag in production (HTTPS)
 		const isProduction = process.env.NODE_ENV === 'production';
-		const secureCookie = isProduction ? cookieValue + '; Secure' : cookieValue;
+		const maxAge = 63072000;
+		const expires = new Date(Date.now() + maxAge * 1000).toUTCString();
 
-		res.setHeader('Set-Cookie', secureCookie);
+		const cookies = [
+			// HTTP-only token cookie
+			`hashnode_token=${personalAccessToken}; HttpOnly; SameSite=Strict; Max-Age=${maxAge}; Path=/` + (isProduction ? '; Secure' : ''),
+			// Client-accessible authentication flag
+			`is_authenticated=true; SameSite=Strict; Max-Age=${maxAge}; Path=/` + (isProduction ? '; Secure' : ''),
+			// Last authentication check timestamp
+			`last_auth_check=${Date.now()}; SameSite=Strict; Max-Age=${maxAge}; Path=/` + (isProduction ? '; Secure' : ''),
+		];
+
+		res.setHeader('Set-Cookie', cookies);
 
 		return res.status(200).json({
 			success: true,
