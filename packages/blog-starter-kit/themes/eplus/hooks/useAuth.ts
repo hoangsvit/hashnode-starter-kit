@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface User {
 	id: string;
@@ -32,6 +32,10 @@ interface UseAuthReturn {
 export const useAuth = (): UseAuthReturn => {
 	const [user, setUser] = useState<User | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
+	const isCheckingAuth = useRef(false);
+	const lastCheckTime = useRef(0);
+	const isInitializedRef = useRef(false);
+	const CHECK_INTERVAL = 30000; // 30 seconds minimum between checks
 
 	const getStoredUser = useCallback(() => {
 		if (typeof window !== 'undefined') {
@@ -76,17 +80,37 @@ export const useAuth = (): UseAuthReturn => {
 	}, []);
 
 	const checkAuth = useCallback(async () => {
+		// Prevent multiple simultaneous auth checks
+		if (isCheckingAuth.current) {
+			console.log('🔄 Auth check already in progress, skipping...');
+			return;
+		}
+
+		// Throttle auth checks to avoid too frequent calls
+		const now = Date.now();
+		if (now - lastCheckTime.current < CHECK_INTERVAL) {
+			console.log('🕒 Auth check throttled, skipping...');
+			return;
+		}
+
+		console.log('🔍 Starting auth check...');
+		isCheckingAuth.current = true;
+		lastCheckTime.current = now;
+
 		try {
-			const token = getStoredToken();
+			// Get token directly to avoid dependency issues
+			const token = typeof window !== 'undefined' ? localStorage.getItem('hashnode_token') : null;
 
 			// Only check authentication if token exists
 			if (!token) {
+				console.log('❌ No token found, clearing user state');
 				setUser(null);
 				clearStoredUser();
 				setIsLoading(false);
 				return;
 			}
 
+			console.log('🌐 Making auth API call...');
 			const response = await fetch('/api/check-auth', {
 				method: 'GET',
 				credentials: 'include',
@@ -95,24 +119,28 @@ export const useAuth = (): UseAuthReturn => {
 			if (response.ok) {
 				const result = await response.json();
 				if (result.authenticated && result.user) {
+					console.log('✅ Auth check successful');
 					setUser(result.user);
 					storeUser(result.user);
 				} else {
+					console.log('❌ Auth check failed - invalid response');
 					setUser(null);
 					clearStoredUser();
 				}
 			} else {
+				console.log('❌ Auth check failed - HTTP error:', response.status);
 				setUser(null);
 				clearStoredUser();
 			}
 		} catch (error) {
-			console.error('Auth check failed:', error);
+			console.error('❌ Auth check failed with error:', error);
 			setUser(null);
 			clearStoredUser();
 		} finally {
 			setIsLoading(false);
+			isCheckingAuth.current = false;
 		}
-	}, [storeUser, clearStoredUser, getStoredToken]);
+	}, [storeUser, clearStoredUser]);
 
 	const login = useCallback(
 		async (token: string): Promise<{ success: boolean; error?: string }> => {
@@ -164,24 +192,41 @@ export const useAuth = (): UseAuthReturn => {
 	}, [clearStoredUser]);
 
 	useEffect(() => {
-		// First check localStorage for immediate UI update
-		const storedUser = getStoredUser();
-		const storedToken = getStoredToken();
+		// Use a ref to prevent multiple initialization calls
+		const initAuth = async () => {
+			if (isInitializedRef.current) return;
+			isInitializedRef.current = true;
 
-		if (storedUser && storedToken) {
-			setUser(storedUser);
-			setIsLoading(false);
-			// Still verify with server in background
-			checkAuth();
-		} else if (storedToken) {
-			// Has token but no stored user, check authentication
-			checkAuth();
-		} else {
-			// No token means no authentication, don't call checkAuth
-			setUser(null);
-			setIsLoading(false);
-		}
-	}, [getStoredUser, getStoredToken, checkAuth]);
+			// Get stored data once
+			const storedUser = getStoredUser();
+			const storedToken = getStoredToken();
+
+			if (storedUser && storedToken) {
+				// Use cached user data immediately for better UX
+				setUser(storedUser);
+				setIsLoading(false);
+				// Only verify with server if enough time has passed
+				const now = Date.now();
+				if (now - lastCheckTime.current > CHECK_INTERVAL) {
+					checkAuth().catch(console.error);
+				}
+			} else if (storedToken) {
+				// Has token but no stored user, check authentication
+				await checkAuth();
+			} else {
+				// No token means no authentication
+				setUser(null);
+				setIsLoading(false);
+			}
+		};
+
+		initAuth();
+
+		// Cleanup function
+		return () => {
+			isInitializedRef.current = false;
+		};
+	}, [checkAuth, getStoredUser, getStoredToken]); // Include dependencies but they're stable
 
 	return {
 		user,

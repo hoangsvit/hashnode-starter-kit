@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useAddComment } from '../hooks/useAddComment';
 import { useAppContext } from './contexts/appContext';
-import { useAuth } from '../hooks/useAuth';
+import { useAuthContext } from '../contexts/AuthContext';
 import { MarkdownToolbar } from './markdown-toolbar';
 
 interface CommentInputProps {
@@ -16,7 +16,7 @@ export const CommentInput = ({ onCommentAdded }: CommentInputProps) => {
   const [showPreview, setShowPreview] = useState(false);
   const { addComment, isSubmitting, error } = useAddComment();
   const { post } = useAppContext();
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuthContext();
   const router = useRouter();
   const t = useTranslations();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
