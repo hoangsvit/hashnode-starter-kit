@@ -102,6 +102,7 @@
 		"noComments": "No comments yet",
 		"commentsDisabled": "The comments have been disabled by the author for this article",
 		"writeComment": "Write a comment...",
+		"writeReply": "Write a reply...",
 		"markdownSupported": "Markdown is supported",
 		"postComment": "Post Comment",
 		"posting": "Posting...",
@@ -113,7 +114,12 @@
 		"replies": "replies",
 		"hideReplies": "Hide replies",
 		"showAllReplies": "Show all",
-		"showMoreReplies": "Show more replies"
+		"showMoreReplies": "Show more replies",
+		"markdownTip": "Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+K for links",
+		"nothingToPreview": "Nothing to preview",
+		"write": "Write",
+		"preview": "Preview",
+		"cancel": "Cancel"
 	},
 	"likers": {
 		"title": "Likers",

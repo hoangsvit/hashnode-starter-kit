@@ -102,6 +102,7 @@
 		"noComments": "Pas encore de commentaires",
 		"commentsDisabled": "L'auteur a désactivé les commentaires pour cet article",
 		"writeComment": "Écrire un commentaire...",
+		"writeReply": "Écrire une réponse...",
 		"markdownSupported": "Markdown pris en charge",
 		"postComment": "Publier le commentaire",
 		"posting": "Publication en cours...",
@@ -113,7 +114,12 @@
 		"replies": "réponses",
 		"hideReplies": "Masquer les réponses",
 		"showAllReplies": "Afficher toutes",
-		"showMoreReplies": "Afficher plus de réponses"
+		"showMoreReplies": "Afficher plus de réponses",
+		"markdownTip": "Utilisez Ctrl+B pour gras, Ctrl+I pour italique, Ctrl+K pour liens",
+		"nothingToPreview": "Rien à prévisualiser",
+		"write": "Écrire",
+		"preview": "Aperçu",
+		"cancel": "Annuler"
 	},
 	"likers": {
 		"title": "J'aime",

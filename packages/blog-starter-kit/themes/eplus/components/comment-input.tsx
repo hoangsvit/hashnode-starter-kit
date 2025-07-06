@@ -15,6 +15,8 @@ interface MarkdownToolbarProps {
 }
 
 const MarkdownToolbar = ({ onFormatText, disabled = false }: MarkdownToolbarProps) => {
+  const t = useTranslations();
+
   const tools = [
     { type: 'bold', icon: 'B', title: 'Bold (Ctrl+B)', className: 'font-bold' },
     { type: 'italic', icon: 'I', title: 'Italic (Ctrl+I)', className: 'italic' },
@@ -45,7 +47,7 @@ const MarkdownToolbar = ({ onFormatText, disabled = false }: MarkdownToolbarProp
       ))}
       <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
       <div className="text-xs text-gray-500 dark:text-gray-400">
-        Markdown supported
+        {t('comments.markdownSupported') || 'Markdown supported'}
       </div>
     </div>
   );
@@ -176,7 +178,7 @@ export const CommentInput = ({ onCommentAdded }: CommentInputProps) => {
     if (!comment.trim()) {
       return (
         <div className="p-3 text-sm text-gray-500 dark:text-gray-400 italic">
-          Nothing to preview
+          {t('comments.nothingToPreview') || 'Nothing to preview'}
         </div>
       );
     }
@@ -251,7 +253,7 @@ export const CommentInput = ({ onCommentAdded }: CommentInputProps) => {
 
             {isExpanded && (
               <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 border-b border-slate-300 dark:border-slate-600 bg-gray-50 dark:bg-gray-800/50">
-                Tip: Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+K for links
+                {t('comments.markdownTip') || 'Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+K for links'}
               </div>
             )}
 
@@ -266,7 +268,7 @@ export const CommentInput = ({ onCommentAdded }: CommentInputProps) => {
                       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
-                  Write
+                  {t('comments.write') || 'Write'}
                 </button>
                 <button
                   type="button"
@@ -277,7 +279,7 @@ export const CommentInput = ({ onCommentAdded }: CommentInputProps) => {
                       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
-                  Preview
+                  {t('comments.preview') || 'Preview'}
                 </button>
               </div>
             )}
@@ -319,14 +321,14 @@ export const CommentInput = ({ onCommentAdded }: CommentInputProps) => {
                 disabled={isSubmitting}
                 className="rounded-md px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
               >
-                {t('common.cancel')}
+                {t('comments.cancel') || 'Cancel'}
               </button>
               <button
                 type="submit"
                 disabled={!comment.trim() || isSubmitting}
                 className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-blue-500 dark:hover:bg-blue-600"
               >
-                {isSubmitting ? t('common.posting') : t('common.postComment')}
+                {isSubmitting ? (t('comments.posting') || 'Posting...') : (t('comments.postComment') || 'Post Comment')}
               </button>
             </div>
           </div>
