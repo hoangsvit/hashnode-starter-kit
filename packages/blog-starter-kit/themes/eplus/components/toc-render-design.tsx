@@ -120,10 +120,6 @@ function TocTree(props: TocTreeProps) {
 
 	if (numItemsCompleted > 0) {
 		nodes = list.filter((node) => {
-			if (node.parentId && node.level === 3 && node.id === currentItem.parentId) {
-				// eslint-disable-next-line no-param-reassign
-				node.hasChildren = true;
-			}
 			return node.parentId === currentItem.id;
 		});
 	} else {
@@ -148,6 +144,12 @@ function TocTree(props: TocTreeProps) {
 			nodes = [...temp, ...nodes];
 		}
 	}
+
+	// Calculate hasChildren for each node based on the full list
+	nodes = nodes.map((node) => ({
+		...node,
+		hasChildren: list.some((item) => item.parentId === node.id)
+	}));
 
 	if (!nodes || !nodes.length) {
 		return null;
