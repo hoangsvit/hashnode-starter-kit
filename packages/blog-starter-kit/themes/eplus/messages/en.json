@@ -108,7 +108,12 @@
 		"loginRequired": "Login Required",
 		"loginToComment": "You need to login to post a comment",
 		"login": "Login",
-		"checkingAuth": "Checking authentication..."
+		"checkingAuth": "Checking authentication...",
+		"reply": "Reply",
+		"replies": "replies",
+		"hideReplies": "Hide replies",
+		"showAllReplies": "Show all",
+		"showMoreReplies": "Show more replies"
 	},
 	"likers": {
 		"title": "Likers",
@@ -179,6 +184,9 @@
 		"noHeadings": "No headings in the",
 		"article": "article",
 		"draft": "draft"
+	},
+	"auth": {
+		"loginToReply": "Login to reply"
 	},
 	"userMenu": {
 		"writeNewPost": "Write new post",

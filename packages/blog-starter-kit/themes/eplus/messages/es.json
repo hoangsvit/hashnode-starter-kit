@@ -108,7 +108,12 @@
 		"loginRequired": "Inicio de sesión requerido",
 		"loginToComment": "Necesitas iniciar sesión para comentar",
 		"login": "Iniciar sesión",
-		"checkingAuth": "Verificando autenticación..."
+		"checkingAuth": "Verificando autenticación...",
+		"reply": "Responder",
+		"replies": "respuestas",
+		"hideReplies": "Ocultar respuestas",
+		"showAllReplies": "Mostrar todas",
+		"showMoreReplies": "Mostrar más respuestas"
 	},
 	"likers": {
 		"title": "Me gusta",
@@ -179,6 +184,9 @@
 		"noHeadings": "No hay encabezados en el",
 		"article": "artículo",
 		"draft": "borrador"
+	},
+	"auth": {
+		"loginToReply": "Iniciar sesión para responder"
 	},
 	"userMenu": {
 		"writeNewPost": "Escribir nueva publicación",

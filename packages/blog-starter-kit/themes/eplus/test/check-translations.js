@@ -4,23 +4,63 @@ const path = require('path');
 const localesDir = 'messages';
 const locales = fs.readdirSync(localesDir).map(file => file.replace('.json', ''));
 
+// Helper function to get all nested keys from an object
+function getAllKeys(obj, prefix = '') {
+  let keys = [];
+  for (const key in obj) {
+    const fullKey = prefix ? `${prefix}.${key}` : key;
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      keys = keys.concat(getAllKeys(obj[key], fullKey));
+    } else {
+      keys.push(fullKey);
+    }
+  }
+  return keys;
+}
+
+// Helper function to count keys in each section
+function countSectionKeys(content) {
+  const sections = {};
+  for (const section in content) {
+    if (typeof content[section] === 'object' && content[section] !== null) {
+      sections[section] = Object.keys(content[section]).length;
+    }
+  }
+  return sections;
+}
+
 console.log('Checking translation files...\n');
 
+// Get English content as reference
+const enPath = path.join(localesDir, 'en.json');
+const enContent = JSON.parse(fs.readFileSync(enPath, 'utf8'));
+const enSections = Object.keys(enContent);
+const enAllKeys = getAllKeys(enContent);
+
+console.log(`English (reference): ${enAllKeys.length} total keys`);
+enSections.forEach(section => {
+  const sectionKeys = Object.keys(enContent[section]).length;
+  console.log(`  ${section}: ${sectionKeys} keys`);
+});
+
+console.log('\nOther languages:');
 locales.forEach(locale => {
+  if (locale === 'en') return;
+
   const filePath = path.join(localesDir, `${locale}.json`);
   if (fs.existsSync(filePath)) {
     const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    console.log(`${locale}: ${Object.keys(content.common).length} keys in common, ${Object.keys(content.userMenu).length} keys in userMenu`);
+    const allKeys = getAllKeys(content);
+    const sections = countSectionKeys(content);
+
+    console.log(`${locale}: ${allKeys.length} total keys`);
+    Object.keys(sections).forEach(section => {
+      console.log(`  ${section}: ${sections[section]} keys`);
+    });
   }
 });
 
-// Check for missing keys
-const enPath = path.join(localesDir, 'en.json');
-const enContent = JSON.parse(fs.readFileSync(enPath, 'utf8'));
-const enCommonKeys = Object.keys(enContent.common);
-const enUserMenuKeys = Object.keys(enContent.userMenu);
-
-console.log('\nChecking for missing keys...\n');
+console.log('\nChecking for missing keys and sections...\n');
 
 locales.forEach(locale => {
   if (locale === 'en') return;
@@ -28,22 +68,46 @@ locales.forEach(locale => {
   const filePath = path.join(localesDir, `${locale}.json`);
   if (fs.existsSync(filePath)) {
     const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const commonKeys = Object.keys(content.common);
-    const userMenuKeys = Object.keys(content.userMenu);
+    const allKeys = getAllKeys(content);
+    const missingSections = [];
+    const missingKeys = [];
 
-    const missingCommonKeys = enCommonKeys.filter(key => !commonKeys.includes(key));
-    const missingUserMenuKeys = enUserMenuKeys.filter(key => !userMenuKeys.includes(key));
+    // Check for missing sections
+    enSections.forEach(section => {
+      if (!content[section]) {
+        missingSections.push(section);
+      } else {
+        // Check for missing keys in each section
+        const enSectionKeys = Object.keys(enContent[section]);
+        const localeSectionKeys = Object.keys(content[section]);
+        const missingSectionKeys = enSectionKeys.filter(key => !localeSectionKeys.includes(key));
 
-    if (missingCommonKeys.length > 0 || missingUserMenuKeys.length > 0) {
-      console.log(`${locale} missing keys:`);
-      if (missingCommonKeys.length > 0) {
-        console.log(`  Common: ${missingCommonKeys.join(', ')}`);
+        if (missingSectionKeys.length > 0) {
+          missingSectionKeys.forEach(key => {
+            missingKeys.push(`${section}.${key}`);
+          });
+        }
       }
-      if (missingUserMenuKeys.length > 0) {
-        console.log(`  UserMenu: ${missingUserMenuKeys.join(', ')}`);
+    });
+
+    // Check for extra keys that don't exist in English
+    const extraKeys = allKeys.filter(key => !enAllKeys.includes(key));
+
+    if (missingSections.length > 0 || missingKeys.length > 0 || extraKeys.length > 0) {
+      console.log(`${locale}:`);
+      if (missingSections.length > 0) {
+        console.log(`  ❌ Missing sections: ${missingSections.join(', ')}`);
+      }
+      if (missingKeys.length > 0) {
+        console.log(`  ❌ Missing keys: ${missingKeys.join(', ')}`);
+      }
+      if (extraKeys.length > 0) {
+        console.log(`  ⚠️  Extra keys: ${extraKeys.join(', ')}`);
       }
     } else {
-      console.log(`${locale}: ✓ All keys present`);
+      console.log(`${locale}: ✅ All keys present and synchronized`);
     }
+  } else {
+    console.log(`${locale}: ❌ Translation file not found`);
   }
 });

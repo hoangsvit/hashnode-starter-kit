@@ -108,7 +108,12 @@
 		"loginRequired": "需要登录",
 		"loginToComment": "您需要登录才能发表评论",
 		"login": "登录",
-		"checkingAuth": "正在检查身份验证..."
+		"checkingAuth": "正在检查身份验证...",
+		"reply": "回复",
+		"replies": "回复",
+		"hideReplies": "隐藏回复",
+		"showAllReplies": "显示全部",
+		"showMoreReplies": "显示更多回复"
 	},
 	"likers": {
 		"title": "点赞者",
@@ -179,6 +184,9 @@
 		"noHeadings": "没有标题在",
 		"article": "文章",
 		"draft": "草稿"
+	},
+	"auth": {
+		"loginToReply": "登录以回复"
 	},
 	"userMenu": {
 		"writeNewPost": "写新文章",

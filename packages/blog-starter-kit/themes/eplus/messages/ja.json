@@ -108,7 +108,12 @@
 		"loginRequired": "ログインが必要",
 		"loginToComment": "コメントするにはログインが必要です",
 		"login": "ログイン",
-		"checkingAuth": "認証を確認中..."
+		"checkingAuth": "認証を確認中...",
+		"reply": "返信",
+		"replies": "返信",
+		"hideReplies": "返信を隠す",
+		"showAllReplies": "すべて表示",
+		"showMoreReplies": "もっと返信を表示"
 	},
 	"likers": {
 		"title": "いいね",
@@ -179,6 +184,9 @@
 		"noHeadings": "見出しがありません",
 		"article": "記事",
 		"draft": "下書き"
+	},
+	"auth": {
+		"loginToReply": "返信するにはログイン"
 	},
 	"userMenu": {
 		"writeNewPost": "新しい投稿を書く",
