@@ -1,5 +1,6 @@
 import * as Tooltip from '@radix-ui/react-tooltip';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { CommentSVGV2, LoveSVG } from './icons/svgs';
 import { kFormatter } from '../utils/image';
 import { Separator } from './separator-root';
@@ -23,6 +24,8 @@ function PostFloatingMenu(props: {
     openComments,
     list,
   } = props;
+
+  const t = useTranslations();
 
   const handleFloatingBarDisplay = () => {
     const blogHeader = document.querySelector('.blog-header');
@@ -63,11 +66,13 @@ function PostFloatingMenu(props: {
   }, []);
 
   // Best practice to have the accessible name being with the visible text (comment count)
-  const commentSuffix = post?.responseCount === 1 ? '' : 's';
-  const commentBtnAccessibleLabel =
-    post?.responseCount > 0
-      ? `${kFormatter(post.responseCount + (post.replyCount || 0))} comment${commentSuffix}, open the comments`
-      : 'Open comments';
+  const commentBtnAccessibleLabel = useMemo(() => {
+    const commentCount = post?.responseCount + (post?.replyCount || 0);
+    if (commentCount > 0) {
+      return `${kFormatter(commentCount)} ${commentCount === 1 ? t('common.comment') : t('common.comments')}, ${t('common.openComments')}`;
+    }
+    return t('common.openComments');
+  }, [post?.responseCount, post?.replyCount, t]);
 
   return (
     <Tooltip.Provider delayDuration={200}>
@@ -99,13 +104,13 @@ function PostFloatingMenu(props: {
       />
       <div className="post-floating-bar fixed left-0 right-0 z-50 flex h-12 w-full flex-wrap justify-center 2xl:h-14">
         <div className="relative mx-auto flex h-12 shrink flex-wrap items-center justify-center rounded-full border-1/2 border-slate-200 bg-white px-5 py-1 text-sm  text-slate-800 shadow-xl dark:border-slate-500 dark:bg-slate-700 dark:text-slate-50 2xl:h-14">
-          <PostFloatingBarTooltipWrapper label="Like this post">
+          <PostFloatingBarTooltipWrapper label={t('common.likeThisPost')}>
             {post && (
               <div>
                 <button
                   type="button"
                   onClick={showPaymentModal}
-                  aria-label="Like this post"
+                  aria-label={t('common.likeThisPost')}
                   className="outline-none! flex cursor-pointer items-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
                 >
                   <span className="rounded-full p-2">
@@ -121,7 +126,7 @@ function PostFloatingMenu(props: {
 
           <Separator className="mx-2 h-5" />
 
-          <PostFloatingBarTooltipWrapper label="Write a comment">
+          <PostFloatingBarTooltipWrapper label={t('common.writeComment')}>
             {post && (
               <div>
                 <button
