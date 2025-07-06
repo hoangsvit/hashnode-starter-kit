@@ -98,7 +98,8 @@
 	},
 	"comments": {
 		"title": "Commentaires",
-		"noComments": "Pas encore de commentaires"
+		"noComments": "Pas encore de commentaires",
+		"commentsDisabled": "L'auteur a désactivé les commentaires pour cet article"
 	},
 	"likers": {
 		"title": "J'aime",

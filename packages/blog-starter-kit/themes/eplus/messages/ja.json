@@ -98,7 +98,8 @@
 	},
 	"comments": {
 		"title": "コメント",
-		"noComments": "まだコメントがありません"
+		"noComments": "まだコメントがありません",
+		"commentsDisabled": "著者がこの記事のコメントを無効にしました"
 	},
 	"likers": {
 		"title": "いいね",

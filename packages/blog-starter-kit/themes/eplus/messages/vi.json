@@ -98,7 +98,8 @@
 	},
 	"comments": {
 		"title": "Bình luận",
-		"noComments": "Chưa có bình luận nào"
+		"noComments": "Chưa có bình luận nào",
+		"commentsDisabled": "Tác giả đã tắt bình luận cho bài viết này"
 	},
 	"likers": {
 		"title": "Người thích",
