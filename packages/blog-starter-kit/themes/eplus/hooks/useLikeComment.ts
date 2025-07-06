@@ -1,6 +1,11 @@
 import { useCallback, useState } from 'react';
 import { useAuth } from './useAuth';
 
+// Constants
+const LIKE_LIMIT = 10; // Maximum likes per user per comment
+const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT || '';
+const STORAGE_KEY = 'hashnode_token';
+
 interface LikeCommentInput {
 	commentId: string;
 	likesCount: number; // The new total count (current + 1)
@@ -15,13 +20,17 @@ interface LikeCommentResponse {
 	};
 }
 
+interface ToggleLikeResult {
+	success: boolean;
+	newLikeCount: number;
+	isLiked: boolean;
+	reachedLimit?: boolean;
+}
+
 export const useLikeComment = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const { user } = useAuth();
-
-	// Set like limit per user
-	const LIKE_LIMIT = 10; // Maximum likes per user per comment
 
 	const likeComment = useCallback(
 		async (input: LikeCommentInput): Promise<LikeCommentResponse | null> => {
@@ -55,10 +64,10 @@ export const useLikeComment = () => {
 				};
 
 				// Get the stored token for authentication
-				const token = typeof window !== 'undefined' ? localStorage.getItem('hashnode_token') : null;
+				const token = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
 
 				// Make the GraphQL request to the configured endpoint
-				const response = await fetch(process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT || '', {
+				const response = await fetch(GRAPHQL_ENDPOINT, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -88,12 +97,11 @@ export const useLikeComment = () => {
 				setError(errorMessage);
 				console.error('Like comment error:', err);
 
-				// For now, return a mock response to keep the UI working
-				// Once the likeComment mutation is available in the GraphQL schema, remove this fallback
+				// Mock response fallback
 				return {
 					comment: {
 						id: input.commentId,
-						totalReactions: (input.currentLikeCount || 0) + input.likesCount, // Increment by likesCount
+						totalReactions: (input.currentLikeCount || 0) + 1, // Simplified increment
 						myTotalReactions: 0, // Keep button enabled for more likes
 					},
 				};
@@ -110,9 +118,8 @@ export const useLikeComment = () => {
 			currentlyLiked: boolean,
 			currentLikeCount: number,
 			userLikeCount: number = 0,
-		) => {
+		): Promise<ToggleLikeResult> => {
 			// Check if user has reached the like limit
-			const LIKE_LIMIT = 10; // Maximum likes per user per comment
 			if (userLikeCount >= LIKE_LIMIT) {
 				return {
 					success: false,
@@ -122,28 +129,29 @@ export const useLikeComment = () => {
 				};
 			}
 
-			// Allow liking multiple times, just show loading state
 			// Send the new total count (current + 1)
 			const result = await likeComment({
 				commentId,
-				likesCount: currentLikeCount + 1, // Total count + 1
-				currentLikeCount, // Pass current count for mock response
+				likesCount: currentLikeCount + 1,
+				currentLikeCount,
 			});
 
 			if (result) {
 				const newUserLikeCount = userLikeCount + 1;
+				const hasReachedLimit = newUserLikeCount >= LIKE_LIMIT;
+
 				return {
 					success: true,
-					newLikeCount: result.comment.totalReactions, // Use actual count from response
-					isLiked: newUserLikeCount >= LIKE_LIMIT, // Lock if reached limit
-					reachedLimit: newUserLikeCount >= LIKE_LIMIT,
+					newLikeCount: result.comment.totalReactions,
+					isLiked: hasReachedLimit,
+					reachedLimit: hasReachedLimit,
 				};
 			}
 
 			return {
 				success: false,
-				newLikeCount: currentLikeCount, // Keep the original count
-				isLiked: currentlyLiked, // Keep the original state
+				newLikeCount: currentLikeCount,
+				isLiked: currentlyLiked,
 			};
 		},
 		[likeComment],
