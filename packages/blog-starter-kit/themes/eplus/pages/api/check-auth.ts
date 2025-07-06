@@ -61,6 +61,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		// Return user info with enhanced data (don't send token back to client)
 		const userData = data.data.me;
+
+		// Update last authentication check timestamp
+		const isProduction = process.env.NODE_ENV === 'production';
+		const maxAge = 63072000; // 2 years
+		const updateCookie =
+			`last_auth_check=${Date.now()}; SameSite=Strict; Max-Age=${maxAge}; Path=/` +
+			(isProduction ? '; Secure' : '');
+
+		res.setHeader('Set-Cookie', updateCookie);
+
 		return res.status(200).json({
 			user: {
 				id: userData.id,
@@ -68,7 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				username: userData.username,
 				profilePicture: userData.profilePicture,
 				email: userData.email,
-				bio: userData.bio?.text || null,
+				bio: userData.bio?.text ?? null,
 				location: userData.location,
 				tagline: userData.tagline,
 				dateJoined: userData.dateJoined,
