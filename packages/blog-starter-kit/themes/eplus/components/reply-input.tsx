@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '../hooks/useAuth';
 import { UserAvatar } from './user-avatar';
@@ -10,11 +10,193 @@ interface ReplyInputProps {
   onCancel?: () => void;
 }
 
+interface MarkdownToolbarProps {
+  onFormatText: (formatType: string) => void;
+  disabled?: boolean;
+}
+
+const MarkdownToolbar = ({ onFormatText, disabled = false }: MarkdownToolbarProps) => {
+  const tools = [
+    { type: 'bold', icon: 'B', title: 'Bold (Ctrl+B)', className: 'font-bold' },
+    { type: 'italic', icon: 'I', title: 'Italic (Ctrl+I)', className: 'italic' },
+    { type: 'link', icon: '🔗', title: 'Link (Ctrl+K)' },
+    { type: 'code', icon: '</>', title: 'Code (Ctrl+`)' },
+    { type: 'quote', icon: '❝', title: 'Quote (Ctrl+Shift+.)' },
+    { type: 'list', icon: '•', title: 'List (Ctrl+Shift+L)' },
+  ];
+
+  return (
+    <div className="flex items-center gap-1 px-3 py-2 border-b border-gray-200 dark:border-gray-700">
+      {tools.map((tool) => (
+        <button
+          key={tool.type}
+          type="button"
+          onClick={() => onFormatText(tool.type)}
+          disabled={disabled}
+          className={`
+            flex items-center justify-center w-8 h-8 rounded text-sm transition-colors
+            hover:bg-gray-100 dark:hover:bg-gray-700
+            disabled:opacity-50 disabled:cursor-not-allowed
+            ${tool.className || ''}
+          `}
+          title={tool.title}
+        >
+          {tool.icon}
+        </button>
+      ))}
+      <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
+      <div className="text-xs text-gray-500 dark:text-gray-400">
+        Markdown supported
+      </div>
+    </div>
+  );
+};
+
 export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProps) => {
   const [content, setContent] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
   const { addReply, isSubmitting, error, setError } = useAddReply();
   const { user } = useAuth();
   const t = useTranslations();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleFormatText = useCallback((formatType: string) => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = content.substring(start, end);
+    let formattedText = '';
+    let newCursorPos = start;
+
+    switch (formatType) {
+      case 'bold':
+        formattedText = `**${selectedText || 'bold text'}**`;
+        newCursorPos = selectedText ? start + formattedText.length : start + 2;
+        break;
+      case 'italic':
+        formattedText = `*${selectedText || 'italic text'}*`;
+        newCursorPos = selectedText ? start + formattedText.length : start + 1;
+        break;
+      case 'link':
+        formattedText = `[${selectedText || 'link text'}](url)`;
+        newCursorPos = selectedText ? start + formattedText.length - 4 : start + 1;
+        break;
+      case 'code':
+        formattedText = `\`${selectedText || 'code'}\``;
+        newCursorPos = selectedText ? start + formattedText.length : start + 1;
+        break;
+      case 'quote':
+        formattedText = `> ${selectedText || 'quote'}`;
+        newCursorPos = selectedText ? start + formattedText.length : start + 2;
+        break;
+      case 'list':
+        formattedText = `- ${selectedText || 'list item'}`;
+        newCursorPos = selectedText ? start + formattedText.length : start + 2;
+        break;
+      default:
+        return;
+    }
+
+    const newContent = content.substring(0, start) + formattedText + content.substring(end);
+    setContent(newContent);
+
+    // Set cursor position after state update
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
+  }, [content]);
+
+  // Handle keyboard shortcuts
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      switch (e.key) {
+        case 'b':
+          e.preventDefault();
+          handleFormatText('bold');
+          break;
+        case 'i':
+          e.preventDefault();
+          handleFormatText('italic');
+          break;
+        case 'k':
+          e.preventDefault();
+          handleFormatText('link');
+          break;
+        case '`':
+          e.preventDefault();
+          handleFormatText('code');
+          break;
+        case '.':
+          if (e.shiftKey) {
+            e.preventDefault();
+            handleFormatText('quote');
+          }
+          break;
+        case 'l':
+          if (e.shiftKey) {
+            e.preventDefault();
+            handleFormatText('list');
+          }
+          break;
+      }
+    }
+  }, [handleFormatText]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!content.trim()) {
+      setError('Reply content cannot be empty');
+      return;
+    }
+
+    try {
+      const newReply = await addReply(commentId, content.trim());
+      setContent('');
+      setShowPreview(false);
+      onReplyAdded?.(newReply);
+    } catch (err) {
+      // Error is already handled by the hook, just continue
+      console.error('Reply submission failed:', err);
+    }
+  };
+
+  const handleCancel = () => {
+    setContent('');
+    setShowPreview(false);
+    setError(null);
+    onCancel?.();
+  };
+
+  const renderPreview = () => {
+    if (!content.trim()) {
+      return (
+        <div className="p-3 text-sm text-gray-500 dark:text-gray-400 italic">
+          Nothing to preview
+        </div>
+      );
+    }
+
+    // Simple markdown preview (you can integrate with a proper markdown parser)
+    const previewContent = content
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/`(.*?)`/g, '<code class="bg-gray-100 dark:bg-gray-800 px-1 rounded">$1</code>')
+      .replace(/^> (.*$)/gm, '<blockquote class="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic">$1</blockquote>')
+      .replace(/^- (.*$)/gm, '<li>$1</li>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">$1</a>')
+      .replace(/\n/g, '<br>');
+
+    return (
+      <div
+        className="p-3 prose prose-sm max-w-none dark:prose-invert"
+        dangerouslySetInnerHTML={{ __html: previewContent }}
+      />
+    );
+  };
 
   // Don't render if user is not authenticated
   if (!user) {
@@ -39,30 +221,6 @@ export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProp
     );
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!content.trim()) {
-      setError('Reply content cannot be empty');
-      return;
-    }
-
-    try {
-      const newReply = await addReply(commentId, content.trim());
-      setContent('');
-      onReplyAdded?.(newReply);
-    } catch (err) {
-      // Error is already handled by the hook, just continue
-      console.error('Reply submission failed:', err);
-    }
-  };
-
-  const handleCancel = () => {
-    setContent('');
-    setError(null);
-    onCancel?.();
-  };
-
   return (
     <div className="mt-3 ml-8">
       <div className="flex gap-3">
@@ -72,35 +230,78 @@ export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProp
         <div className="flex-1">
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="border rounded-lg border-gray-200 dark:border-gray-700 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
-              <textarea
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder={t('comments.writeReply') || 'Write a reply...'}
-                className="w-full min-h-[80px] p-3 resize-y border-none outline-none bg-transparent dark:text-white placeholder-slate-500 dark:placeholder-slate-400 rounded-lg"
-                disabled={isSubmitting}
-              />
+              <MarkdownToolbar onFormatText={handleFormatText} disabled={isSubmitting} />
+
+              <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+                Tip: Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+K for links
+              </div>
+
+              <div className="flex border-b border-gray-200 dark:border-gray-700">
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(false)}
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    !showPreview
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  Write
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(true)}
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    showPreview
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                  }`}
+                >
+                  Preview
+                </button>
+              </div>
+
+              {showPreview ? (
+                <div className="min-h-[80px]">
+                  {renderPreview()}
+                </div>
+              ) : (
+                <textarea
+                  ref={textareaRef}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder={t('comments.writeReply') || 'Write a reply...'}
+                  className="w-full min-h-[80px] p-3 resize-y border-none outline-none bg-transparent dark:text-white placeholder-slate-500 dark:placeholder-slate-400 rounded-lg"
+                  disabled={isSubmitting}
+                />
+              )}
+
               {error && (
                 <div className="px-3 pb-2 text-red-500 text-sm">
                   {error}
                 </div>
               )}
-              <div className="flex items-center justify-between p-3 pt-0">
-                <div className="flex gap-3">
-                  <button
-                    type="button"
-                    className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={handleCancel}
-                    disabled={isSubmitting}
-                  >
-                    {t('common.cancel') || 'Cancel'}
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium"
-                    disabled={isSubmitting || !content.trim()}
-                  >
-                    {isSubmitting ? (t('comments.posting') || 'Posting...') : (t('comments.reply') || 'Reply')}
-                  </button>
+
+              <div className="p-3 pt-0">
+                <div className="flex justify-end">
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      className="px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      onClick={handleCancel}
+                      disabled={isSubmitting}
+                    >
+                      {t('common.cancel') || 'Cancel'}
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium transition-colors"
+                      disabled={isSubmitting || !content.trim()}
+                    >
+                      {isSubmitting ? (t('comments.posting') || 'Posting...') : (t('comments.reply') || 'Reply')}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
