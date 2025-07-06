@@ -109,10 +109,10 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
             type="button"
             onClick={toggleAllReplies}
             className="text-sm text-blue-500 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors duration-200"
-            aria-label={hideShowAllBox ? "Hide replies" : `Show all ${totalReplies} replies`}
+            aria-label={hideShowAllBox ? (t('comments.hideReplies') || 'Hide replies') : (t('comments.showAllReplies') || 'Show all') + ` ${totalReplies} ` + (t('comments.replies') || 'replies')}
           >
             <span className="font-medium">
-              {hideShowAllBox ? 'Hide replies' : `Show all ${totalReplies} replies`}
+              {hideShowAllBox ? (t('comments.hideReplies') || 'Hide replies') : (t('comments.showAllReplies') || 'Show all') + ` ${totalReplies} ` + (t('comments.replies') || 'replies')}
             </span>
           </button>
         )}
@@ -126,9 +126,9 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
               type="button"
               onClick={showAllReplies}
               className="flex py-2 text-sm text-blue-500 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors duration-200"
-              aria-label="Show more replies"
+              aria-label={t('comments.showMoreReplies') || 'Show more replies'}
             >
-              <span className="font-medium">Show more replies</span>
+              <span className="font-medium">{t('comments.showMoreReplies') || 'Show more replies'}</span>
             </button>
           )}
         </div>

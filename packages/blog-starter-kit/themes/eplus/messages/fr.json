@@ -108,7 +108,12 @@
 		"loginRequired": "Connexion requise",
 		"loginToComment": "Vous devez vous connecter pour commenter",
 		"login": "Se connecter",
-		"checkingAuth": "Vérification de l'authentification..."
+		"checkingAuth": "Vérification de l'authentification...",
+		"reply": "Répondre",
+		"replies": "réponses",
+		"hideReplies": "Masquer les réponses",
+		"showAllReplies": "Afficher toutes",
+		"showMoreReplies": "Afficher plus de réponses"
 	},
 	"likers": {
 		"title": "J'aime",
@@ -179,6 +184,9 @@
 		"noHeadings": "Aucun titre dans l'",
 		"article": "article",
 		"draft": "brouillon"
+	},
+	"auth": {
+		"loginToReply": "Se connecter pour répondre"
 	},
 	"userMenu": {
 		"writeNewPost": "Écrire un nouveau post",

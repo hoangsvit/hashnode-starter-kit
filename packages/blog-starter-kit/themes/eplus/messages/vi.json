@@ -108,7 +108,12 @@
 		"loginRequired": "Cần đăng nhập",
 		"loginToComment": "Bạn cần đăng nhập để viết bình luận",
 		"login": "Đăng nhập",
-		"checkingAuth": "Đang kiểm tra xác thực..."
+		"checkingAuth": "Đang kiểm tra xác thực...",
+		"reply": "Trả lời",
+		"replies": "phản hồi",
+		"hideReplies": "Ẩn phản hồi",
+		"showAllReplies": "Hiển thị tất cả",
+		"showMoreReplies": "Hiển thị thêm phản hồi"
 	},
 	"likers": {
 		"title": "Người thích",
@@ -179,6 +184,9 @@
 		"noHeadings": "Không có tiêu đề trong",
 		"article": "bài viết",
 		"draft": "bản nháp"
+	},
+	"auth": {
+		"loginToReply": "Đăng nhập để trả lời"
 	},
 	"userMenu": {
 		"writeNewPost": "Viết bài mới",
