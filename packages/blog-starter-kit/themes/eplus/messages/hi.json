@@ -48,10 +48,18 @@
 		"loadMore": "और लोड करें",
 		"reachedEnd": "आप अंत तक पहुंच गए हैं! 👋",
 		"noPostsImage": "कोई पोस्ट नहीं",
+		"likeThisPost": "इस पोस्ट को पसंद करें",
+		"writeComment": "टिप्पणी लिखें",
+		"openComments": "टिप्पणियां खोलें",
+		"openLikers": "पसंद करने वालों की सूची खोलें",
+		"likers": "पसंद करने वाले",
+		"comment": "टिप्पणी",
+		"comments": "टिप्पणियां",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "सीरीज में पोस्ट",
 		"currentPost": "मौजूदा पोस्ट",
-		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें"
+		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें",
+		"cancel": "रद्द करें"
 	},
 	"navigation": {
 		"home": "होम",
@@ -91,7 +99,40 @@
 	},
 	"comments": {
 		"title": "टिप्पणियां",
-		"noComments": "अभी तक कोई टिप्पणी नहीं"
+		"noComments": "अभी तक कोई टिप्पणी नहीं",
+		"commentsDisabled": "लेखक ने इस लेख के लिए टिप्पणियां बंद कर दी हैं",
+		"writeComment": "टिप्पणी लिखें...",
+		"writeReply": "उत्तर लिखें...",
+		"markdownSupported": "Markdown समर्थित",
+		"postComment": "टिप्पणी पोस्ट करें",
+		"posting": "पोस्ट हो रहा है...",
+		"loginRequired": "लॉगिन आवश्यक",
+		"loginToComment": "टिप्पणी करने के लिए आपको लॉगिन करना होगा",
+		"login": "लॉगिन",
+		"checkingAuth": "प्रमाणीकरण जांच रहे हैं...",
+		"reply": "उत्तर दें",
+		"replies": "उत्तर",
+		"hideReplies": "उत्तर छुपाएं",
+		"showAllReplies": "सभी दिखाएं",
+		"showMoreReplies": "अधिक उत्तर दिखाएं",
+		"markdownTip": "बोल्ड के लिए Ctrl+B, इटैलिक के लिए Ctrl+I, लिंक के लिए Ctrl+K का उपयोग करें",
+		"nothingToPreview": "प्रीव्यू के लिए कुछ नहीं",
+		"write": "लिखें",
+		"preview": "प्रीव्यू",
+		"cancel": "रद्द करें",
+		"like": "पसंद",
+		"unlike": "पसंद हटाएं",
+		"alreadyLiked": "पहले से पसंद है"
+	},
+	"likers": {
+		"title": "पसंद करने वाले",
+		"noLikers": "अभी तक कोई लाइक नहीं",
+		"reactions": "प्रतिक्रियाएं",
+		"reaction": "प्रतिक्रिया"
+	},
+	"responses": {
+		"comments": "टिप्पणियां",
+		"likers": "पसंद करने वाले"
 	},
 	"share": {
 		"shareThisArticle": "इस आर्टिकल को शेयर करें",
@@ -152,6 +193,9 @@
 		"noHeadings": "कोई शीर्षक नहीं",
 		"article": "आर्टिकल",
 		"draft": "ड्राफ्ट"
+	},
+	"auth": {
+		"loginToReply": "उत्तर देने के लिए लॉगिन करें"
 	},
 	"userMenu": {
 		"writeNewPost": "नया पोस्ट लिखें",

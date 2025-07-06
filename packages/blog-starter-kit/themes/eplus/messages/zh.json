@@ -48,10 +48,18 @@
 		"loadMore": "加载更多",
 		"reachedEnd": "你已经到达末尾了！👋",
 		"noPostsImage": "没有文章",
+		"likeThisPost": "赞这篇文章",
+		"writeComment": "写评论",
+		"openComments": "打开评论",
+		"openLikers": "打开点赞列表",
+		"likers": "点赞者",
+		"comment": "评论",
+		"comments": "评论",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "系列中的文章",
 		"currentPost": "当前文章",
-		"viewAllPostsInSeries": "查看系列中的所有文章"
+		"viewAllPostsInSeries": "查看系列中的所有文章",
+		"cancel": "取消"
 	},
 	"navigation": {
 		"home": "首页",
@@ -91,7 +99,40 @@
 	},
 	"comments": {
 		"title": "评论",
-		"noComments": "还没有评论"
+		"noComments": "还没有评论",
+		"commentsDisabled": "作者已禁用此文章的评论功能",
+		"writeComment": "写评论...",
+		"writeReply": "写回复...",
+		"markdownSupported": "支持Markdown",
+		"postComment": "发表评论",
+		"posting": "发表中...",
+		"loginRequired": "需要登录",
+		"loginToComment": "您需要登录才能发表评论",
+		"login": "登录",
+		"checkingAuth": "正在检查身份验证...",
+		"reply": "回复",
+		"replies": "回复",
+		"hideReplies": "隐藏回复",
+		"showAllReplies": "显示全部",
+		"showMoreReplies": "显示更多回复",
+		"markdownTip": "使用 Ctrl+B 加粗，Ctrl+I 斜体，Ctrl+K 链接",
+		"nothingToPreview": "没有内容可预览",
+		"write": "编写",
+		"preview": "预览",
+		"cancel": "取消",
+		"like": "点赞",
+		"unlike": "取消点赞",
+		"alreadyLiked": "已点赞"
+	},
+	"likers": {
+		"title": "点赞者",
+		"noLikers": "还没有点赞",
+		"reactions": "反应",
+		"reaction": "反应"
+	},
+	"responses": {
+		"comments": "评论",
+		"likers": "点赞者"
 	},
 	"share": {
 		"shareThisArticle": "分享这篇文章",
@@ -152,6 +193,9 @@
 		"noHeadings": "没有标题在",
 		"article": "文章",
 		"draft": "草稿"
+	},
+	"auth": {
+		"loginToReply": "登录以回复"
 	},
 	"userMenu": {
 		"writeNewPost": "写新文章",

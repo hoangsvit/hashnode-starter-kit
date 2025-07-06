@@ -8,7 +8,7 @@ import PublicationSocialLinks from './publication-social-links';
 import { UserAvatar } from './user-avatar';
 import { LanguageSwitcher } from './language-switcher';
 import { DarkModeToggle } from './dark-mode-toggle';
-import { useAuth } from '../hooks/useAuth';
+import { useAuthContext } from '../contexts/AuthContext';
 import { useRouter } from 'next/router';
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 export const Header = (props: Props) => {
 	const { currentMenuId, isHome } = props;
 	const { publication } = useAppContext();
-	const { user, logout } = useAuth();
+	const { user, logout } = useAuthContext();
 	const router = useRouter();
 
 	const handleLogin = () => {
