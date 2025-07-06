@@ -102,6 +102,7 @@
 		"noComments": "Aún no hay comentarios",
 		"commentsDisabled": "El autor ha deshabilitado los comentarios para este artículo",
 		"writeComment": "Escribir un comentario...",
+		"writeReply": "Escribir una respuesta...",
 		"markdownSupported": "Soporta Markdown",
 		"postComment": "Publicar comentario",
 		"posting": "Publicando...",
@@ -113,7 +114,12 @@
 		"replies": "respuestas",
 		"hideReplies": "Ocultar respuestas",
 		"showAllReplies": "Mostrar todas",
-		"showMoreReplies": "Mostrar más respuestas"
+		"showMoreReplies": "Mostrar más respuestas",
+		"markdownTip": "Usa Ctrl+B para negrita, Ctrl+I para cursiva, Ctrl+K para enlaces",
+		"nothingToPreview": "No hay nada que previsualizar",
+		"write": "Escribir",
+		"preview": "Vista previa",
+		"cancel": "Cancelar"
 	},
 	"likers": {
 		"title": "Me gusta",

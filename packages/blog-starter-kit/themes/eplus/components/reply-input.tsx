@@ -16,6 +16,8 @@ interface MarkdownToolbarProps {
 }
 
 const MarkdownToolbar = ({ onFormatText, disabled = false }: MarkdownToolbarProps) => {
+  const t = useTranslations();
+  
   const tools = [
     { type: 'bold', icon: 'B', title: 'Bold (Ctrl+B)', className: 'font-bold' },
     { type: 'italic', icon: 'I', title: 'Italic (Ctrl+I)', className: 'italic' },
@@ -46,7 +48,7 @@ const MarkdownToolbar = ({ onFormatText, disabled = false }: MarkdownToolbarProp
       ))}
       <div className="w-px h-6 bg-gray-300 dark:bg-gray-600 mx-1" />
       <div className="text-xs text-gray-500 dark:text-gray-400">
-        Markdown supported
+        {t('comments.markdownSupported') || 'Markdown supported'}
       </div>
     </div>
   );
@@ -175,7 +177,7 @@ export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProp
     if (!content.trim()) {
       return (
         <div className="p-3 text-sm text-gray-500 dark:text-gray-400 italic">
-          Nothing to preview
+          {t('comments.nothingToPreview') || 'Nothing to preview'}
         </div>
       );
     }
@@ -233,7 +235,7 @@ export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProp
               <MarkdownToolbar onFormatText={handleFormatText} disabled={isSubmitting} />
 
               <div className="px-3 py-2 text-xs text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
-                Tip: Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+K for links
+                {t('comments.markdownTip') || 'Use Ctrl+B for bold, Ctrl+I for italic, Ctrl+K for links'}
               </div>
 
               <div className="flex border-b border-gray-200 dark:border-gray-700">
@@ -246,7 +248,7 @@ export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProp
                       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
-                  Write
+                  {t('comments.write') || 'Write'}
                 </button>
                 <button
                   type="button"
@@ -257,7 +259,7 @@ export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProp
                       : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                   }`}
                 >
-                  Preview
+                  {t('comments.preview') || 'Preview'}
                 </button>
               </div>
 
@@ -292,7 +294,7 @@ export const ReplyInput = ({ commentId, onReplyAdded, onCancel }: ReplyInputProp
                       onClick={handleCancel}
                       disabled={isSubmitting}
                     >
-                      {t('common.cancel') || 'Cancel'}
+                      {t('comments.cancel') || 'Cancel'}
                     </button>
                     <button
                       type="submit"

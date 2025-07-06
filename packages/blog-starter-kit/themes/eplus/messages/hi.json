@@ -102,6 +102,7 @@
 		"noComments": "अभी तक कोई टिप्पणी नहीं",
 		"commentsDisabled": "लेखक ने इस लेख के लिए टिप्पणियां बंद कर दी हैं",
 		"writeComment": "टिप्पणी लिखें...",
+		"writeReply": "उत्तर लिखें...",
 		"markdownSupported": "Markdown समर्थित",
 		"postComment": "टिप्पणी पोस्ट करें",
 		"posting": "पोस्ट हो रहा है...",
@@ -113,7 +114,12 @@
 		"replies": "उत्तर",
 		"hideReplies": "उत्तर छुपाएं",
 		"showAllReplies": "सभी दिखाएं",
-		"showMoreReplies": "अधिक उत्तर दिखाएं"
+		"showMoreReplies": "अधिक उत्तर दिखाएं",
+		"markdownTip": "बोल्ड के लिए Ctrl+B, इटैलिक के लिए Ctrl+I, लिंक के लिए Ctrl+K का उपयोग करें",
+		"nothingToPreview": "प्रीव्यू के लिए कुछ नहीं",
+		"write": "लिखें",
+		"preview": "प्रीव्यू",
+		"cancel": "रद्द करें"
 	},
 	"likers": {
 		"title": "पसंद करने वाले",

@@ -102,6 +102,7 @@
 		"noComments": "Chưa có bình luận nào",
 		"commentsDisabled": "Tác giả đã tắt bình luận cho bài viết này",
 		"writeComment": "Viết bình luận...",
+		"writeReply": "Viết phản hồi...",
 		"markdownSupported": "Hỗ trợ Markdown",
 		"postComment": "Đăng bình luận",
 		"posting": "Đang đăng...",
@@ -113,7 +114,12 @@
 		"replies": "phản hồi",
 		"hideReplies": "Ẩn phản hồi",
 		"showAllReplies": "Hiển thị tất cả",
-		"showMoreReplies": "Hiển thị thêm phản hồi"
+		"showMoreReplies": "Hiển thị thêm phản hồi",
+		"markdownTip": "Dùng Ctrl+B cho in đậm, Ctrl+I cho in nghiêng, Ctrl+K cho liên kết",
+		"nothingToPreview": "Không có gì để xem trước",
+		"write": "Viết",
+		"preview": "Xem trước",
+		"cancel": "Hủy"
 	},
 	"likers": {
 		"title": "Người thích",

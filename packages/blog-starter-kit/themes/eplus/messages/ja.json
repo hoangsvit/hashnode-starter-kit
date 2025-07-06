@@ -102,6 +102,7 @@
 		"noComments": "まだコメントがありません",
 		"commentsDisabled": "著者がこの記事のコメントを無効にしました",
 		"writeComment": "コメントを書く...",
+		"writeReply": "返信を書く...",
 		"markdownSupported": "Markdown対応",
 		"postComment": "コメントを投稿",
 		"posting": "投稿中...",
@@ -113,7 +114,12 @@
 		"replies": "返信",
 		"hideReplies": "返信を隠す",
 		"showAllReplies": "すべて表示",
-		"showMoreReplies": "もっと返信を表示"
+		"showMoreReplies": "もっと返信を表示",
+		"markdownTip": "Ctrl+B で太字、Ctrl+I で斜体、Ctrl+K でリンク",
+		"nothingToPreview": "プレビューする内容がありません",
+		"write": "書く",
+		"preview": "プレビュー",
+		"cancel": "キャンセル"
 	},
 	"likers": {
 		"title": "いいね",
