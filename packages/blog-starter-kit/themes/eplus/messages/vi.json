@@ -51,6 +51,8 @@
 		"likeThisPost": "Thích bài viết này",
 		"writeComment": "Viết bình luận",
 		"openComments": "Mở bình luận",
+		"openLikers": "Mở danh sách người thích",
+		"likers": "Người thích",
 		"comment": "bình luận",
 		"comments": "bình luận",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
@@ -97,6 +99,16 @@
 	"comments": {
 		"title": "Bình luận",
 		"noComments": "Chưa có bình luận nào"
+	},
+	"likers": {
+		"title": "Người thích",
+		"noLikers": "Chưa có ai thích",
+		"reactions": "phản ứng",
+		"reaction": "phản ứng"
+	},
+	"responses": {
+		"comments": "Bình luận",
+		"likers": "Người thích"
 	},
 	"share": {
 		"shareThisArticle": "Chia sẻ bài viết này",

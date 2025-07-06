@@ -53,7 +53,7 @@ type Props = {
 };
 
 const PostFloatingMenu = dynamic(() => import('./post-floating-bar'), { ssr: false });
-const PostCommentsSidebar = dynamic(() => import('./post-comments-sidebar'), { ssr: false });
+const PostResponsesSidebar = dynamic(() => import('./post-responses-sidebar'), { ssr: false });
 
 const PublicationSubscribeStandOut = dynamic(() => import('./publication-subscribe-standout'), {
 	ssr: false,
@@ -77,6 +77,8 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 		[post.content?.html],
 	);
 	const [showCommentsSheet, setShowCommentsSheet] = useState(false);
+	const [showLikersSheet] = useState(false);
+	const [responseSheetTab, setResponseSheetTab] = useState<'comments' | 'likers'>('comments');
 	const tags = (post.tags ?? []).map((tag) => {
 		return {
 			_id: tag.id,
@@ -96,6 +98,12 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 	} } from @hashnode`;
 
 	const handleOpenComments = () => {
+		setResponseSheetTab('comments');
+		setShowCommentsSheet(true);
+	};
+
+	const handleOpenLikers = () => {
+		setResponseSheetTab('likers');
 		setShowCommentsSheet(true);
 	};
 
@@ -312,6 +320,7 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 								post={post}
 								shareText={shareText}
 								openComments={handleOpenComments}
+								openLikers={handleOpenLikers}
 								list={toc}
 							/>
 						</div>
@@ -342,11 +351,12 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 			{/* TODO: Below breaking on failed nw request */}
 			{!post.series && <OtherPostsOfAccount morePosts={top3FilteredPosts} />}
 			{showCommentsSheet && (
-				<PostCommentsSidebar
+				<PostResponsesSidebar
 					hideSidebar={() => setShowCommentsSheet(false)}
 					isPublicationPost={true}
 					selectedFilter={selectedFilter}
 					post={post}
+					initialTab={responseSheetTab}
 				/>
 			)}
 			{isCoAuthorModalVisible && <CoAuthorsModal closeModal={closeCoAuthorModal} />}

@@ -51,6 +51,8 @@
 		"likeThisPost": "赞这篇文章",
 		"writeComment": "写评论",
 		"openComments": "打开评论",
+		"openLikers": "打开点赞列表",
+		"likers": "点赞者",
 		"comment": "评论",
 		"comments": "评论",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
@@ -97,6 +99,16 @@
 	"comments": {
 		"title": "评论",
 		"noComments": "还没有评论"
+	},
+	"likers": {
+		"title": "点赞者",
+		"noLikers": "还没有点赞",
+		"reactions": "反应",
+		"reaction": "反应"
+	},
+	"responses": {
+		"comments": "评论",
+		"likers": "点赞者"
 	},
 	"share": {
 		"shareThisArticle": "分享这篇文章",

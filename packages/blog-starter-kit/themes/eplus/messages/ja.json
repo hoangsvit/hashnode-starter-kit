@@ -51,6 +51,8 @@
 		"likeThisPost": "この投稿にいいね",
 		"writeComment": "コメントを書く",
 		"openComments": "コメントを開く",
+		"openLikers": "いいねリストを開く",
+		"likers": "いいねした人",
 		"comment": "コメント",
 		"comments": "コメント",
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
@@ -97,6 +99,16 @@
 	"comments": {
 		"title": "コメント",
 		"noComments": "まだコメントがありません"
+	},
+	"likers": {
+		"title": "いいね",
+		"noLikers": "まだいいねがありません",
+		"reactions": "リアクション",
+		"reaction": "リアクション"
+	},
+	"responses": {
+		"comments": "コメント",
+		"likers": "いいね"
 	},
 	"share": {
 		"shareThisArticle": "この記事を共有",
