@@ -119,7 +119,10 @@
 		"nothingToPreview": "プレビューする内容がありません",
 		"write": "書く",
 		"preview": "プレビュー",
-		"cancel": "キャンセル"
+		"cancel": "キャンセル",
+		"like": "いいね",
+		"unlike": "いいね取消",
+		"alreadyLiked": "いいね済み"
 	},
 	"likers": {
 		"title": "いいね",

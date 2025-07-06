@@ -119,7 +119,10 @@
 		"nothingToPreview": "No hay nada que previsualizar",
 		"write": "Escribir",
 		"preview": "Vista previa",
-		"cancel": "Cancelar"
+		"cancel": "Cancelar",
+		"like": "Me gusta",
+		"unlike": "Quitar me gusta",
+		"alreadyLiked": "Ya me gusta"
 	},
 	"likers": {
 		"title": "Me gusta",

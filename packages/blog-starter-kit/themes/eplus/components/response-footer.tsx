@@ -1,11 +1,10 @@
 import { useState, useCallback, memo } from 'react';
-import { twJoin } from 'tailwind-merge';
 import { useTranslations } from 'next-intl';
 
 import ResponseReplyCard from './response-reply-card';
-import Button from './hn-button';
 import { CommentSVGV2 } from './icons/svgs';
 import { ReplyInput } from './reply-input';
+import { LikeButton } from './like-button';
 import { useAuth } from '../hooks/useAuth';
 
 interface Props {
@@ -85,8 +84,16 @@ const ResponseFooter = memo(function ResponseFooter(props: Props) {
     </div>
   ));
 
-  return (      <div className="w-full">
+  return (
+    <div className="w-full">
       <div className="flex flex-row flex-nowrap items-center gap-4">
+        {/* Like Button */}
+        <LikeButton
+          commentId={response.id}
+          initialLikeCount={response.totalReactions ?? 0}
+          isLiked={response.myTotalReactions > 0}
+        />
+
         {/* Combined Button - Show replies count and Reply action */}
         <button
           type="button"

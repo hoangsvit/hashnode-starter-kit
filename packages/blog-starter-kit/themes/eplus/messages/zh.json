@@ -119,7 +119,10 @@
 		"nothingToPreview": "没有内容可预览",
 		"write": "编写",
 		"preview": "预览",
-		"cancel": "取消"
+		"cancel": "取消",
+		"like": "点赞",
+		"unlike": "取消点赞",
+		"alreadyLiked": "已点赞"
 	},
 	"likers": {
 		"title": "点赞者",
