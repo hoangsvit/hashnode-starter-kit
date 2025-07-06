@@ -58,7 +58,8 @@
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "Articles dans la série",
 		"currentPost": "Article actuel",
-		"viewAllPostsInSeries": "Voir tous les articles de la série"
+		"viewAllPostsInSeries": "Voir tous les articles de la série",
+		"cancel": "Annuler"
 	},
 	"navigation": {
 		"home": "Accueil",
@@ -99,7 +100,15 @@
 	"comments": {
 		"title": "Commentaires",
 		"noComments": "Pas encore de commentaires",
-		"commentsDisabled": "L'auteur a désactivé les commentaires pour cet article"
+		"commentsDisabled": "L'auteur a désactivé les commentaires pour cet article",
+		"writeComment": "Écrire un commentaire...",
+		"markdownSupported": "Markdown pris en charge",
+		"postComment": "Publier le commentaire",
+		"posting": "Publication en cours...",
+		"loginRequired": "Connexion requise",
+		"loginToComment": "Vous devez vous connecter pour commenter",
+		"login": "Se connecter",
+		"checkingAuth": "Vérification de l'authentification..."
 	},
 	"likers": {
 		"title": "J'aime",

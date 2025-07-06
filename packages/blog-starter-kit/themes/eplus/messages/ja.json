@@ -58,7 +58,8 @@
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "シリーズの投稿",
 		"currentPost": "現在の投稿",
-		"viewAllPostsInSeries": "シリーズの全投稿を表示"
+		"viewAllPostsInSeries": "シリーズの全投稿を表示",
+		"cancel": "キャンセル"
 	},
 	"navigation": {
 		"home": "ホーム",
@@ -99,7 +100,15 @@
 	"comments": {
 		"title": "コメント",
 		"noComments": "まだコメントがありません",
-		"commentsDisabled": "著者がこの記事のコメントを無効にしました"
+		"commentsDisabled": "著者がこの記事のコメントを無効にしました",
+		"writeComment": "コメントを書く...",
+		"markdownSupported": "Markdown対応",
+		"postComment": "コメントを投稿",
+		"posting": "投稿中...",
+		"loginRequired": "ログインが必要",
+		"loginToComment": "コメントするにはログインが必要です",
+		"login": "ログイン",
+		"checkingAuth": "認証を確認中..."
 	},
 	"likers": {
 		"title": "いいね",

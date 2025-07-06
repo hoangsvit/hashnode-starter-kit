@@ -58,7 +58,8 @@
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "Bài viết trong chuỗi",
 		"currentPost": "Bài hiện tại",
-		"viewAllPostsInSeries": "Xem tất cả bài viết trong chuỗi"
+		"viewAllPostsInSeries": "Xem tất cả bài viết trong chuỗi",
+		"cancel": "Hủy"
 	},
 	"navigation": {
 		"home": "Trang chủ",
@@ -99,7 +100,15 @@
 	"comments": {
 		"title": "Bình luận",
 		"noComments": "Chưa có bình luận nào",
-		"commentsDisabled": "Tác giả đã tắt bình luận cho bài viết này"
+		"commentsDisabled": "Tác giả đã tắt bình luận cho bài viết này",
+		"writeComment": "Viết bình luận...",
+		"markdownSupported": "Hỗ trợ Markdown",
+		"postComment": "Đăng bình luận",
+		"posting": "Đang đăng...",
+		"loginRequired": "Cần đăng nhập",
+		"loginToComment": "Bạn cần đăng nhập để viết bình luận",
+		"login": "Đăng nhập",
+		"checkingAuth": "Đang kiểm tra xác thực..."
 	},
 	"likers": {
 		"title": "Người thích",

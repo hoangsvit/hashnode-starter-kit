@@ -20,6 +20,10 @@ const PostLikers = dynamic(() =>
 	import('../components/post-likers').then((mod) => mod.PostLikers),
 );
 
+const CommentInput = dynamic(() =>
+	import('../components/comment-input').then((mod) => mod.CommentInput),
+);
+
 type ResponseTab = 'comments' | 'likers';
 
 function ResponseList(props: Props) {
@@ -94,6 +98,13 @@ function ResponseList(props: Props) {
 			{/* Tab Content */}
 			{activeTab === 'comments' && (
 				<div>
+					{/* Comment Input */}
+					<CommentInput onCommentAdded={() => {
+						// Refresh comments after adding a new one
+						// This could trigger a refetch of the post data
+						window.location.reload();
+					}} />
+
 					{hasComments ? (
 						<PostComments />
 					) : (

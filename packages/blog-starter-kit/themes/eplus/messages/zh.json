@@ -58,7 +58,8 @@
 		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
 		"postsInSeries": "系列中的文章",
 		"currentPost": "当前文章",
-		"viewAllPostsInSeries": "查看系列中的所有文章"
+		"viewAllPostsInSeries": "查看系列中的所有文章",
+		"cancel": "取消"
 	},
 	"navigation": {
 		"home": "首页",
@@ -99,7 +100,15 @@
 	"comments": {
 		"title": "评论",
 		"noComments": "还没有评论",
-		"commentsDisabled": "作者已禁用此文章的评论功能"
+		"commentsDisabled": "作者已禁用此文章的评论功能",
+		"writeComment": "写评论...",
+		"markdownSupported": "支持Markdown",
+		"postComment": "发表评论",
+		"posting": "发表中...",
+		"loginRequired": "需要登录",
+		"loginToComment": "您需要登录才能发表评论",
+		"login": "登录",
+		"checkingAuth": "正在检查身份验证..."
 	},
 	"likers": {
 		"title": "点赞者",
