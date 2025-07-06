@@ -143,13 +143,13 @@ function ResponseReplyCard(props: Props) {
               // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{ __html: replyContent }}
             />
-            
+
             {/* Reply Actions */}
             <div className="flex items-center gap-4 mt-2">
               <LikeButton
                 commentId={reply.id}
                 initialLikeCount={reply.totalReactions ?? 0}
-                isLiked={reply.myTotalReactions > 0}
+                isLiked={false}
               />
             </div>
           </div>
