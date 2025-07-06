@@ -119,7 +119,10 @@
 		"nothingToPreview": "प्रीव्यू के लिए कुछ नहीं",
 		"write": "लिखें",
 		"preview": "प्रीव्यू",
-		"cancel": "रद्द करें"
+		"cancel": "रद्द करें",
+		"like": "पसंद",
+		"unlike": "पसंद हटाएं",
+		"alreadyLiked": "पहले से पसंद है"
 	},
 	"likers": {
 		"title": "पसंद करने वाले",

@@ -119,7 +119,10 @@
 		"nothingToPreview": "Rien à prévisualiser",
 		"write": "Écrire",
 		"preview": "Aperçu",
-		"cancel": "Annuler"
+		"cancel": "Annuler",
+		"like": "J'aime",
+		"unlike": "Je n'aime plus",
+		"alreadyLiked": "Déjà aimé"
 	},
 	"likers": {
 		"title": "J'aime",

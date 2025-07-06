@@ -119,7 +119,10 @@
 		"nothingToPreview": "Nothing to preview",
 		"write": "Write",
 		"preview": "Preview",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"like": "Like",
+		"unlike": "Unlike",
+		"alreadyLiked": "Already liked"
 	},
 	"likers": {
 		"title": "Likers",

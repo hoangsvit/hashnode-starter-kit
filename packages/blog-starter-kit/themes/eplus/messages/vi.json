@@ -119,7 +119,10 @@
 		"nothingToPreview": "Không có gì để xem trước",
 		"write": "Viết",
 		"preview": "Xem trước",
-		"cancel": "Hủy"
+		"cancel": "Hủy",
+		"like": "Thích",
+		"unlike": "Bỏ thích",
+		"alreadyLiked": "Đã thích"
 	},
 	"likers": {
 		"title": "Người thích",
