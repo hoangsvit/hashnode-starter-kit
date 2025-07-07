@@ -29,7 +29,7 @@ interface TocRenderDesignProps {
 
 function TocRow(props: TocRowProps) {
 	const { children, node, modal } = props;
-	const [childrenVisibility, setChildrenVisibility] = useState(false);
+	const [childrenVisibility, setChildrenVisibility] = useState(true);
 	const { hide: hideTocModal } = useTocModalStore();
 	const t = useTranslations('toc');
 
