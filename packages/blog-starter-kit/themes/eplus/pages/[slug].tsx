@@ -28,6 +28,7 @@ import {
 	SinglePostByPublicationDocument,
 	StaticPageFragment,
 } from '../generated/graphql';
+import { getTimezoneFromLocale } from '../utils/timezone';
 
 type PostProps = {
 	type: 'post';
@@ -196,7 +197,7 @@ export default function PostOrPage(props: Props) {
 			<NextIntlClientProvider
 				locale={router.locale}
 				messages={props.messages}
-				timeZone="Asia/Ho_Chi_Minh"
+				timeZone={getTimezoneFromLocale(router.locale ?? 'en')}
 			>
 				<AppProvider publication={publication} post={props.post}>
 					<Layout>
@@ -236,7 +237,7 @@ export default function PostOrPage(props: Props) {
 		<NextIntlClientProvider
 			locale={router.locale}
 			messages={props.messages}
-			timeZone="Asia/Ho_Chi_Minh"
+			timeZone={getTimezoneFromLocale(router.locale ?? 'en')}
 		>
 			<AppProvider publication={publication} post={maybePost} page={maybePage}>
 				<Layout>
