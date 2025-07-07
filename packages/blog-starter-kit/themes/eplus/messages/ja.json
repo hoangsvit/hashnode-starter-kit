@@ -38,7 +38,7 @@
 		"readMoreOnHashnode": "Hashnodeでもっと読む",
 		"articlesWithTag": "このタグの記事",
 		"noArticlesYet": "まだ記事がありません",
-		"noArticlesWithTag": "#{{tagName}}タグの記事はまだありません。最初の記事を書いてみませんか！",
+		"noArticlesWithTag": "#{tagName}タグの記事はまだありません。最初の記事を書いてみませんか！",
 		"exploreMoreOnHashnode": "Hashnodeでもっと探索する",
 		"aboutTopic": "について",
 		"pinned": "ピン留め",
@@ -55,7 +55,7 @@
 		"likers": "いいねした人",
 		"comment": "コメント",
 		"comments": "コメント",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"seriesPageTitle": "{seriesName} - {publicationTitle}",
 		"postsInSeries": "シリーズの投稿",
 		"currentPost": "現在の投稿",
 		"viewAllPostsInSeries": "シリーズの全投稿を表示",
@@ -205,6 +205,15 @@
 		"writtenBy": "著者",
 		"moreArticles": "その他の記事",
 		"addComment": "コメントを追加",
-		"userAvatar": "{{name}}のアバター"
+		"userAvatar": "{name}のアバター"
+	},
+	"archive": {
+		"title": "アーカイブ",
+		"description": "{publicationTitle}のすべての投稿を閲覧",
+		"allPosts": "すべての投稿",
+		"browsePosts": "{publicationTitle}のすべての{totalPosts}投稿を閲覧",
+		"noPostsFound": "投稿が見つかりません。",
+		"previous": "前へ",
+		"next": "次へ"
 	}
 }

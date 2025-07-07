@@ -38,7 +38,7 @@
 		"readMoreOnHashnode": "Lire plus d'histoires sur Hashnode",
 		"articlesWithTag": "Articles avec cette étiquette",
 		"noArticlesYet": "Aucun article pour le moment",
-		"noArticlesWithTag": "Il n'y a pas encore d'articles étiquetés avec #{{tagName}}. Soyez le premier à en écrire un !",
+		"noArticlesWithTag": "Il n'y a pas encore d'articles étiquetés avec #{tagName}. Soyez le premier à en écrire un !",
 		"exploreMoreOnHashnode": "Explorer plus sur Hashnode",
 		"aboutTopic": "à propos de",
 		"pinned": "Épinglé",
@@ -55,7 +55,7 @@
 		"likers": "Personnes qui aiment",
 		"comment": "commentaire",
 		"comments": "commentaires",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"seriesPageTitle": "{seriesName} - {publicationTitle}",
 		"postsInSeries": "Articles dans la série",
 		"currentPost": "Article actuel",
 		"viewAllPostsInSeries": "Voir tous les articles de la série",
@@ -205,6 +205,15 @@
 		"writtenBy": "Écrit par",
 		"moreArticles": "Plus d'articles",
 		"addComment": "Ajouter un commentaire",
-		"userAvatar": "Avatar de {{name}}"
+		"userAvatar": "Avatar de {name}"
+	},
+	"archive": {
+		"title": "Archives",
+		"description": "Parcourir tous les posts de {publicationTitle}",
+		"allPosts": "Tous les posts",
+		"browsePosts": "Parcourir tous les {totalPosts} posts de {publicationTitle}",
+		"noPostsFound": "Aucun post trouvé.",
+		"previous": "Précédent",
+		"next": "Suivant"
 	}
 }

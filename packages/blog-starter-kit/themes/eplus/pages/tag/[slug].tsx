@@ -29,7 +29,7 @@ type Props = {
 };
 
 export default function Post({ publication, posts, tag, slug, currentMenuId }: Props) {
-	const t = useTranslations('common');
+	const t = useTranslations();
 	const title = `#${tag.name} - ${publication.title}`;
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({

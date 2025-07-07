@@ -38,7 +38,7 @@
 		"readMoreOnHashnode": "Hashnode पर और कहानियां पढ़ें",
 		"articlesWithTag": "इस टैग के साथ आर्टिकल",
 		"noArticlesYet": "अभी तक कोई आर्टिकल नहीं",
-		"noArticlesWithTag": "अभी तक #{{tagName}} टैग के साथ कोई आर्टिकल नहीं है। पहले लिखने वाले बनें!",
+		"noArticlesWithTag": "अभी तक #{tagName} टैग के साथ कोई आर्टिकल नहीं है। पहले लिखने वाले बनें!",
 		"exploreMoreOnHashnode": "Hashnode पर और एक्सप्लोर करें",
 		"aboutTopic": "के बारे में",
 		"pinned": "पिन किया गया",
@@ -55,7 +55,7 @@
 		"likers": "पसंद करने वाले",
 		"comment": "टिप्पणी",
 		"comments": "टिप्पणियां",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"seriesPageTitle": "{seriesName} - {publicationTitle}",
 		"postsInSeries": "सीरीज में पोस्ट",
 		"currentPost": "मौजूदा पोस्ट",
 		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें",
@@ -205,6 +205,15 @@
 		"writtenBy": "लेखक",
 		"moreArticles": "अधिक लेख",
 		"addComment": "टिप्पणी जोड़ें",
-		"userAvatar": "{{name}} का अवतार"
+		"userAvatar": "{name} का अवतार"
+	},
+	"archive": {
+		"title": "आर्काइव",
+		"description": "{publicationTitle} की सभी पोस्ट ब्राउज़ करें",
+		"allPosts": "सभी पोस्ट",
+		"browsePosts": "{publicationTitle} की सभी {totalPosts} पोस्ट ब्राउज़ करें",
+		"noPostsFound": "कोई पोस्ट नहीं मिली।",
+		"previous": "पिछला",
+		"next": "अगला"
 	}
 }
