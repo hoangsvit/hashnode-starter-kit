@@ -38,7 +38,7 @@
 		"readMoreOnHashnode": "Đọc thêm câu chuyện trên Hashnode",
 		"articlesWithTag": "Bài viết có thẻ này",
 		"noArticlesYet": "Chưa có bài viết nào",
-		"noArticlesWithTag": "Chưa có bài viết nào được gắn thẻ #{{tagName}}. Hãy là người đầu tiên viết một bài!",
+		"noArticlesWithTag": "Chưa có bài viết nào được gắn thẻ #{tagName}. Hãy là người đầu tiên viết một bài!",
 		"exploreMoreOnHashnode": "Khám phá thêm trên Hashnode",
 		"aboutTopic": "về",
 		"pinned": "Được ghim",
@@ -55,7 +55,7 @@
 		"likers": "Người thích",
 		"comment": "bình luận",
 		"comments": "bình luận",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"seriesPageTitle": "{seriesName} - {publicationTitle}",
 		"postsInSeries": "Bài viết trong chuỗi",
 		"currentPost": "Bài hiện tại",
 		"viewAllPostsInSeries": "Xem tất cả bài viết trong chuỗi",
@@ -205,6 +205,15 @@
 		"writtenBy": "Được viết bởi",
 		"moreArticles": "Bài viết khác",
 		"addComment": "Thêm bình luận",
-		"userAvatar": "Ảnh đại diện của {{name}}"
+		"userAvatar": "Ảnh đại diện của {name}"
+	},
+	"archive": {
+		"title": "Kho lưu trữ",
+		"description": "Duyệt tất cả bài viết từ {publicationTitle}",
+		"allPosts": "Tất cả bài viết",
+		"browsePosts": "Duyệt tất cả {totalPosts} bài viết từ {publicationTitle}",
+		"noPostsFound": "Không tìm thấy bài viết nào.",
+		"previous": "Trước",
+		"next": "Tiếp theo"
 	}
 }
