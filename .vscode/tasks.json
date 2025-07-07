@@ -19,7 +19,7 @@
 			}
 		},
 		{
-			"label": "eplus",
+			"label": "eplus - dev",
 			"type": "shell",
 			"command": "pnpm dev",
 			"group": "none",
