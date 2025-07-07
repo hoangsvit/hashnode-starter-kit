@@ -20,6 +20,7 @@ query RSSFeed($host: String!, $first: Int!, $after: String) {
 						name
 						username
 					}
+					publishedAt
 				}
 			}
 			pageInfo {
