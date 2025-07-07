@@ -38,7 +38,7 @@
 		"readMoreOnHashnode": "在 Hashnode 上阅读更多故事",
 		"articlesWithTag": "带有此标签的文章",
 		"noArticlesYet": "还没有文章",
-		"noArticlesWithTag": "还没有标记为 #{{tagName}} 的文章。成为第一个写文章的人！",
+		"noArticlesWithTag": "还没有标记为 #{tagName} 的文章。成为第一个写文章的人！",
 		"exploreMoreOnHashnode": "在 Hashnode 上探索更多",
 		"aboutTopic": "关于",
 		"pinned": "置顶",
@@ -55,7 +55,7 @@
 		"likers": "点赞者",
 		"comment": "评论",
 		"comments": "评论",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"seriesPageTitle": "{seriesName} - {publicationTitle}",
 		"postsInSeries": "系列中的文章",
 		"currentPost": "当前文章",
 		"viewAllPostsInSeries": "查看系列中的所有文章",
@@ -205,6 +205,15 @@
 		"writtenBy": "作者",
 		"moreArticles": "更多文章",
 		"addComment": "添加评论",
-		"userAvatar": "{{name}}的头像"
+		"userAvatar": "{name}的头像"
+	},
+	"archive": {
+		"title": "归档",
+		"description": "浏览 {publicationTitle} 的所有文章",
+		"allPosts": "所有文章",
+		"browsePosts": "浏览 {publicationTitle} 的所有 {totalPosts} 篇文章",
+		"noPostsFound": "未找到文章。",
+		"previous": "上一页",
+		"next": "下一页"
 	}
 }

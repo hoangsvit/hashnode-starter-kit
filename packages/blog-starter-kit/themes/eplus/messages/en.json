@@ -38,7 +38,7 @@
 		"readMoreOnHashnode": "Read more stories on Hashnode",
 		"articlesWithTag": "Articles with this tag",
 		"noArticlesYet": "No articles yet",
-		"noArticlesWithTag": "There are no articles tagged with #{{tagName}} yet. Be the first to write one!",
+		"noArticlesWithTag": "There are no articles tagged with #{tagName} yet. Be the first to write one!",
 		"exploreMoreOnHashnode": "Explore more on Hashnode",
 		"aboutTopic": "about",
 		"pinned": "Pinned",
@@ -55,7 +55,7 @@
 		"likers": "Likers",
 		"comment": "comment",
 		"comments": "comments",
-		"seriesPageTitle": "{{seriesName}} - {{publicationTitle}}",
+		"seriesPageTitle": "{seriesName} - {publicationTitle}",
 		"postsInSeries": "Posts in series",
 		"currentPost": "Current Post",
 		"viewAllPostsInSeries": "View all posts in series",
@@ -205,6 +205,15 @@
 		"writtenBy": "Written by",
 		"moreArticles": "More articles",
 		"addComment": "Add a comment",
-		"userAvatar": "{{name}} avatar"
+		"userAvatar": "{name} avatar"
+	},
+	"archive": {
+		"title": "Archive",
+		"description": "Browse all posts from {publicationTitle}",
+		"allPosts": "All Posts",
+		"browsePosts": "Browse all {totalPosts} posts from {publicationTitle}",
+		"noPostsFound": "No posts found.",
+		"previous": "Previous",
+		"next": "Next"
 	}
 }
