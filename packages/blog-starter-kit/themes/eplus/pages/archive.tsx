@@ -62,9 +62,7 @@ export default function Archive(
 			<AppProvider publication={publication}>
 				<Layout>
 					<Head>
-						<title>
-							{t('archive.title')} - {publication.displayTitle || publication.title || 'Hashnode Blog'}
-						</title>
+						<title>{`${t('archive.title')} - ${publication.displayTitle || publication.title || 'Hashnode Blog'}`}</title>
 						<meta
 							name="description"
 							content={t('archive.description', {
