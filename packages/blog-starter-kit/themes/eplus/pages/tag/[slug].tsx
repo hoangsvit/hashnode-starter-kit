@@ -1,9 +1,10 @@
 import Head from 'next/head';
-import { useTranslations } from 'next-intl';
+import { useTranslations, NextIntlClientProvider } from 'next-intl';
 import { twJoin } from 'tailwind-merge';
 import { useState } from 'react';
 import { useQuery } from 'urql';
 import { initUrqlClient } from 'next-urql';
+import { useRouter } from 'next/router';
 
 import { AppProvider } from '../../components/contexts/appContext';
 import { Header } from '../../components/header';
@@ -17,6 +18,7 @@ import ExternalLinkSVG from '../../components/icons/svgs/ExternalLinkSVG';
 import { createHeaders, createSSRExchange, getUrqlClientConfig } from '../../lib/api/client';
 import PublicationPosts from '../../components/publication-posts';
 import PublicationFooter from '../../components/publication-footer';
+import { getTimezoneFromLocale } from '../../utils/timezone';
 
 const INITIAL_LIMIT = 6;
 
@@ -26,10 +28,12 @@ type Props = {
 	tag: NonNullable<TagInitialQuery['tag']>;
 	slug: string;
 	currentMenuId: string;
+	messages: Record<string, any>;
 };
 
-export default function Post({ publication, posts, tag, slug, currentMenuId }: Props) {
+export default function Post({ publication, posts, tag, slug, currentMenuId, messages }: Props) {
 	const t = useTranslations();
+	const router = useRouter();
 	const title = `#${tag.name} - ${publication.title}`;
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
@@ -46,7 +50,12 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 		}
 	};
 	return (
-		<AppProvider publication={publication}>
+		<NextIntlClientProvider
+			locale={router.locale}
+			messages={messages}
+			timeZone={getTimezoneFromLocale(router.locale ?? 'en')}
+		>
+			<AppProvider publication={publication}>
 			<Layout>
 				<Head>
 					<title>{title}</title>
@@ -213,9 +222,9 @@ export default function Post({ publication, posts, tag, slug, currentMenuId }: P
 					disableFooterBranding={publication.preferences.disableFooterBranding}
 					isTeam={publication.isTeam}
 					logo={publication.preferences.logo}
-				/>
-			</Layout>
-		</AppProvider>
+				/>				</Layout>
+			</AppProvider>
+		</NextIntlClientProvider>
 	);
 }
 
@@ -227,6 +236,9 @@ export const getServerSideProps: any = async (ctx: any) => { // TODO: type needs
   const ssrCache = createSSRExchange();
   const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
   let currentMenu = '';
+
+  // Load messages for the current locale
+  const messages = (await import(`../../messages/${locale}.json`)).default;
 
   const host = (queryHost as string) || req.headers.host!;
   const slug = query.slug as string;
@@ -282,6 +294,7 @@ export const getServerSideProps: any = async (ctx: any) => { // TODO: type needs
 
   return {
     props: {
+      messages,
       publication,
       posts,
       tag,
