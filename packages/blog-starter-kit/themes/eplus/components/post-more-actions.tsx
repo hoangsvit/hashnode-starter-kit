@@ -28,7 +28,6 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 	const { pinPost, unpinPost, editPost, deletePost } = usePostActions({
 		onSuccess: (action, postId) => {
 			setIsLoading(false);
-			console.log(`${action} successful for post ${postId}`);
 			// You could show a toast notification here
 		},
 		onError: (error, action) => {
@@ -112,7 +111,7 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 
 	const handleEdit = () => {
 		setIsOpen(false);
-		editPost(post.id, post.slug);
+		editPost(post.cuid, post.slug);
 	};
 
 	const handleDelete = async () => {
