@@ -26,6 +26,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 		};
 	}, []);
 
+	useEffect(() => {
+		// Remove 't' param from URL if present
+		const { pathname, query, asPath } = router;
+		if (typeof window !== 'undefined' && query.t) {
+			const newQuery = { ...query };
+			delete newQuery.t;
+			const params = new URLSearchParams(newQuery as Record<string, string>);
+			const newUrl = params.toString() ? `${pathname}?${params}` : pathname;
+			router.replace(newUrl, undefined, { shallow: true });
+		}
+		// Only run on client side when query changes
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [router.query]);
+
 	return (
 		<NextIntlClientProvider
 			locale={router.locale}

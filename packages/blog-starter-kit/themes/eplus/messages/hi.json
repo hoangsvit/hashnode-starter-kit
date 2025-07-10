@@ -59,7 +59,8 @@
 		"postsInSeries": "सीरीज में पोस्ट",
 		"currentPost": "मौजूदा पोस्ट",
 		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें",
-		"cancel": "रद्द करें"
+		"cancel": "रद्द करें",
+		"moreActions": "अधिक क्रियाएं"
 	},
 	"navigation": {
 		"home": "होम",
@@ -196,6 +197,14 @@
 	},
 	"auth": {
 		"loginToReply": "उत्तर देने के लिए लॉगिन करें"
+	},
+	"post": {
+		"actions": {
+			"pin": "गर्मियों के लिए पिन करें",
+			"unpin": "गर्मियों के लिए अनपिन करें",
+			"edit": "पोस्ट संपादित करें",
+			"delete": "पोस्ट हटाएं"
+		}
 	},
 	"userMenu": {
 		"writeNewPost": "नया पोस्ट लिखें",

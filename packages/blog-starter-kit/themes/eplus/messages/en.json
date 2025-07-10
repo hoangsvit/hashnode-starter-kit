@@ -59,7 +59,8 @@
 		"postsInSeries": "Posts in series",
 		"currentPost": "Current Post",
 		"viewAllPostsInSeries": "View all posts in series",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"moreActions": "More actions"
 	},
 	"navigation": {
 		"home": "Home",
@@ -196,6 +197,14 @@
 	},
 	"auth": {
 		"loginToReply": "Login to reply"
+	},
+	"post": {
+		"actions": {
+			"pin": "Pin to your Blog",
+			"unpin": "Unpin from your Blog",
+			"edit": "Edit post",
+			"delete": "Delete post"
+		}
 	},
 	"userMenu": {
 		"writeNewPost": "Write new post",
