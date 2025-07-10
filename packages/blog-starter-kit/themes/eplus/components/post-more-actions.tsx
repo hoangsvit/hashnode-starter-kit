@@ -215,7 +215,7 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 									role="menuitem"
 								>
 									<PinSVG 
-										className="mr-3 h-4 w-4 text-slate-500 dark:text-slate-400" 
+										className="mr-3 h-4 w-4 text-blue-500 dark:text-blue-400" 
 										aria-hidden="true"
 									/>
 									{t('post.actions.pin') || 'Pin post'}
