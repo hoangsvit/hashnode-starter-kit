@@ -4,6 +4,7 @@ import { twJoin } from 'tailwind-merge';
 import { MoreVerticalSVG, EditSVG, DeleteSVG, PinSVG } from './icons/svgs';
 import { useAuthContext } from '../contexts/AuthContext';
 import { usePostActions } from '../hooks/usePostActions';
+import { useAppContext } from './contexts/appContext';
 import { PostFullFragment } from '../generated/graphql';
 
 interface PostMoreActionsProps {
@@ -18,6 +19,10 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const t = useTranslations();
 	const { user, isAuthenticated } = useAuthContext();
+	const { publication } = useAppContext();
+
+	// Determine if the current post is pinned by comparing with publication.pinnedPost
+	const isPinned = publication.pinnedPost?.id === post.id;
 
 	// Post actions hook with success/error handlers
 	const { pinPost, unpinPost, editPost, deletePost } = usePostActions({
@@ -81,14 +86,28 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 		setIsOpen(false);
 		setIsLoading(true);
 		
-		if (!post.publication?.id) {
+		// Use the post ID directly with UpdatePost mutation
+		const result = await pinPost(post.id);
+		
+		// State update is handled in the onSuccess callback
+		if (result && !result.success) {
+			// If pin failed, reset loading state (error handling is in onError callback)
 			setIsLoading(false);
-			alert('Publication ID not available');
-			return;
 		}
+	};
 
-		// For now, we'll assume it's a pin action since we don't have pin status
-		await pinPost(post.id, post.publication.id);
+	const handleUnpin = async () => {
+		setIsOpen(false);
+		setIsLoading(true);
+		
+		// Use the post ID directly with UpdatePost mutation  
+		const result = await unpinPost(post.id);
+		
+		// State update is handled in the onSuccess callback
+		if (result && !result.success) {
+			// If unpin failed, reset loading state (error handling is in onError callback)
+			setIsLoading(false);
+		}
 	};
 
 	const handleEdit = () => {
@@ -144,27 +163,9 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 					role="menu"
 					aria-orientation="vertical"
 				>
-					<div className="py-1">
-						<button
-							onClick={handlePin}
-							disabled={isLoading}
-							className={twJoin(
-								'flex w-full items-center px-4 py-2 text-left text-sm transition-colors duration-150',
-								'hover:bg-slate-50 dark:hover:bg-slate-700',
-								'text-slate-700 dark:text-slate-300',
-								'disabled:opacity-50 disabled:cursor-not-allowed'
-							)}
-							role="menuitem"
-						>
-							<PinSVG 
-								className="mr-3 h-4 w-4 text-slate-500 dark:text-slate-400" 
-								aria-hidden="true"
-							/>
-							{/* Note: Pin status not available in current GraphQL fragment */}
-							{t('post.actions.pin') || 'Pin post'}
-						</button>
-
-						<button
+                    <div className="py-1">
+                        
+                        <button
 							onClick={handleEdit}
 							disabled={isLoading}
 							className={twJoin(
@@ -180,7 +181,46 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 								aria-hidden="true"
 							/>
 							{t('post.actions.edit') || 'Edit post'}
-						</button>
+                        </button>
+                        
+						{/* Show either Pin or Unpin based on current status */}
+						{isPinned ? (
+								<button
+									onClick={handleUnpin}
+									disabled={isLoading}
+									className={twJoin(
+										'flex w-full items-center px-4 py-2 text-left text-sm transition-colors duration-150',
+										'hover:bg-slate-50 dark:hover:bg-slate-700',
+										'text-slate-700 dark:text-slate-300',
+										'disabled:opacity-50 disabled:cursor-not-allowed'
+									)}
+									role="menuitem"
+								>
+									<PinSVG 
+										className="mr-3 h-4 w-4 text-slate-500 dark:text-slate-400" 
+										aria-hidden="true"
+									/>
+									{t('post.actions.unpin') || 'Unpin post'}
+								</button>
+							) : (
+								<button
+									onClick={handlePin}
+									disabled={isLoading}
+									className={twJoin(
+										'flex w-full items-center px-4 py-2 text-left text-sm transition-colors duration-150',
+										'hover:bg-slate-50 dark:hover:bg-slate-700',
+										'text-slate-700 dark:text-slate-300',
+										'disabled:opacity-50 disabled:cursor-not-allowed'
+									)}
+									role="menuitem"
+								>
+									<PinSVG 
+										className="mr-3 h-4 w-4 text-slate-500 dark:text-slate-400" 
+										aria-hidden="true"
+									/>
+									{t('post.actions.pin') || 'Pin post'}
+								</button>
+							)}
 
 						<div className="my-1 border-t border-slate-200 dark:border-slate-600" />
 

@@ -2,20 +2,9 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const HASHNODE_GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 
-const PIN_POST_MUTATION = `
-  mutation PinPost($input: PinPostInput!) {
-    pinPost(input: $input) {
-      post {
-        id
-        title
-      }
-    }
-  }
-`;
-
-const UNPIN_POST_MUTATION = `
-  mutation UnpinPost($input: UnpinPostInput!) {
-    unpinPost(input: $input) {
+const UPDATE_POST_MUTATION = `
+  mutation UpdatePost($input: UpdatePostInput!) {
+    updatePost(input: $input) {
       post {
         id
         title
@@ -30,12 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	}
 
 	try {
-		const { postId, action, publicationId } = req.body;
+		const { postId, action } = req.body;
 
-		if (!postId || !action || !publicationId) {
-			return res
-				.status(400)
-				.json({ error: 'Missing required fields: postId, action, publicationId' });
+		if (!postId || !action) {
+			return res.status(400).json({ error: 'Missing required fields: postId, action' });
 		}
 
 		if (!['pin', 'unpin'].includes(action)) {
@@ -48,11 +35,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			return res.status(401).json({ error: 'Authentication required' });
 		}
 
-		const mutation = action === 'pin' ? PIN_POST_MUTATION : UNPIN_POST_MUTATION;
+		// Use UpdatePost mutation with pinToBlog setting
 		const variables = {
 			input: {
-				postId,
-				publicationId,
+				id: postId,
+				settings: {
+					pinToBlog: action === 'pin',
+				},
 			},
 		};
 
@@ -63,7 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				Authorization: token,
 			},
 			body: JSON.stringify({
-				query: mutation,
+				query: UPDATE_POST_MUTATION,
 				variables,
 			}),
 		});
@@ -78,7 +67,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			});
 		}
 
-		const result = data.data[action === 'pin' ? 'pinPost' : 'unpinPost'];
+		const result = data.data.updatePost;
+
 		if (result?.post) {
 			return res.status(200).json({
 				success: true,
