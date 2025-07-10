@@ -12,7 +12,7 @@ export const usePostActions = ({ onSuccess, onError }: UsePostActionsProps = {})
 	const { isAuthenticated } = useAuthContext();
 
 	const pinPost = useCallback(
-		async (postId: string, publicationId: string) => {
+		async (postId: string) => {
 			if (!isAuthenticated) {
 				onError?.('Authentication required', 'pin');
 				return;
@@ -27,7 +27,6 @@ export const usePostActions = ({ onSuccess, onError }: UsePostActionsProps = {})
 					credentials: 'include',
 					body: JSON.stringify({
 						postId,
-						publicationId,
 						action: 'pin',
 					}),
 				});
@@ -50,7 +49,7 @@ export const usePostActions = ({ onSuccess, onError }: UsePostActionsProps = {})
 	);
 
 	const unpinPost = useCallback(
-		async (postId: string, publicationId: string) => {
+		async (postId: string) => {
 			if (!isAuthenticated) {
 				onError?.('Authentication required', 'unpin');
 				return;
@@ -65,7 +64,6 @@ export const usePostActions = ({ onSuccess, onError }: UsePostActionsProps = {})
 					credentials: 'include',
 					body: JSON.stringify({
 						postId,
-						publicationId,
 						action: 'unpin',
 					}),
 				});
@@ -90,7 +88,7 @@ export const usePostActions = ({ onSuccess, onError }: UsePostActionsProps = {})
 	const editPost = useCallback(
 		(postId: string, slug: string) => {
 			// Redirect to Hashnode's edit page
-			const editUrl = `https://hashnode.com/draft/${postId}`;
+			const editUrl = `https://hashnode.com/edit/${postId}`;
 			window.open(editUrl, '_blank', 'noopener,noreferrer');
 			onSuccess?.('edit', postId);
 		},
