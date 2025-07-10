@@ -47,6 +47,9 @@ import ShareSVGV2 from './ShareSVGV2';
 import WhatsappSVG from './WhatsappSVG';
 import AlertSVG from './AlertSVG';
 import LoveSVG from './LoveSVG';
+import MoreVerticalSVG from './MoreVerticalSVG';
+import EditSVG from './EditSVG';
+import DeleteSVG from './DeleteSVG';
 
 export {
 	ArticleSVG,
@@ -97,5 +100,8 @@ export {
 	ShareSVGV2,
 	WhatsappSVG,
 	AlertSVG,
-	LoveSVG
+	LoveSVG,
+	MoreVerticalSVG,
+	EditSVG,
+	DeleteSVG
 };
