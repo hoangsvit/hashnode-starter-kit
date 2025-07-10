@@ -200,8 +200,8 @@
 	},
 	"post": {
 		"actions": {
-			"pin": "Pin post",
-			"unpin": "Unpin post",
+			"pin": "Pin to your Blog",
+			"unpin": "Unpin from your Blog",
 			"edit": "Edit post",
 			"delete": "Delete post"
 		}

@@ -59,7 +59,8 @@
 		"postsInSeries": "系列中的文章",
 		"currentPost": "当前文章",
 		"viewAllPostsInSeries": "查看系列中的所有文章",
-		"cancel": "取消"
+		"cancel": "取消",
+		"moreActions": "更多操作"
 	},
 	"navigation": {
 		"home": "首页",
@@ -196,6 +197,14 @@
 	},
 	"auth": {
 		"loginToReply": "登录以回复"
+	},
+	"post": {
+		"actions": {
+			"pin": "在您的博客上置顶",
+			"unpin": "从您的博客上取消置顶",
+			"edit": "编辑文章",
+			"delete": "删除文章"
+		}
 	},
 	"userMenu": {
 		"writeNewPost": "写新文章",

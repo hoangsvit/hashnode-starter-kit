@@ -59,7 +59,8 @@
 		"postsInSeries": "Bài viết trong chuỗi",
 		"currentPost": "Bài hiện tại",
 		"viewAllPostsInSeries": "Xem tất cả bài viết trong chuỗi",
-		"cancel": "Hủy"
+		"cancel": "Hủy",
+		"moreActions": "Các hành động khác"
 	},
 	"navigation": {
 		"home": "Trang chủ",
@@ -196,6 +197,14 @@
 	},
 	"auth": {
 		"loginToReply": "Đăng nhập để trả lời"
+	},
+	"post": {
+		"actions": {
+			"pin": "Ghim vào Blog của bạn",
+			"unpin": "Bỏ ghim khỏi Blog của bạn",
+			"edit": "Chỉnh sửa bài viết",
+			"delete": "Xóa bài viết"
+		}
 	},
 	"userMenu": {
 		"writeNewPost": "Viết bài mới",
