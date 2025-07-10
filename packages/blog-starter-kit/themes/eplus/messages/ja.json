@@ -59,7 +59,8 @@
 		"postsInSeries": "シリーズの投稿",
 		"currentPost": "現在の投稿",
 		"viewAllPostsInSeries": "シリーズの全投稿を表示",
-		"cancel": "キャンセル"
+		"cancel": "キャンセル",
+		"moreActions": "その他のアクション"
 	},
 	"navigation": {
 		"home": "ホーム",
@@ -196,6 +197,14 @@
 	},
 	"auth": {
 		"loginToReply": "返信するにはログイン"
+	},
+	"post": {
+		"actions": {
+			"pin": "ブログにピン留め",
+			"unpin": "ブログからピン留め解除",
+			"edit": "投稿を編集",
+			"delete": "投稿を削除"
+		}
 	},
 	"userMenu": {
 		"writeNewPost": "新しい投稿を書く",
