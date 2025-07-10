@@ -59,7 +59,8 @@
 		"postsInSeries": "सीरीज में पोस्ट",
 		"currentPost": "मौजूदा पोस्ट",
 		"viewAllPostsInSeries": "सीरीज में सभी पोस्ट देखें",
-		"cancel": "रद्द करें"
+		"cancel": "रद्द करें",
+		"moreActions": "अधिक क्रियाएं"
 	},
 	"navigation": {
 		"home": "होम",
