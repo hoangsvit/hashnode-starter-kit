@@ -38,9 +38,6 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 		},
 	});
 
-	// Check if current user is the post author
-	const isPostOwner = isAuthenticated && user && user.id === post.author.id;
-
 	// Close dropdown when clicking outside
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -75,11 +72,6 @@ export const PostMoreActions = ({ post, isCompact = false }: PostMoreActionsProp
 			};
 		}
 	}, [isOpen]);
-
-	// Don't render if user is not authenticated or not the post owner
-	if (!isPostOwner) {
-		return null;
-	}
 
 	const handlePin = async () => {
 		setIsOpen(false);

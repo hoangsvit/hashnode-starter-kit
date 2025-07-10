@@ -9,6 +9,7 @@ import { PostFullFragment } from '../generated/graphql';
 import TocSheet from './toc-sheet';
 import PostShareWidget from './post-share-widget';
 import { PostMoreActions } from './post-more-actions';
+import { useAuthContext } from '../contexts/AuthContext';
 
 
 function PostFloatingMenu(props: {
@@ -29,6 +30,8 @@ function PostFloatingMenu(props: {
   } = props;
 
   const t = useTranslations();
+  const { user, isAuthenticated } = useAuthContext();
+  const isPostOwner = isAuthenticated && user && user.id === post.author.id;
 
   const handleFloatingBarDisplay = () => {
     const blogHeader = document.querySelector('.blog-header');
@@ -171,10 +174,12 @@ function PostFloatingMenu(props: {
           )}
 
           <PostShareWidget post={post} shareText={shareText} />
-          
-          <Separator className="mx-2 h-5" />
-          
-          <PostMoreActions post={post} isCompact={true} />
+          {isPostOwner && (
+            <>
+              <Separator className="mx-2 h-5" />
+              <PostMoreActions post={post} isCompact={true} />
+            </>
+          )}
         </div>
       </div>
     </Tooltip.Provider>
