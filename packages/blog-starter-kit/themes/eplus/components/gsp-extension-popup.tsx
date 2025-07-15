@@ -32,7 +32,7 @@ type GSPExtensionPopupProps = {
  */
 const isGSPRelatedPost = (post: PostFullFragment): boolean => {
   // Check if the post title includes GSP-related keywords
-  const gspKeywords = ['gsp', 'google skills program', 'google cloud', 'gcp', 'cloud skills', 'qwiklabs'];
+  const gspKeywords = ['gsp', 'arcade', 'google skills program', 'google cloud', 'gcp', 'cloud skills', 'qwiklabs'];
   const postTitle = post.title.toLowerCase();
   const postContent = post.content?.html?.toLowerCase() || '';
   
