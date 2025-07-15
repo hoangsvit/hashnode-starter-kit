@@ -4,6 +4,8 @@ import Button from './hn-button';
 import { CloseSVG } from './icons/svgs';
 import { PostFullFragment } from '../generated/graphql';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { useTranslations } from 'next-intl';
 
 // Custom animation styles (these will be added at build time via Tailwind's JIT compiler)
 // If you need to add these manually to your CSS, you can do so
@@ -46,6 +48,10 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
   const [showPopup, setShowPopup] = useState(false);
   const [dismissedPermanently, setDismissedPermanently] = useState(false);
   const [isBrowser, setIsBrowser] = useState(false);
+  const router = useRouter();
+  
+  // Use translations from next-intl
+  const t = useTranslations('gsp-extension');
   
   // Check for stored state and set browser environment on mount
   useEffect(() => {
@@ -133,21 +139,20 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
                     height={48}
                   />
                 </div>
-                <h2 className="text-xl font-semibold">Google Cloud Skills Boost - Helper</h2>
+                <h2 className="text-xl font-semibold">{t('extensionTitle')}</h2>
               </div>
               
               <p className="mb-4 text-sm">
-                Looking to complete Google Cloud Skills Boost labs more efficiently? This Chrome extension helps you track lab progress, provides quick references, and offers helpful shortcuts while working on Google Cloud hands-on labs.
+                {t('extensionDescription')}
               </p>
               
               <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-md border border-blue-200 dark:border-blue-800">
-                <h3 className="text-sm font-semibold mb-1 text-blue-700 dark:text-blue-300">📘 Disclaimer</h3>
+                <h3 className="text-sm font-semibold mb-1 text-blue-700 dark:text-blue-300">{t('disclaimerTitle')}</h3>
                 <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
-                  <strong>For Educational Use Only:</strong> This repository and the included script are provided strictly for learning purposes. 
-                  They are meant to help you explore and understand Google Cloud&apos;s monitoring services more effectively and build your cloud skills.
+                  {t('disclaimerEducationalUse')}
                 </p>
                 <p className="text-xs text-blue-700 dark:text-blue-300">
-                  <strong>📝 Read Before Use:</strong> Please review the script carefully before running it to ensure you understand how the services involved work.
+                  {t('disclaimerReadBeforeUse')}
                 </p>
               </div>
               
@@ -168,14 +173,14 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
                   rel="noopener noreferrer"
                   className="inline-block rounded-md bg-blue-600 px-6 py-3 text-center font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
                 >
-                  Install Extension
+                  {t('installButton')}
                 </a>
                 <Button 
                   onClick={closePopupPermanently}
                   variant="transparent" 
                   className="text-sm"
                 >
-                  Don&apos;t show again
+                  {t('dontShowAgain')}
                 </Button>
               </div>
             </div>

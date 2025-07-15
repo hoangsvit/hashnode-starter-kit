@@ -224,5 +224,14 @@
 		"noPostsFound": "Không tìm thấy bài viết nào.",
 		"previous": "Trước",
 		"next": "Tiếp theo"
+	},
+	"gsp-extension": {
+		"extensionTitle": "Google Cloud Skills Boost - Trợ lý",
+		"extensionDescription": "Muốn hoàn thành các bài lab Google Cloud Skills Boost hiệu quả hơn? Tiện ích Chrome này giúp theo dõi tiến trình, cung cấp tham khảo nhanh và các phím tắt hữu ích khi làm việc với các bài thực hành Google Cloud.",
+		"disclaimerTitle": "📘 Lưu ý quan trọng",
+		"disclaimerEducationalUse": "Chỉ dành cho mục đích học tập: Tiện ích này được cung cấp chỉ để phục vụ việc học tập. Nó giúp bạn khám phá và hiểu rõ hơn về các dịch vụ của Google Cloud và nâng cao kỹ năng cloud của bạn.",
+		"disclaimerReadBeforeUse": "Đọc trước khi sử dụng: Vui lòng xem xét kỹ tài liệu trước khi sử dụng tiện ích này để đảm bảo bạn hiểu cách thức hoạt động của các dịch vụ liên quan.",
+		"installButton": "Cài đặt tiện ích",
+		"dontShowAgain": "Không hiển thị lại"
 	}
 }

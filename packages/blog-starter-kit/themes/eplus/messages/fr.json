@@ -224,5 +224,14 @@
 		"noPostsFound": "Aucun post trouvé.",
 		"previous": "Précédent",
 		"next": "Suivant"
+	},
+	"gsp-extension": {
+		"extensionTitle": "Google Cloud Skills Boost - Assistant",
+		"extensionDescription": "Vous cherchez à compléter les laboratoires Google Cloud Skills Boost plus efficacement ? Cette extension Chrome vous aide à suivre la progression des laboratoires, fournit des références rapides et propose des raccourcis utiles lors de l'utilisation des laboratoires pratiques Google Cloud.",
+		"disclaimerTitle": "📘 Avertissement",
+		"disclaimerEducationalUse": "Pour usage éducatif uniquement : Cette extension est fournie strictement à des fins d'apprentissage. Elle vous aide à explorer et comprendre les services de Google Cloud plus efficacement et à développer vos compétences cloud.",
+		"disclaimerReadBeforeUse": "Lisez avant utilisation : Veuillez lire attentivement la documentation avant d'utiliser cette extension pour vous assurer que vous comprenez comment fonctionnent les services impliqués.",
+		"installButton": "Installer l'extension",
+		"dontShowAgain": "Ne plus afficher"
 	}
 }

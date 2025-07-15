@@ -224,5 +224,14 @@
 		"noPostsFound": "未找到文章。",
 		"previous": "上一页",
 		"next": "下一页"
+	},
+	"gsp-extension": {
+		"extensionTitle": "Google Cloud Skills Boost - 助手",
+		"extensionDescription": "想更高效地完成 Google Cloud Skills Boost 实验吗？此 Chrome 扩展可帮助您跟踪实验进度，提供快速参考，并在进行 Google Cloud 实践实验时提供便捷的快捷方式。",
+		"disclaimerTitle": "📘 免责声明",
+		"disclaimerEducationalUse": "仅限教育用途：此扩展仅用于学习目的。它有助于您更有效地探索和理解 Google Cloud 服务，并提升您的云技能。",
+		"disclaimerReadBeforeUse": "使用前请阅读：在使用此扩展前，请务必仔细阅读文档并了解相关服务的工作原理。",
+		"installButton": "安装扩展",
+		"dontShowAgain": "不再显示"
 	}
 }
