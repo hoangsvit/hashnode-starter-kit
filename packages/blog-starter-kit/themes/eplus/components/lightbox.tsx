@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
 interface LightboxProps {
   isOpen: boolean;
@@ -10,6 +12,8 @@ interface LightboxProps {
 }
 
 const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
+  const t = useTranslations('common.lightbox');
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [imgDimensions, setImgDimensions] = useState({ width: 1200, height: 800 });
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -211,7 +215,7 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
         {/* Help tooltip - only shown on desktop */}
         {showHelp && !isMobile && (
           <div className="lightbox-help-tooltip absolute -top-14 left-1/2 z-[60] w-max -translate-x-1/2 rounded-lg bg-black/80 px-4 py-2 text-center text-sm text-white shadow-lg">
-            <p>🖱️ Mouse wheel/+/- keys to zoom | Drag to move when zoomed | Arrow keys to pan</p>
+            <p>{t('mouseControls')}</p>
           </div>
         )}
         
@@ -221,7 +225,7 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
             onClose();
           }}
           className="absolute -right-4 -top-4 z-[60] flex h-10 w-10 items-center justify-center rounded-full bg-white text-xl font-bold text-black shadow-lg hover:bg-gray-200"
-          aria-label="Close"
+          aria-label={t('close')}
         >
           ×
         </button>
@@ -236,7 +240,7 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
             }}
             className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
             disabled={zoomLevel <= 1}
-            aria-label="Zoom out"
+            aria-label={t('zoomOut')}
           >
             <span className="text-xl font-bold">−</span>
           </button>
@@ -252,7 +256,7 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
             }}
             className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
             disabled={zoomLevel >= 5}
-            aria-label="Zoom in"
+            aria-label={t('zoomIn')}
           >
             <span className="text-xl font-bold">+</span>
           </button>
@@ -265,9 +269,9 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
             }}
             className="lightbox-reset-button ml-1 flex items-center justify-center rounded-full bg-slate-200 px-2 py-1 text-sm hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
             disabled={zoomLevel === 1}
-            aria-label="Reset zoom"
+            aria-label={t('reset')}
           >
-            Reset
+            {t('reset')}
           </button>
         </div>
         

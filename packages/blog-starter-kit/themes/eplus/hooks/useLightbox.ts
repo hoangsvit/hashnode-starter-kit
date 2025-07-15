@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface UseLightboxProps {
@@ -5,6 +7,8 @@ interface UseLightboxProps {
 }
 
 export const useLightbox = ({ contentRef }: UseLightboxProps) => {
+	const t = useTranslations('common.lightbox');
+	const router = useRouter();
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 	const [lightboxImage, setLightboxImage] = useState({
 		src: '',
@@ -32,7 +36,7 @@ export const useLightbox = ({ contentRef }: UseLightboxProps) => {
 
 				setLightboxImage({
 					src: originalSrc,
-					alt: imgElement.alt || 'Image',
+					alt: imgElement.alt || t('image'),
 				});
 				setIsLightboxOpen(true);
 			}
@@ -55,10 +59,13 @@ export const useLightbox = ({ contentRef }: UseLightboxProps) => {
 					img.dataset.originalSrc = fullResSrc;
 				}
 
+				// Add instructions tooltip text
+				img.dataset.instructions = t('instructions');
+
 				// Add title attribute for better UX - different for mobile and desktop
 				if (!img.title) {
 					const isMobile = window.innerWidth <= 768;
-					img.title = isMobile ? 'Tap to view in fullscreen' : 'Click to view in lightbox';
+					img.title = isMobile ? t('tapToView') : t('clickToView');
 				}
 
 				// Remove transform effect on mobile (often causes issues with tap detection)
@@ -101,7 +108,7 @@ export const useLightbox = ({ contentRef }: UseLightboxProps) => {
 			});
 			observer.disconnect();
 		};
-	}, [contentRef]);
+	}, [contentRef, t]);
 
 	return {
 		isLightboxOpen,

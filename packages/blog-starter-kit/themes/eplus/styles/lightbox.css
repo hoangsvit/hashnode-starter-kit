@@ -59,7 +59,7 @@ button[disabled] {
 }
 
 .prose img.lightbox-enabled:hover::before {
-  content: 'Click to zoom | Scroll to resize';
+  content: attr(data-instructions);
   position: absolute;
   bottom: 8px;
   left: 50%;
