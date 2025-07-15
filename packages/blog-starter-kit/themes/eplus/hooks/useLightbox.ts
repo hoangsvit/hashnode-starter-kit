@@ -55,9 +55,21 @@ export const useLightbox = ({ contentRef }: UseLightboxProps) => {
 					img.dataset.originalSrc = fullResSrc;
 				}
 
-				// Add title attribute for better UX
+				// Add title attribute for better UX - different for mobile and desktop
 				if (!img.title) {
-					img.title = 'Click to view in lightbox';
+					const isMobile = window.innerWidth <= 768;
+					img.title = isMobile ? 'Tap to view in fullscreen' : 'Click to view in lightbox';
+				}
+
+				// Remove transform effect on mobile (often causes issues with tap detection)
+				if (window.innerWidth <= 768) {
+					// Use a smaller transform scale on mobile to avoid UI issues
+					img.addEventListener('touchstart', () => {
+						img.style.transform = 'scale(1.005)';
+					});
+					img.addEventListener('touchend', () => {
+						img.style.transform = '';
+					});
 				}
 
 				// Add class to mark as processed

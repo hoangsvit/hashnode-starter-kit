@@ -72,3 +72,38 @@ button[disabled] {
   white-space: nowrap;
   z-index: 10;
 }
+
+/* Hide keyboard shortcut tips on mobile devices */
+@media (max-width: 768px) {
+  /* Hide the hover tooltip on images */
+  .prose img.lightbox-enabled:hover::before {
+    display: none;
+  }
+  
+  /* Hide the help tooltip in the lightbox for mobile */
+  .lightbox-help-tooltip {
+    display: none;
+  }
+}
+
+/* Simplify zoom controls on mobile */
+@media (max-width: 768px) {
+  .lightbox-zoom-controls {
+    padding: 6px 10px;
+  }
+  
+  .lightbox-zoom-controls button {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .lightbox-zoom-text {
+    min-width: 36px;
+    font-size: 12px;
+  }
+  
+  .lightbox-reset-button {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+}

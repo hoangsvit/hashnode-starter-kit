@@ -17,6 +17,24 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [showHelp, setShowHelp] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Check on initial render
+    checkMobile();
+    
+    // Add resize listener
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
 
   // Reset zoom and position when image changes or lightbox closes/opens
   useEffect(() => {
@@ -102,13 +120,13 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
 
   // Hide help tooltip after a few seconds
   useEffect(() => {
-    if (isOpen && showHelp) {
+    if (isOpen && showHelp && !isMobile) { // Only show help on desktop
       const timer = setTimeout(() => {
         setShowHelp(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [isOpen, showHelp]);
+  }, [isOpen, showHelp, isMobile]);
 
   // Reset help state when lightbox opens
   useEffect(() => {
@@ -151,6 +169,34 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
     setIsDragging(false);
   }, []);
 
+  // Handle touch events for mobile
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (zoomLevel > 1 && e.touches.length === 1) {
+      const touch = e.touches[0];
+      setIsDragging(true);
+      setDragStart({ 
+        x: touch.clientX - position.x, 
+        y: touch.clientY - position.y 
+      });
+    }
+  }, [zoomLevel, position]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (isDragging && zoomLevel > 1 && e.touches.length === 1) {
+      const touch = e.touches[0];
+      setPosition({
+        x: touch.clientX - dragStart.x,
+        y: touch.clientY - dragStart.y
+      });
+      // Prevent page scrolling when dragging the image
+      e.preventDefault();
+    }
+  }, [isDragging, dragStart, zoomLevel]);
+
+  const handleTouchEnd = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
   if (!isOpen || !mounted) return null;
 
   // Portal the lightbox to the body to avoid styling conflicts
@@ -162,9 +208,9 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
       onMouseLeave={handleMouseUp}
     >
       <div className="relative max-h-[90vh] max-w-[90vw]">
-        {/* Help tooltip */}
-        {showHelp && (
-          <div className="absolute -top-14 left-1/2 z-[60] w-max -translate-x-1/2 rounded-lg bg-black/80 px-4 py-2 text-center text-sm text-white shadow-lg">
+        {/* Help tooltip - only shown on desktop */}
+        {showHelp && !isMobile && (
+          <div className="lightbox-help-tooltip absolute -top-14 left-1/2 z-[60] w-max -translate-x-1/2 rounded-lg bg-black/80 px-4 py-2 text-center text-sm text-white shadow-lg">
             <p>🖱️ Mouse wheel/+/- keys to zoom | Drag to move when zoomed | Arrow keys to pan</p>
           </div>
         )}
@@ -181,7 +227,7 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
         </button>
         
         {/* Zoom controls */}
-        <div className="absolute bottom-4 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-3 rounded-full bg-white/90 px-4 py-2 text-black shadow-lg dark:bg-black/80 dark:text-white">
+        <div className="lightbox-zoom-controls absolute bottom-4 left-1/2 z-[60] flex -translate-x-1/2 items-center gap-3 rounded-full bg-white/90 px-4 py-2 text-black shadow-lg dark:bg-black/80 dark:text-white">
           <button 
             onClick={(e) => {
               e.stopPropagation();
@@ -195,7 +241,7 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
             <span className="text-xl font-bold">−</span>
           </button>
           
-          <div className="min-w-[40px] text-center">
+          <div className="lightbox-zoom-text min-w-[40px] text-center">
             {Math.round(zoomLevel * 100)}%
           </div>
           
@@ -217,7 +263,7 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
               setZoomLevel(1);
               setPosition({ x: 0, y: 0 });
             }}
-            className="ml-1 flex items-center justify-center rounded-full bg-slate-200 px-2 py-1 text-sm hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
+            className="lightbox-reset-button ml-1 flex items-center justify-center rounded-full bg-slate-200 px-2 py-1 text-sm hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600"
             disabled={zoomLevel === 1}
             aria-label="Reset zoom"
           >
@@ -243,6 +289,9 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <div style={{
               transform: `scale(${zoomLevel}) translate(${position.x / zoomLevel}px, ${position.y / zoomLevel}px)`,
@@ -266,19 +315,6 @@ const Lightbox = ({ isOpen, imageUrl, alt, onClose }: LightboxProps) => {
             </div>
           </div>
         </div>
-
-        {/* Help tooltip */}
-        {showHelp && (
-          <div className="absolute bottom-20 left-1/2 z-[70] -translate-x-1/2 rounded-lg bg-black px-4 py-2 text-center text-white shadow-lg">
-            <div className="text-sm">
-              Use <kbd className="rounded-md bg-slate-700 px-2 py-1 text-xs font-semibold">Arrow Keys</kbd> to move,
-              <br />
-              <kbd className="rounded-md bg-slate-700 px-2 py-1 text-xs font-semibold">+</kbd> <kbd className="rounded-md bg-slate-700 px-2 py-1 text-xs font-semibold">-</kbd> to zoom,
-              <br />
-              <kbd className="rounded-md bg-slate-700 px-2 py-1 text-xs font-semibold">Esc</kbd> to close.
-            </div>
-          </div>
-        )}
       </div>
     </div>,
     document.body
