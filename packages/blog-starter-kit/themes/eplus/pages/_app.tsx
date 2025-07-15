@@ -10,6 +10,7 @@ import { getUrqlClientConfig } from '../lib/api/client';
 import { useImageBlurMode } from '../hooks/useImageBlurMode';
 import { AuthProvider } from '../contexts/AuthContext';
 import '../styles/index.css';
+import '../styles/lightbox.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();

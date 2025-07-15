@@ -28,6 +28,8 @@
 		"error": "エラーが発生しました",
 		"tryAgain": "再試行",
 		"language": "言語",
+		"darkMode": "ダークモード",
+		"lightMode": "ライトモード",
 		"switchLanguage": "言語を切り替える",
 		"on": "で",
 		"discover": "発見",
@@ -45,6 +47,9 @@
 		"views": "閲覧数",
 		"with": "と",
 		"coAuthor": "共著者",
+		"and": "と",
+		"by": "著者",
+		"sortBy": "並び替え",
 		"loadMore": "さらに読み込む",
 		"reachedEnd": "最後まで読みました！👋",
 		"noPostsImage": "投稿なし",
@@ -60,7 +65,34 @@
 		"currentPost": "現在の投稿",
 		"viewAllPostsInSeries": "シリーズの全投稿を表示",
 		"cancel": "キャンセル",
-		"moreActions": "その他のアクション"
+		"moreActions": "その他のアクション",
+		"signIn": "サインイン",
+		"signUp": "サインアップ",
+		"signOut": "サインアウト",
+		"close": "閉じる",
+		"view": "表示",
+		"viewAll": "すべて表示",
+		"copied": "コピーしました！",
+		"copyToClipboard": "クリップボードにコピー",
+		"notFound": "見つかりません",
+		"yourEmail": "メールアドレス",
+		"privacyPolicy": "プライバシーポリシー",
+		"termsAndConditions": "利用規約",
+		"seeMore": "もっと見る",
+		"seeLess": "表示を減らす",
+		"lightbox": {
+			"clickToView": "クリックしてライトボックスで表示",
+			"tapToView": "タップして全画面表示",
+			"zoom": "ズーム",
+			"zoomIn": "拡大",
+			"zoomOut": "縮小",
+			"reset": "リセット",
+			"close": "閉じる",
+			"mouseControls": "マウスホイール/+/-キーでズーム | ズーム時ドラッグで移動 | 矢印キーで移動",
+			"keyboardControls": "矢印キーで移動、+/-でズーム、Escで閉じる",
+			"instructions": "クリックして拡大 | スクロールでサイズ変更",
+			"image": "画像"
+		}
 	},
 	"navigation": {
 		"home": "ホーム",
@@ -224,5 +256,14 @@
 		"noPostsFound": "投稿が見つかりません。",
 		"previous": "前へ",
 		"next": "次へ"
+	},
+	"gsp-extension": {
+		"extensionTitle": "Google Cloud Skills Boost - ヘルパー",
+		"extensionDescription": "Google Cloud Skills Boostのラボをより効率的に完了したいですか？このChrome拡張機能は、ラボの進捗を追跡し、クイックリファレンスやGoogle Cloudのハンズオンラボ作業中に役立つショートカットを提供します。",
+		"disclaimerTitle": "📘 免責事項",
+		"disclaimerEducationalUse": "教育目的のみ: この拡張機能は学習目的でのみ提供されています。Google Cloudのサービスをより効果的に探索・理解し、クラウドスキルを構築するのに役立ちます。",
+		"disclaimerReadBeforeUse": "ご利用前にお読みください: この拡張機能を使用する前に、必ずドキュメントをよくご確認いただき、関係するサービスの仕組みをご理解ください。",
+		"installButton": "拡張機能をインストール",
+		"dontShowAgain": "今後表示しない"
 	}
 }

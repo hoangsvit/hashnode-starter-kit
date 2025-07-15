@@ -28,6 +28,8 @@
 		"error": "发生错误",
 		"tryAgain": "重试",
 		"language": "语言",
+		"darkMode": "深色模式",
+		"lightMode": "浅色模式",
 		"switchLanguage": "切换语言",
 		"on": "在",
 		"discover": "发现",
@@ -45,6 +47,9 @@
 		"views": "浏览量",
 		"with": "与",
 		"coAuthor": "共同作者",
+		"and": "和",
+		"by": "由",
+		"sortBy": "排序方式",
 		"loadMore": "加载更多",
 		"reachedEnd": "你已经到达末尾了！👋",
 		"noPostsImage": "没有文章",
@@ -60,7 +65,34 @@
 		"currentPost": "当前文章",
 		"viewAllPostsInSeries": "查看系列中的所有文章",
 		"cancel": "取消",
-		"moreActions": "更多操作"
+		"moreActions": "更多操作",
+		"signIn": "登录",
+		"signUp": "注册",
+		"signOut": "退出登录",
+		"close": "关闭",
+		"view": "查看",
+		"viewAll": "查看全部",
+		"copied": "已复制！",
+		"copyToClipboard": "复制到剪贴板",
+		"notFound": "未找到",
+		"yourEmail": "您的邮箱",
+		"privacyPolicy": "隐私政策",
+		"termsAndConditions": "条款和条件",
+		"seeMore": "查看更多",
+		"seeLess": "收起",
+		"lightbox": {
+			"clickToView": "点击在灯箱中查看",
+			"tapToView": "点击全屏查看",
+			"zoom": "缩放",
+			"zoomIn": "放大",
+			"zoomOut": "缩小",
+			"reset": "重置",
+			"close": "关闭",
+			"mouseControls": "鼠标滚轮/+/-键缩放 | 放大时拖动移动 | 方向键平移",
+			"keyboardControls": "使用方向键移动，+/-缩放，Esc关闭",
+			"instructions": "点击放大 | 滚动调整大小",
+			"image": "图片"
+		}
 	},
 	"navigation": {
 		"home": "首页",
@@ -224,5 +256,14 @@
 		"noPostsFound": "未找到文章。",
 		"previous": "上一页",
 		"next": "下一页"
+	},
+	"gsp-extension": {
+		"extensionTitle": "Google Cloud Skills Boost - 助手",
+		"extensionDescription": "想更高效地完成 Google Cloud Skills Boost 实验吗？此 Chrome 扩展可帮助您跟踪实验进度，提供快速参考，并在进行 Google Cloud 实践实验时提供便捷的快捷方式。",
+		"disclaimerTitle": "📘 免责声明",
+		"disclaimerEducationalUse": "仅限教育用途：此扩展仅用于学习目的。它有助于您更有效地探索和理解 Google Cloud 服务，并提升您的云技能。",
+		"disclaimerReadBeforeUse": "使用前请阅读：在使用此扩展前，请务必仔细阅读文档并了解相关服务的工作原理。",
+		"installButton": "安装扩展",
+		"dontShowAgain": "不再显示"
 	}
 }

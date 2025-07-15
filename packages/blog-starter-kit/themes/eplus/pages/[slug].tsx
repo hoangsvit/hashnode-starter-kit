@@ -19,6 +19,7 @@ import { LazySeriesWrapper } from '../components/lazy-series-wrapper';
 import StaticPageContent from '../components/static-page-content';
 import { useRouter } from 'next/router';
 import { NextIntlClientProvider } from 'next-intl';
+import GSPExtensionPopup from '../components/gsp-extension-popup';
 import {
 	MorePostsByPublicationDocument,
 	MorePostsEdgeFragment,
@@ -138,6 +139,7 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 					currentPostSlug={post.slug}
 				/>
 			)}
+			<GSPExtensionPopup post={post} />
 		</>
 	);
 };

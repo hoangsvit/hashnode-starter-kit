@@ -28,6 +28,8 @@
 		"error": "Se produjo un error",
 		"tryAgain": "Intentar de nuevo",
 		"language": "Idioma",
+		"darkMode": "Modo oscuro",
+		"lightMode": "Modo claro",
 		"switchLanguage": "Cambiar idioma",
 		"on": "en",
 		"discover": "Descubrir",
@@ -45,6 +47,9 @@
 		"views": "vistas",
 		"with": "con",
 		"coAuthor": "coautor",
+		"and": "y",
+		"by": "por",
+		"sortBy": "Ordenar por",
 		"loadMore": "Cargar más",
 		"reachedEnd": "¡Has llegado al final! 👋",
 		"noPostsImage": "Sin publicaciones",
@@ -60,7 +65,34 @@
 		"currentPost": "Publicación actual",
 		"viewAllPostsInSeries": "Ver todas las publicaciones de la serie",
 		"cancel": "Cancelar",
-		"moreActions": "Más acciones"
+		"moreActions": "Más acciones",
+		"signIn": "Iniciar sesión",
+		"signUp": "Registrarse",
+		"signOut": "Cerrar sesión",
+		"close": "Cerrar",
+		"view": "Ver",
+		"viewAll": "Ver todo",
+		"copied": "¡Copiado!",
+		"copyToClipboard": "Copiar al portapapeles",
+		"notFound": "No encontrado",
+		"yourEmail": "Tu correo electrónico",
+		"privacyPolicy": "Política de privacidad",
+		"termsAndConditions": "Términos y condiciones",
+		"seeMore": "Ver más",
+		"seeLess": "Ver menos",
+		"lightbox": {
+			"clickToView": "Haga clic para ver en lightbox",
+			"tapToView": "Toque para ver en pantalla completa",
+			"zoom": "Zoom",
+			"zoomIn": "Acercar",
+			"zoomOut": "Alejar",
+			"reset": "Reiniciar",
+			"close": "Cerrar",
+			"mouseControls": "Rueda del ratón/teclas +/- para zoom | Arrastre para mover cuando está ampliado | Flechas para desplazarse",
+			"keyboardControls": "Use las flechas para moverse, +/- para zoom, Esc para cerrar",
+			"instructions": "Clic para acercar | Desplazarse para cambiar tamaño",
+			"image": "Imagen"
+		}
 	},
 	"navigation": {
 		"home": "Inicio",
@@ -224,5 +256,14 @@
 		"noPostsFound": "No se encontraron publicaciones.",
 		"previous": "Anterior",
 		"next": "Siguiente"
+	},
+	"gsp-extension": {
+		"extensionTitle": "Google Cloud Skills Boost - Asistente",
+		"extensionDescription": "¿Buscas completar los laboratorios de Google Cloud Skills Boost de manera más eficiente? Esta extensión de Chrome te ayuda a seguir tu progreso, proporciona referencias rápidas y ofrece atajos útiles mientras trabajas en los laboratorios prácticos de Google Cloud.",
+		"disclaimerTitle": "📘 Aviso importante",
+		"disclaimerEducationalUse": "Solo para uso educativo: Esta extensión se proporciona estrictamente con fines de aprendizaje. Te ayuda a explorar y comprender mejor los servicios de Google Cloud y desarrollar tus habilidades en la nube.",
+		"disclaimerReadBeforeUse": "Leer antes de usar: Por favor, revisa cuidadosamente la documentación antes de usar esta extensión para asegurarte de que comprendes cómo funcionan los servicios involucrados.",
+		"installButton": "Instalar extensión",
+		"dontShowAgain": "No mostrar de nuevo"
 	}
 }
