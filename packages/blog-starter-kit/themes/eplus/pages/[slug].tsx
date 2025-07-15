@@ -139,9 +139,7 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 					currentPostSlug={post.slug}
 				/>
 			)}
-			<div className="relative w-full h-0" style={{ top: '50vh' }}>
-				<GSPExtensionPopup post={post} />
-			</div>
+			<GSPExtensionPopup post={post} />
 		</>
 	);
 };

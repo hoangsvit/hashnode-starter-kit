@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { Waypoint } from 'react-waypoint';
 import Button from './hn-button';
 import { CloseSVG } from './icons/svgs';
 import { PostFullFragment } from '../generated/graphql';
@@ -57,6 +56,25 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
       const dismissed = localStorage.getItem('gsp-extension-dismissed');
       if (dismissed === 'true') {
         setDismissedPermanently(true);
+      } else {
+        // Auto show popup after 5 seconds if not dismissed
+        const timer = setTimeout(() => {
+          const lastShownTime = sessionStorage.getItem('gsp-extension-last-shown');
+          const now = new Date().getTime();
+          
+          if (lastShownTime) {
+            const timeSinceLastShown = now - parseInt(lastShownTime);
+            // Only show once per hour (3600000 ms) per session
+            if (timeSinceLastShown < 3600000) {
+              return;
+            }
+          }
+          
+          setShowPopup(true);
+          sessionStorage.setItem('gsp-extension-last-shown', now.toString());
+        }, 5000); // 5 seconds delay
+        
+        return () => clearTimeout(timer); // Clean up on unmount
       }
     }
   }, []);
@@ -65,28 +83,6 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
   if (!isGSPRelatedPost(post) || dismissedPermanently) {
     return null;
   }
-  
-  const handleEnter = () => {
-    // Show popup when scrolling to the middle (50%) of the post
-    // Only show if it hasn't been dismissed permanently
-    if (!dismissedPermanently && typeof window !== 'undefined') {
-      // Check if we've shown the popup in this session
-      const lastShownTime = sessionStorage.getItem('gsp-extension-last-shown');
-      const now = new Date().getTime();
-      
-      if (lastShownTime) {
-        const timeSinceLastShown = now - parseInt(lastShownTime);
-        // Only show once per hour (3600000 ms) per session
-        if (timeSinceLastShown < 3600000) {
-          return;
-        }
-      }
-      
-      // Now show the popup and record when we showed it
-      setShowPopup(true);
-      sessionStorage.setItem('gsp-extension-last-shown', now.toString());
-    }
-  };
   
   const closePopup = () => {
     setShowPopup(false);
@@ -104,13 +100,6 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
     <>
       {/* Add animation styles */}
       <style dangerouslySetInnerHTML={{ __html: animationStyles.fadeIn + animationStyles.scaleIn }} />
-      
-      {/* This Waypoint will trigger exactly at the 50% position of the article */}
-      <div className="pointer-events-none">
-        {isBrowser && (
-          <Waypoint onEnter={handleEnter} topOffset="0px" bottomOffset="0px" />
-        )}
-      </div>
       
       <DialogPrimitive.Root open={showPopup} onOpenChange={closePopup}>
         <DialogPrimitive.Portal>
@@ -150,6 +139,17 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
               <p className="mb-4 text-sm">
                 Looking to complete Google Cloud Skills Boost labs more efficiently? This Chrome extension helps you track lab progress, provides quick references, and offers helpful shortcuts while working on Google Cloud hands-on labs.
               </p>
+              
+              <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-md border border-blue-200 dark:border-blue-800">
+                <h3 className="text-sm font-semibold mb-1 text-blue-700 dark:text-blue-300">📘 Disclaimer</h3>
+                <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
+                  <strong>For Educational Use Only:</strong> This repository and the included script are provided strictly for learning purposes. 
+                  They are meant to help you explore and understand Google Cloud&apos;s monitoring services more effectively and build your cloud skills.
+                </p>
+                <p className="text-xs text-blue-700 dark:text-blue-300">
+                  <strong>📝 Read Before Use:</strong> Please review the script carefully before running it to ensure you understand how the services involved work.
+                </p>
+              </div>
               
               <div className="relative w-full mb-5 rounded-lg overflow-hidden aspect-video">
                 <iframe 
