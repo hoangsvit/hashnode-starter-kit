@@ -33,6 +33,8 @@ const addRefToExternalUrl = (url: string): string => {
 };
 import TocRenderDesign from './toc-render-design';
 import useCopyCodeButton from '../hooks/useCopyCodeButton';
+import { useLightbox } from '../hooks/useLightbox';
+import Lightbox from './lightbox';
 
 const OtherPostsOfAccount = dynamic(() => import('./other-posts-of-account'), { ssr: false });
 const AboutAuthor = dynamic(() => import('./about-author'), { ssr: false });
@@ -67,6 +69,11 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 
 	// Add copy button functionality to code blocks
 	useCopyCodeButton(postContentEle);
+	
+	// Add lightbox functionality for images
+	const { isLightboxOpen, lightboxImage, closeLightbox } = useLightbox({
+		contentRef: postContentEle
+	});
 
 	const [selectedFilter, setSelectedFilter] = useState('totalReactions');
 	const toc = post.features?.tableOfContents?.isEnabled
@@ -360,6 +367,14 @@ export const PostHeader = ({ post, morePosts }: Props) => {
 				/>
 			)}
 			{isCoAuthorModalVisible && <CoAuthorsModal closeModal={closeCoAuthorModal} />}
+			
+			{/* Lightbox component */}
+			<Lightbox 
+				isOpen={isLightboxOpen}
+				imageUrl={lightboxImage.src}
+				alt={lightboxImage.alt}
+				onClose={closeLightbox}
+			/>
 		</Fragment>
 	);
 };
