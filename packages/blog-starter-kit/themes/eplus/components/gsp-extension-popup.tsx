@@ -63,27 +63,27 @@ export const GSPExtensionPopup: React.FC<GSPExtensionPopupProps> = ({ post }) =>
       if (dismissed === 'true') {
         setDismissedPermanently(true);
       } else {
-        // Auto show popup after 5 seconds if not dismissed
+        // Auto show popup sau 5s nếu thỏa điều kiện
         const timer = setTimeout(() => {
-          const lastShownTime = sessionStorage.getItem('gsp-extension-last-shown');
+          // Chỉ mở popup nếu là bài GSP và chưa bị dismissed
+          if (!isGSPRelatedPost(post)) return;
           const now = new Date().getTime();
-          
+          const lastShownTime = sessionStorage.getItem('gsp-extension-last-shown');
           if (lastShownTime) {
             const timeSinceLastShown = now - parseInt(lastShownTime);
-            // Only show once per hour (3600000 ms) per session
-            if (timeSinceLastShown < 3600000) {
+            // Only show once per 5 hours (18000000 ms) per session
+            if (timeSinceLastShown < 18000000) {
+              sessionStorage.setItem('gsp-extension-last-shown', now.toString());
               return;
             }
           }
-          
           setShowPopup(true);
           sessionStorage.setItem('gsp-extension-last-shown', now.toString());
-        }, 5000); // 5 seconds delay
-        
-        return () => clearTimeout(timer); // Clean up on unmount
+        }, 5000);
+        return () => clearTimeout(timer);
       }
     }
-  }, []);
+  }, [post]);
   
   // Don't render anything if this post is not GSP-related or popup dismissed
   if (!isGSPRelatedPost(post) || dismissedPermanently) {
