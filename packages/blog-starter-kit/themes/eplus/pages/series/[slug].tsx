@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { twJoin } from 'tailwind-merge';
 import { useQuery } from 'urql';
+import { useEnvironmentTitle } from '../../hooks/useEnvironmentTitle';
 import { AppProvider } from '../../components/contexts/appContext';
 import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
@@ -35,7 +36,7 @@ export default function Series({
 	currentMenuId,
 }: Required<WithUrqlProps> & Props) {
 	const t = useTranslations();
-	const title = `${series.name} - ${publication.title}`;
+	const title = useEnvironmentTitle(`${series.name} - ${publication.title}`);
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
 		query: SeriesPageInitialDocument,

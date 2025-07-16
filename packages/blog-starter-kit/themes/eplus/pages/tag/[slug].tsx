@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useQuery } from 'urql';
 import { initUrqlClient } from 'next-urql';
 import { useRouter } from 'next/router';
+import { useEnvironmentTitle } from '../../hooks/useEnvironmentTitle';
 
 import { AppProvider } from '../../components/contexts/appContext';
 import { Header } from '../../components/header';
@@ -34,7 +35,7 @@ type Props = {
 export default function Post({ publication, posts, tag, slug, currentMenuId, messages }: Props) {
 	const t = useTranslations();
 	const router = useRouter();
-	const title = `#${tag.name} - ${publication.title}`;
+	const title = useEnvironmentTitle(`#${tag.name} - ${publication.title}`);
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
 		query: TagInitialDocument,

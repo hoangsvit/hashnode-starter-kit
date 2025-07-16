@@ -1,11 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useEnvironmentTitle } from '../hooks/useEnvironmentTitle';
 
 export default function Custom404() {
+  const title = useEnvironmentTitle('404 - Page Not Found');
+
   return (
     <>
       <Head>
-        <title>404 - Page Not Found</title>
+        <title>{title}</title>
       </Head>
       <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
         <div className="text-center">
