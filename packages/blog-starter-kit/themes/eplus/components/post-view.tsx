@@ -8,6 +8,8 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useCopyCodeButton from '../hooks/useCopyCodeButton';
+import { useReadingProgress } from '../hooks/useReadingProgress';
+import ReadingProgressWithBackToTop from './reading-progress-with-back-to-top';
 import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
 
 import {
@@ -35,6 +37,9 @@ function PostView(props: any) {
   const currentLocale = router.locale || 'en';
   const postContentEle = useRef<HTMLDivElement>(null);
 
+  // Reading progress hook
+  const readingProgress = useReadingProgress();
+
   // Add copy button functionality to code blocks
   useCopyCodeButton(postContentEle);
 
@@ -56,6 +61,9 @@ function PostView(props: any) {
 
   return (
     <main className="blog-post-detail-card pb-24">
+        {/* Reading Progress Bar */}
+        <ReadingProgressWithBackToTop progress={readingProgress} />
+
         <article>
             <div className="blog-article-page container relative mx-auto grid grid-cols-8">
             <div className="col-span-full lg:col-span-6 lg:col-start-2">

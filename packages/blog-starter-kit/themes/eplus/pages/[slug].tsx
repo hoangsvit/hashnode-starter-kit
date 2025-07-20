@@ -14,10 +14,13 @@ import { AppProvider } from '../components/contexts/appContext';
 import { Layout } from '../components/layout';
 import { PostHeader } from '../components/post-header';
 import PostPageNavbar from '../components/post-page-navbar';
+import { useReadingProgress } from '../hooks/useReadingProgress';
+import ReadingProgressWithBackToTop from '../components/reading-progress-with-back-to-top';
 import PublicationFooter from '../components/publication-footer';
 import { LazySeriesWrapper } from '../components/lazy-series-wrapper';
 import StaticPageContent from '../components/static-page-content';
 import { useRouter } from 'next/router';
+import { useEnvironmentTitle } from '../hooks/useEnvironmentTitle';
 import { NextIntlClientProvider } from 'next-intl';
 import GSPExtensionPopup from '../components/gsp-extension-popup';
 import {
@@ -51,13 +54,14 @@ type Props = PostProps | PageProps;
 const Post = ({ publication, post, morePosts }: PostProps) => {
 	const router = useRouter();
 	const currentLocale = router.locale || 'en';
+	const postTitle = useEnvironmentTitle(post.seo?.title || post.title);
 	const highlightJsMonokaiTheme =
 		'.hljs{display:block;overflow-x:auto;padding:.5em;background:#23241f}.hljs,.hljs-subst,.hljs-tag{color:#f8f8f2}.hljs-emphasis,.hljs-strong{color:#a8a8a2}.hljs-bullet,.hljs-link,.hljs-literal,.hljs-number,.hljs-quote,.hljs-regexp{color:#ae81ff}.hljs-code,.hljs-section,.hljs-selector-class,.hljs-title{color:#a6e22e}.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hljs-attr,.hljs-keyword,.hljs-name,.hljs-selector-tag{color:#f92672}.hljs-attribute,.hljs-symbol{color:#66d9ef}.hljs-class .hljs-title,.hljs-params{color:#f8f8f2}.hljs-addition,.hljs-built_in,.hljs-builtin-name,.hljs-selector-attr,.hljs-selector-id,.hljs-selector-pseudo,.hljs-string,.hljs-template-variable,.hljs-type,.hljs-variable{color:#e6db74}.hljs-comment,.hljs-deletion,.hljs-meta{color:#75715e}';
 
 	return (
 		<>
 			<Head>
-				<title>{post.seo?.title || post.title}</title>
+				<title>{postTitle}</title>
 				<link rel="canonical" href={post.url} />
 				<meta name="description" content={post.seo?.description || post.subtitle || post.brief} />
 
@@ -147,7 +151,7 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 const Page = ({ page }: PageProps) => {
 	const router = useRouter();
 	const currentLocale = router.locale || 'en';
-	const title = page.title;
+	const title = useEnvironmentTitle(page.title);
 	const description = page.content?.markdown?.substring(0, 160) || title;
 	const highlightJsMonokaiTheme =
 		'.hljs{display:block;overflow-x:auto;padding:.5em;background:#23241f}.hljs,.hljs-subst,.hljs-tag{color:#f8f8f2}.hljs-emphasis,.hljs-strong{color:#a8a8a2}.hljs-bullet,.hljs-link,.hljs-literal,.hljs-number,.hljs-quote,.hljs-regexp{color:#ae81ff}.hljs-code,.hljs-section,.hljs-selector-class,.hljs-title{color:#a6e22e}.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hljs-attr,.hljs-keyword,.hljs-name,.hljs-selector-tag{color:#f92672}.hljs-attribute,.hljs-symbol{color:#66d9ef}.hljs-class .hljs-title,.hljs-params{color:#f8f8f2}.hljs-addition,.hljs-built_in,.hljs-builtin-name,.hljs-selector-attr,.hljs-selector-id,.hljs-selector-pseudo,.hljs-string,.hljs-template-variable,.hljs-type,.hljs-variable{color:#e6db74}.hljs-comment,.hljs-deletion,.hljs-meta{color:#75715e}';
@@ -188,6 +192,10 @@ const Page = ({ page }: PageProps) => {
 export default function PostOrPage(props: Props) {
 	const router = useRouter();
 	const headerRef = useRef<HTMLElement | null>(null);
+
+	// Reading progress hook
+	const readingProgress = useReadingProgress();
+
 	const maybePost = props.type === 'post' ? props.post : null;
 	const maybePage = props.type === 'page' ? props.page : null;
 	const publication = props.publication;
@@ -201,6 +209,9 @@ export default function PostOrPage(props: Props) {
 				messages={props.messages}
 				timeZone={getTimezoneFromLocale(router.locale ?? 'en')}
 			>
+				{/* Reading Progress Bar */}
+				<ReadingProgressWithBackToTop progress={readingProgress} />
+
 				<AppProvider publication={publication} post={props.post}>
 					<Layout>
 						<header
@@ -241,6 +252,9 @@ export default function PostOrPage(props: Props) {
 			messages={props.messages}
 			timeZone={getTimezoneFromLocale(router.locale ?? 'en')}
 		>
+			{/* Reading Progress Bar */}
+			<ReadingProgressWithBackToTop progress={readingProgress} />
+
 			<AppProvider publication={publication} post={maybePost} page={maybePage}>
 				<Layout>
 					<Head>
@@ -292,6 +306,7 @@ export default function PostOrPage(props: Props) {
 					disableFooterBranding={publication.preferences.disableFooterBranding}
 					isTeam={publication.isTeam}
 					logo={publication.preferences.logo}
+					hideBackToTop={true}
 				/>
 			</Layout>
 		</AppProvider>

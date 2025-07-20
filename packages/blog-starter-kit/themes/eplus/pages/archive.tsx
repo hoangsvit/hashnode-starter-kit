@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { NextIntlClientProvider, useTranslations } from 'next-intl';
+import { useEnvironmentTitle } from '../hooks/useEnvironmentTitle';
 
 import { AppProvider } from '../components/contexts/appContext';
 import { Header } from '../components/header';
@@ -28,6 +29,7 @@ export default function Archive(
 	const router = useRouter();
 	const t = useTranslations();
 	const [currentPage, setCurrentPage] = useState(page);
+	const archiveTitle = useEnvironmentTitle(`${t('archive.title')} - ${publication.displayTitle || publication.title || 'Hashnode Blog'}`);
 
 	const handlePageChange = (newPage: number) => {
 		setCurrentPage(newPage);
@@ -62,7 +64,7 @@ export default function Archive(
 			<AppProvider publication={publication}>
 				<Layout>
 					<Head>
-						<title>{`${t('archive.title')} - ${publication.displayTitle || publication.title || 'Hashnode Blog'}`}</title>
+						<title>{archiveTitle}</title>
 						<meta
 							name="description"
 							content={t('archive.description', {
