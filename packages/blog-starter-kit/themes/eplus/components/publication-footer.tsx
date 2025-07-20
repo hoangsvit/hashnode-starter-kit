@@ -24,10 +24,11 @@ interface PublicationFooterProps {
   imprint?: string;
   disableFooterBranding?: boolean;
   logo?: string;
+  hideBackToTop?: boolean;
 }
 
 const PublicationFooter = memo(function PublicationFooter(props: PublicationFooterProps) {
-  const { isTeam, authorName, title, imprint, disableFooterBranding, logo } = props;
+  const { isTeam, authorName, title, imprint, disableFooterBranding, logo, hideBackToTop = false } = props;
   const [showButton, setShowButton] = useState(false);
   const router = useRouter();
 
@@ -141,7 +142,7 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
           </div>
         )}
       </div>
-      {showButton && (
+      {showButton && !hideBackToTop && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-6 right-6 z-50 group rounded-full bg-slate-700/80 p-3 text-white shadow-lg backdrop-blur-sm transition-all duration-200 hover:bg-slate-900/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95 dark:focus:ring-offset-slate-900"

@@ -14,6 +14,8 @@ import { AppProvider } from '../components/contexts/appContext';
 import { Layout } from '../components/layout';
 import { PostHeader } from '../components/post-header';
 import PostPageNavbar from '../components/post-page-navbar';
+import { useReadingProgress } from '../hooks/useReadingProgress';
+import ReadingProgressWithBackToTop from '../components/reading-progress-with-back-to-top';
 import PublicationFooter from '../components/publication-footer';
 import { LazySeriesWrapper } from '../components/lazy-series-wrapper';
 import StaticPageContent from '../components/static-page-content';
@@ -190,6 +192,10 @@ const Page = ({ page }: PageProps) => {
 export default function PostOrPage(props: Props) {
 	const router = useRouter();
 	const headerRef = useRef<HTMLElement | null>(null);
+	
+	// Reading progress hook
+	const readingProgress = useReadingProgress();
+	
 	const maybePost = props.type === 'post' ? props.post : null;
 	const maybePage = props.type === 'page' ? props.page : null;
 	const publication = props.publication;
@@ -203,6 +209,9 @@ export default function PostOrPage(props: Props) {
 				messages={props.messages}
 				timeZone={getTimezoneFromLocale(router.locale ?? 'en')}
 			>
+				{/* Reading Progress Bar */}
+				<ReadingProgressWithBackToTop progress={readingProgress} />
+				
 				<AppProvider publication={publication} post={props.post}>
 					<Layout>
 						<header
@@ -243,6 +252,9 @@ export default function PostOrPage(props: Props) {
 			messages={props.messages}
 			timeZone={getTimezoneFromLocale(router.locale ?? 'en')}
 		>
+			{/* Reading Progress Bar */}
+			<ReadingProgressWithBackToTop progress={readingProgress} />
+			
 			<AppProvider publication={publication} post={maybePost} page={maybePage}>
 				<Layout>
 					<Head>
@@ -294,6 +306,7 @@ export default function PostOrPage(props: Props) {
 					disableFooterBranding={publication.preferences.disableFooterBranding}
 					isTeam={publication.isTeam}
 					logo={publication.preferences.logo}
+					hideBackToTop={true}
 				/>
 			</Layout>
 		</AppProvider>

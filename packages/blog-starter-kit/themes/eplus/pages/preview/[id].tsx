@@ -29,6 +29,8 @@ import { twJoin } from 'tailwind-merge';
 import CustomImage from '../../components/custom-image';
 import { getBlurHash, imageReplacer, resizeImage } from '../../utils/image';
 import { blurImageDimensions } from '../../utils/const/images';
+import { useReadingProgress } from '../../hooks/useReadingProgress';
+import ReadingProgressWithBackToTop from '../../components/reading-progress-with-back-to-top';
 import ProfileImage from '../../components/profile-image';
 import { BookOpenSVG } from '../../components/icons/svgs';
 import getReadTime from '../../utils/getReadTime';
@@ -47,15 +49,20 @@ export default function Post({ publication, draft }: Props) {
 	const router = useRouter();
 	const headerRef = useRef<HTMLElement | null>(null);
 
+	// Reading progress hook
+	const readingProgress = useReadingProgress();
+
 	// Setup dayjs locale based on current locale
 	const currentLocale = router.locale || 'en';
 	moment.extend(localizedFormat);
 	moment.locale(currentLocale);
 
+	// Use title hook before conditional check
+	const title = useEnvironmentTitle(draft ? `${draft.title} - Hashnode` : 'Hashnode');
+
 	if (!draft) {
 		return <ErrorPage statusCode={404} />;
 	}
-	const title = useEnvironmentTitle(`${draft.title} - Hashnode`);
 	const highlightJsMonokaiTheme =
 		'.hljs{display:block;overflow-x:auto;padding:.5em;background:#23241f}.hljs,.hljs-subst,.hljs-tag{color:#f8f8f2}.hljs-emphasis,.hljs-strong{color:#a8a8a2}.hljs-bullet,.hljs-link,.hljs-literal,.hljs-number,.hljs-quote,.hljs-regexp{color:#ae81ff}.hljs-code,.hljs-section,.hljs-selector-class,.hljs-title{color:#a6e22e}.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hljs-attr,.hljs-keyword,.hljs-name,.hljs-selector-tag{color:#f92672}.hljs-attribute,.hljs-symbol{color:#66d9ef}.hljs-class .hljs-title,.hljs-params{color:#f8f8f2}.hljs-addition,.hljs-built_in,.hljs-builtin-name,.hljs-selector-attr,.hljs-selector-id,.hljs-selector-pseudo,.hljs-string,.hljs-template-variable,.hljs-type,.hljs-variable{color:#e6db74}.hljs-comment,.hljs-deletion,.hljs-meta{color:#75715e}';
 	const navPositionStyles = 'relative transform-none md:sticky md:top-0 md:left-0 md:backdrop-blur-lg';
@@ -102,6 +109,9 @@ export default function Post({ publication, draft }: Props) {
 						<style dangerouslySetInnerHTML={{ __html: highlightJsMonokaiTheme }}></style>
 					</Head>
 					<main className="blog-post-detail-card pb-24">
+						{/* Reading Progress Bar */}
+						<ReadingProgressWithBackToTop progress={readingProgress} />
+
 						<article className="blog-article-page">
 							<div className="container relative mx-auto grid grid-cols-8">
 								<div className="col-span-full lg:col-span-6 lg:col-start-2">
