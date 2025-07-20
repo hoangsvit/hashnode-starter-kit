@@ -241,6 +241,7 @@ export default function Post({ publication, draft }: Props) {
 					disableFooterBranding={publication.preferences.disableFooterBranding}
 					isTeam={publication.isTeam}
 					logo={publication.preferences.logo}
+					hideBackToTop={true}
 				/>
 			</Layout>
 		</AppProvider>

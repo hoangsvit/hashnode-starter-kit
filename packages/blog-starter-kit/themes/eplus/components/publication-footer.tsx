@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 // Helper function to add ref parameter to external URLs
 const addRefToExternalUrl = (url: string): string => {
   if (!url.startsWith('http')) return url; // Skip internal links
-  
+
   try {
     const urlObj = new URL(url);
     urlObj.searchParams.set('ref', 'eplus.dev');
@@ -34,8 +34,8 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
 
   // Generate aria-label for logo link
   const blogType = isTeam ? 'team' : '';
-  const logoAriaLabel = title 
-    ? `${title} home page` 
+  const logoAriaLabel = title
+    ? `${title} home page`
     : `${authorName}'s ${blogType} blog home page`.replace(/\s+/g, ' ').trim();
 
   const handleScroll = useCallback(() => {
@@ -67,29 +67,29 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
       <div className="blog-footer-credits flex flex-col items-center justify-center">
         <nav className="mb-6" aria-label="Footer navigation">
           <div className="flex flex-wrap items-center justify-center gap-1 text-slate-600 dark:text-slate-300">
-            <Link 
-              href="/about-me" 
+            <Link
+              href="/about-me"
               className="mx-2 py-1 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded dark:focus:ring-offset-slate-900"
             >
               About
             </Link>
             <span className="font-extrabold text-black opacity-20 dark:text-white" aria-hidden="true">&middot;</span>
-            <Link 
-              href="/ecosystem" 
+            <Link
+              href="/ecosystem"
               className="mx-2 py-1 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded dark:focus:ring-offset-slate-900"
             >
               Ecosystem
             </Link>
             <span className="font-extrabold text-black opacity-20 dark:text-white" aria-hidden="true">&middot;</span>
-            <Link 
-              href="/privacy-policy" 
+            <Link
+              href="/privacy-policy"
               className="mx-2 py-1 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded dark:focus:ring-offset-slate-900"
             >
               Privacy Policy
             </Link>
             <span className="font-extrabold text-black opacity-20 dark:text-white" aria-hidden="true">&middot;</span>
-            <Link 
-              href="/terms-of-service" 
+            <Link
+              href="/terms-of-service"
               className="mx-2 py-1 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded dark:focus:ring-offset-slate-900"
             >
               Terms
@@ -99,9 +99,9 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
         {disableFooterBranding ? (
           <>        {logo && (
           <div className="flex flex-col items-center">
-            <Link 
-              href={router.locale === 'en' ? '/' : `/${router.locale}/`} 
-              className="relative block h-10 w-40" 
+            <Link
+              href={router.locale === 'en' ? '/' : `/${router.locale}/`}
+              className="relative block h-10 w-40"
               aria-label={logoAriaLabel}
             >
               <Image
@@ -148,10 +148,10 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
           className="fixed bottom-6 right-6 z-50 group rounded-full bg-slate-700/80 p-3 text-white shadow-lg backdrop-blur-sm transition-all duration-200 hover:bg-slate-900/90 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95 dark:focus:ring-offset-slate-900"
           aria-label="Scroll to top"
         >
-          <svg 
-            className="h-5 w-5 transition-transform group-hover:-translate-y-0.5" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className="h-5 w-5 transition-transform group-hover:-translate-y-0.5"
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
             aria-hidden="true"
           >

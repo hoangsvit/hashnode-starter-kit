@@ -38,23 +38,26 @@ const ReadingProgressWithBackToTop: React.FC<ReadingProgressWithBackToTopProps> 
       {/* Combined Back to Top Button with Progress Circle */}
       {showButton && (
         <div className="fixed bottom-6 right-6 z-50">
-          {/* Progress Circle Background */}
+          {/* Outer Progress Circle */}
           <div 
-            className="absolute inset-0 rounded-full transition-all duration-300"
+            className="absolute -inset-1 rounded-full p-1 transition-all duration-300"
             style={{
-              background: `conic-gradient(#3b82f6 ${progress * 3.6}deg, rgba(148, 163, 184, 0.3) 0deg)`,
+              background: `conic-gradient(#3b82f6 ${progress * 3.6}deg, rgba(148, 163, 184, 0.2) 0deg)`,
             }}
-          />
+          >
+            {/* Inner white circle to create ring effect */}
+            <div className="w-full h-full rounded-full bg-white dark:bg-slate-900" />
+          </div>
           
           {/* Back to Top Button */}
           <button
             onClick={scrollToTop}
-            className="relative group rounded-full bg-white/90 backdrop-blur-sm p-3 text-slate-700 shadow-lg border border-slate-200 transition-all duration-200 hover:bg-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95 dark:bg-slate-800/90 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-800 dark:focus:ring-offset-slate-900"
+            className="relative group rounded-full bg-white/95 backdrop-blur-sm p-3 text-slate-700 shadow-lg border border-slate-200 transition-all duration-200 hover:bg-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95 dark:bg-slate-800/95 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-800 dark:focus:ring-offset-slate-900"
             aria-label="Scroll to top"
           >
-            {/* Progress percentage overlay */}
+            {/* Progress percentage badge */}
             {progress > 5 && (
-              <div className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded-full shadow-sm">
+              <div className="absolute -top-4 -right-1 bg-blue-500 text-white text-xs px-1.5 py-0.5 rounded-full shadow-sm font-medium min-w-[2rem] text-center">
                 {Math.round(progress)}%
               </div>
             )}

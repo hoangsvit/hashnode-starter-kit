@@ -192,10 +192,10 @@ const Page = ({ page }: PageProps) => {
 export default function PostOrPage(props: Props) {
 	const router = useRouter();
 	const headerRef = useRef<HTMLElement | null>(null);
-	
+
 	// Reading progress hook
 	const readingProgress = useReadingProgress();
-	
+
 	const maybePost = props.type === 'post' ? props.post : null;
 	const maybePage = props.type === 'page' ? props.page : null;
 	const publication = props.publication;
@@ -211,7 +211,7 @@ export default function PostOrPage(props: Props) {
 			>
 				{/* Reading Progress Bar */}
 				<ReadingProgressWithBackToTop progress={readingProgress} />
-				
+
 				<AppProvider publication={publication} post={props.post}>
 					<Layout>
 						<header
@@ -254,7 +254,7 @@ export default function PostOrPage(props: Props) {
 		>
 			{/* Reading Progress Bar */}
 			<ReadingProgressWithBackToTop progress={readingProgress} />
-			
+
 			<AppProvider publication={publication} post={maybePost} page={maybePage}>
 				<Layout>
 					<Head>
