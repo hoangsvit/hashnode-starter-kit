@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"author": "",
 	"scripts": {
-		"cleandep": "rm -rf node_modules && pnpm -r exec rm -rf node_modules",
+		"cleandep": "rimraf node_modules && pnpm -r exec rimraf node_modules",
 		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
 		"preinstall": "npx only-allow pnpm"
 	},
