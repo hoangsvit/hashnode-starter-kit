@@ -4,6 +4,7 @@ import { useEffect, Fragment } from 'react';
 import 'tailwindcss/tailwind.css';
 import NextTopLoader from 'nextjs-toploader';
 import { NextIntlClientProvider } from 'next-intl';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { useRouter } from 'next/router';
 import { GlobalFontVariables } from '../components/fonts';
 import { getUrqlClientConfig } from '../lib/api/client';
@@ -63,6 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						zIndex={1600}
 						showAtBottom={false}
 					/>
+					<SpeedInsights />
 					<Component {...pageProps} />
 				</Fragment>
 			</AuthProvider>

@@ -8,12 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@vercel/speed-insights':
+        specifier: ^1.2.0
+        version: 1.2.0(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       classnames:
         specifier: ^2.3.1
         version: 2.5.1
       next:
         specifier: ^13.4.19
-        version: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nextjs-toploader:
         specifier: ^3.8.16
         version: 3.8.16(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -186,7 +189,7 @@ importers:
         version: link:../../../utils
       '@tailwindcss/typography':
         specifier: ^0.5.10
-        version: 0.5.16
+        version: 0.5.16(tailwindcss@3.4.17)
       '@urql/core':
         specifier: ^5.1.1
         version: 5.1.1(graphql@16.11.0)
@@ -228,10 +231,10 @@ importers:
         version: 3.7.3
       next-axiom:
         specifier: 0.18.0
-        version: 0.18.0(next@13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
+        version: 0.18.0(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       next-intl:
         specifier: ^4.3.4
-        version: 4.3.4(next@13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
+        version: 4.3.4(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(typescript@5.8.3)
       next-urql:
         specifier: 5.0.2
         version: 5.0.2(react@18.3.1)(urql@4.2.2(@urql/core@5.1.1(graphql@16.11.0))(react@18.3.1))
@@ -1845,6 +1848,29 @@ packages:
   '@vercel/og@0.5.20':
     resolution: {integrity: sha512-zi+ZXSx/peXA+1lq7s/5Vzmm/TTfTSf/5P1qNYnh42+7X+pZmahWoXt0i7SWiq3WagfsNUNA4hUDapDiHRoXqA==}
     engines: {node: '>=16'}
+
+  '@vercel/speed-insights@1.2.0':
+    resolution: {integrity: sha512-y9GVzrUJ2xmgtQlzFP2KhVRoCglwfRQgjyfY607aU0hh0Un6d0OUyrJkjuAlsV18qR4zfoFPs/BiIj9YDS6Wzw==}
+    peerDependencies:
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   '@whatwg-node/disposablestack@0.0.6':
     resolution: {integrity: sha512-LOtTn+JgJvX8WfBVJtF08TGrdjuFzGJc4mkP8EdDI8ADbvO7kiexYep1o8dwnt0okb0jYclCDXF13xU7Ge4zSw==}
@@ -6028,13 +6054,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@tailwindcss/typography@0.5.16':
-    dependencies:
-      lodash.castarray: 4.4.0
-      lodash.isplainobject: 4.0.6
-      lodash.merge: 4.6.2
-      postcss-selector-parser: 6.0.10
-
   '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17)':
     dependencies:
       lodash.castarray: 4.4.0
@@ -6235,6 +6254,11 @@ snapshots:
       '@resvg/resvg-wasm': 2.6.0
       satori: 0.10.9
       yoga-wasm-web: 0.3.3
+
+  '@vercel/speed-insights@1.2.0(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+    optionalDependencies:
+      next: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
 
   '@whatwg-node/disposablestack@0.0.6':
     dependencies:
@@ -8228,21 +8252,16 @@ snapshots:
 
   negotiator@1.0.0: {}
 
-  next-axiom@0.18.0(next@13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
-    dependencies:
-      next: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      whatwg-fetch: 3.6.20
-
   next-axiom@0.18.0(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)):
     dependencies:
-      next: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       whatwg-fetch: 3.6.20
 
-  next-intl@4.3.4(next@13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(typescript@5.8.3):
+  next-intl@4.3.4(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(typescript@5.8.3):
     dependencies:
       '@formatjs/intl-localematcher': 0.5.10
       negotiator: 1.0.0
-      next: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react: 18.3.1
       use-intl: 4.3.4(react@18.3.1)
     optionalDependencies:
@@ -8259,7 +8278,7 @@ snapshots:
       react-ssr-prepass: 1.6.0(react@18.3.1)
       urql: 4.2.2(@urql/core@5.1.1(graphql@16.11.0))(react@18.3.1)
 
-  next@13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 13.5.11
       '@swc/helpers': 0.5.2
@@ -8268,7 +8287,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      styled-jsx: 5.1.1(@babel/core@7.27.7)(react@18.3.1)
+      styled-jsx: 5.1.1(react@18.3.1)
       watchpack: 2.4.0
     optionalDependencies:
       '@next/swc-darwin-arm64': 13.5.9
@@ -8286,7 +8305,7 @@ snapshots:
 
   nextjs-toploader@3.8.16(next@13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      next: 13.5.11(@babel/core@7.27.7)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next: 13.5.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       nprogress: 0.2.0
       prop-types: 15.8.1
       react: 18.3.1
@@ -9153,12 +9172,10 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.2
 
-  styled-jsx@5.1.1(@babel/core@7.27.7)(react@18.3.1):
+  styled-jsx@5.1.1(react@18.3.1):
     dependencies:
       client-only: 0.0.1
       react: 18.3.1
-    optionalDependencies:
-      '@babel/core': 7.27.7
 
   stylis@4.3.6: {}
 
