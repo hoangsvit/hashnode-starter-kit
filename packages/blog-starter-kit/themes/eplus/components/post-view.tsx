@@ -8,6 +8,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import useCopyCodeButton from '../hooks/useCopyCodeButton';
+import useCopyHeadingLink from '../hooks/useCopyHeadingLink';
 import { useReadingProgress } from '../hooks/useReadingProgress';
 import ReadingProgressWithBackToTop from './reading-progress-with-back-to-top';
 import { formatDate, formatDateTooltip } from '../utils/dateFormatter';
@@ -42,6 +43,8 @@ function PostView(props: any) {
 
   // Add copy button functionality to code blocks
   useCopyCodeButton(postContentEle);
+  // Add copy link functionality to headings
+  useCopyHeadingLink(postContentEle);
 
   const { post: _post } = useAppContext();
   const post = _post as unknown as PostFullFragment;
