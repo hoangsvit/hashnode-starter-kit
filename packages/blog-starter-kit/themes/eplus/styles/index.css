@@ -91,7 +91,7 @@ html {
 		-webkit-backdrop-filter 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .tooltip-handle.gold-tooltip:after {
-	background: linear-gradient(135.06deg, #fcc201 0.05%, #b78628 99.96%);
+	background: linear-gradient(135.06deg, #f6af41 0.05%, #b78628 99.96%);
 }
 .tooltip-handle:hover::after {
 	opacity: 1;
@@ -370,7 +370,6 @@ img.image--right {
 /* Code block copy button styles */
 .copy-button {
 	font-family: inherit;
-	border: none;
 	cursor: pointer;
 	z-index: 10;
 	min-width: 50px;
