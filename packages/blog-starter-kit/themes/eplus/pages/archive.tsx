@@ -2,7 +2,7 @@ import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NextIntlClientProvider, useTranslations } from 'next-intl';
 import { useEnvironmentTitle } from '../hooks/useEnvironmentTitle';
 
@@ -12,7 +12,6 @@ import { Layout } from '../components/layout';
 import BlogPostPreview from '../components/magazine-blog-post-preview';
 import PublicationFooter from '../components/publication-footer';
 import Button from '../components/hn-button';
-import { ChevronLeftSVG, ChevronRightSVG_16x16 as ChevronRightSVG } from '../components/icons/svgs';
 import {
 	PostsByPublicationDocument,
 	PostsByPublicationQueryVariables,
@@ -25,34 +24,47 @@ const POSTS_PER_PAGE = 12;
 export default function Archive(
 	props: InferGetServerSidePropsType<typeof getServerSideProps> & Required<WithUrqlProps>,
 ) {
-	const { publication, posts, page, totalPages } = props;
+	const { publication, posts: initialPosts } = props;
 	const router = useRouter();
 	const t = useTranslations();
-	const [currentPage, setCurrentPage] = useState(page);
+	const [isLoading, setIsLoading] = useState(false);
+	const [posts, setPosts] = useState(initialPosts);
+	const [endCursor, setEndCursor] = useState(initialPosts?.pageInfo?.endCursor);
+	const [hasNextPage, setHasNextPage] = useState(initialPosts?.pageInfo?.hasNextPage || false);
+
+
 	const archiveTitle = useEnvironmentTitle(`${t('archive.title')} - ${publication.displayTitle || publication.title || 'Hashnode Blog'}`);
 
-	const handlePageChange = (newPage: number) => {
-		setCurrentPage(newPage);
-		router.push(`/archive?page=${newPage}`);
-	};
+	const handleLoadMore = async () => {
+		if (isLoading || !hasNextPage || !endCursor) return;
 
-	const generatePaginationItems = () => {
-		const items = [];
-		const maxVisiblePages = 5;
-		const halfVisible = Math.floor(maxVisiblePages / 2);
-		let startPage = Math.max(1, currentPage - halfVisible);
-		let endPage = Math.min(totalPages, currentPage + halfVisible);
-		if (endPage - startPage < maxVisiblePages - 1) {
-			if (startPage === 1) {
-				endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-			} else {
-				startPage = Math.max(1, endPage - maxVisiblePages + 1);
+		setIsLoading(true);
+		try {
+			const ssrCache = createSSRExchange();
+			const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
+			const res = await urqlClient.query(
+				PostsByPublicationDocument,
+				{ host: props.host, first: POSTS_PER_PAGE, after: endCursor },
+				{
+					fetchOptions: { headers: createHeaders({ byPassCache: false }) },
+					requestPolicy: 'network-only',
+				}
+			).toPromise();
+
+			if (res.data?.publication?.posts) {
+				setPosts(prev => ({
+					...prev,
+					edges: [...prev.edges, ...res.data.publication.posts.edges],
+					pageInfo: res.data.publication.posts.pageInfo
+				}));
+				setEndCursor(res.data.publication.posts.pageInfo.endCursor);
+				setHasNextPage(res.data.publication.posts.pageInfo.hasNextPage);
 			}
+		} catch (error) {
+			console.error('Error loading more posts:', error);
+		} finally {
+			setIsLoading(false);
 		}
-		for (let i = startPage; i <= endPage; i++) {
-			items.push(i);
-		}
-		return items;
 	};
 
 	return (
@@ -135,41 +147,31 @@ export default function Archive(
 										/>
 									))}
 								</div>
-								{/* Pagination */}
-								{totalPages > 1 && (
-									<div className="flex items-center justify-center space-x-2 mt-8">
+								{/* Load More Button */}
+								{hasNextPage && (
+									<div className="flex items-center justify-center mt-8">
 										<Button
 											variant="transparent"
-											disabled={currentPage === 1}
-											onClick={() => handlePageChange(currentPage - 1)}
-											className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+											disabled={isLoading}
+											onClick={handleLoadMore}
+											className="flex items-center space-x-2 px-6 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
 										>
-											<ChevronLeftSVG className="w-4 h-4" />
-											<span>{t('archive.previous')}</span>
+											{isLoading ? (
+												<>
+													<div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
+													<span>{t('common.loading')}</span>
+												</>
+											) : (
+												<>
+													<span>{t('archive.loadMorePosts')}</span>
+												</>
+											)}
 										</Button>
-										{generatePaginationItems().map((pageNum) => (
-											<Button
-												key={pageNum}
-												variant={currentPage === pageNum ? 'primary' : 'transparent'}
-												onClick={() => handlePageChange(pageNum)}
-												className={`px-4 py-2 text-sm font-medium rounded-lg ${
-													currentPage === pageNum
-														? 'text-white bg-blue-600 hover:bg-blue-700'
-														: 'text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-												}`}
-											>
-												{pageNum}
-											</Button>
-										))}
-										<Button
-											variant="transparent"
-											disabled={currentPage === totalPages}
-											onClick={() => handlePageChange(currentPage + 1)}
-											className="flex items-center space-x-2 px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
-										>
-											<span>{t('archive.next')}</span>
-											<ChevronRightSVG className="w-4 h-4" />
-										</Button>
+									</div>
+								)}
+								{isLoading && (
+									<div className="flex items-center justify-center py-4 mt-4">
+										<div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
 									</div>
 								)}
 							</>
@@ -191,66 +193,20 @@ export default function Archive(
 	);
 }
 
-// Helper to get endCursor for a specific page
-async function getCursorForPage(urqlClient, host, page, pageSize) {
-	let endCursor = undefined;
-	if (page > 1) {
-		let cursor = undefined;
-		for (let i = 1; i < page; i++) {
-			const res = await urqlClient.query(
-				PostsByPublicationDocument,
-				{ host, first: pageSize, after: cursor },
-				{
-					fetchOptions: { headers: createHeaders({ byPassCache: false }) },
-					requestPolicy: 'network-only',
-				}
-			).toPromise();
-			cursor = res.data?.publication?.posts?.pageInfo?.endCursor;
-			if (!cursor) break;
-		}
-		endCursor = cursor;
-	}
-	return endCursor;
-}
-
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-	const { locale = 'en', query } = context;
-	const page = parseInt(query.page as string) || 1;
+	const { locale = 'en' } = context;
+	const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
 
 	// Load messages for the current locale
 	const messages = (await import(`../messages/${locale}.json`)).default;
 
 	const ssrCache = createSSRExchange();
 	const urqlClient = initUrqlClient(getUrqlClientConfig(ssrCache), false);
-	const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
 
-	// Get total posts for pagination
-	const countRes = await urqlClient.query(
-		PostsByPublicationDocument,
-		{ host, first: 1 },
-		{
-			fetchOptions: { headers: createHeaders({ byPassCache: false }) },
-			requestPolicy: 'network-only',
-		}
-	).toPromise();
-	const totalPosts = countRes.data?.publication?.posts?.totalDocuments || 0;
-	const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
-
-	if (page > totalPages && totalPages > 0) {
-		return {
-			redirect: {
-				destination: `/archive?page=${totalPages}`,
-				permanent: false,
-			},
-		};
-	}
-
-	// Get correct cursor for this page
-	const endCursor = await getCursorForPage(urqlClient, host, page, POSTS_PER_PAGE);
-
+	// Get first page of posts
 	const archiveRes = await urqlClient.query(
 		PostsByPublicationDocument,
-		{ host, first: POSTS_PER_PAGE, after: endCursor },
+		{ host, first: POSTS_PER_PAGE },
 		{
 			fetchOptions: { headers: createHeaders({ byPassCache: false }) },
 			requestPolicy: 'network-only',
@@ -266,10 +222,8 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 			messages,
 			publication: archiveRes.data.publication,
 			posts: archiveRes.data.publication.posts,
-			page,
-			totalPages,
-			urqlState: ssrCache.extractData(),
 			host,
+			urqlState: ssrCache.extractData(),
 		},
 	};
 };

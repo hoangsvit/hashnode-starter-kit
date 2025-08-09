@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useTranslations } from 'next-intl';
 import Image from 'next/legacy/image';
 import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
-import { useTranslations } from 'next-intl';
 import { ChevronDownSVG_16x16, ChevronRightSVG_16x16, ChevronUpSVG_16x16 } from './icons/svgs';
 import { useTocModalStore } from './toc-sheet';
 
@@ -41,8 +41,9 @@ function TocRow(props: TocRowProps) {
 			indent: `pl-${Math.min(baseIndent / 4, 12)}`, // max pl-12
 			textSize: level === 1 ? 'text-base' : level === 2 ? 'text-sm' : 'text-xs',
 			fontWeight: level === 1 ? 'font-semibold' : level === 2 ? 'font-medium' : 'font-normal',
-			opacity: level > 3 ? 'text-slate-600 dark:text-slate-400' : 'text-slate-800 dark:text-slate-200',
-			borderColor: level === 1 ? 'border-l-2 border-slate-300 dark:border-slate-600' : ''
+			opacity:
+				level > 3 ? 'text-slate-600 dark:text-slate-400' : 'text-slate-800 dark:text-slate-200',
+			borderColor: level === 1 ? 'border-l-2 border-slate-300 dark:border-slate-600' : '',
 		};
 	};
 
@@ -52,7 +53,7 @@ function TocRow(props: TocRowProps) {
 		<li key={node.id} className="group">
 			<div
 				className={twJoin(
-					'flex items-center gap-2 py-1.5 px-2 rounded-md transition-all duration-200',
+					'flex items-center gap-2 rounded-md px-2 py-1.5 transition-all duration-200',
 					levelStyles.borderColor,
 					'hover:bg-slate-50 dark:hover:bg-slate-800/50',
 				)}
@@ -60,8 +61,10 @@ function TocRow(props: TocRowProps) {
 				{node.hasChildren && (
 					<button
 						type="button"
-						className="flex-shrink-0 p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors duration-200"
-						aria-label={childrenVisibility ? `${t('collapse')} ${node.title}` : `${t('expand')} ${node.title}`}
+						className="flex-shrink-0 p-0.5 text-slate-400 transition-colors duration-200 hover:text-slate-600 dark:hover:text-slate-300"
+						aria-label={
+							childrenVisibility ? `${t('collapse')} ${node.title}` : `${t('expand')} ${node.title}`
+						}
 						aria-expanded={childrenVisibility}
 						onClick={() => {
 							setChildrenVisibility((prevVisibility: boolean) => !prevVisibility);
@@ -83,7 +86,7 @@ function TocRow(props: TocRowProps) {
 						levelStyles.opacity,
 						levelStyles.indent,
 						!node.hasChildren && 'ml-4',
-						'hover:text-slate-900 dark:hover:text-slate-100'
+						'hover:text-slate-900 dark:hover:text-slate-100',
 					)}
 					href={`#heading-${node.slug}`}
 					onClick={() => {
@@ -148,7 +151,7 @@ function TocTree(props: TocTreeProps) {
 	// Calculate hasChildren for each node based on the full list
 	nodes = nodes.map((node) => ({
 		...node,
-		hasChildren: list.some((item) => item.parentId === node.id)
+		hasChildren: list.some((item) => item.parentId === node.id),
 	}));
 
 	if (!nodes || !nodes.length) {
@@ -176,6 +179,7 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 	const { list, hideShowMoreOption, modal } = props;
 	const [tocFullVisibility, setTocFullVisibility] = useState<boolean>(false);
 	const [isOverflowing, setIsOverflowing] = useState(false);
+	const initialRender = useRef(true);
 	const router = useRouter();
 	const t = useTranslations('toc');
 	const { pathname } = router;
@@ -187,7 +191,11 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 		const shouldShowMoreOption = hideShowMoreOption !== false && hasEnoughItems;
 
 		setIsOverflowing(shouldShowMoreOption);
-		setTocFullVisibility(!hasEnoughItems || hideShowMoreOption === true);
+
+		if (initialRender.current) {
+			setTocFullVisibility(!hasEnoughItems || hideShowMoreOption === true);
+			initialRender.current = false;
+		}
 	}, [list, hideShowMoreOption]);
 	return (
 		<div
@@ -200,8 +208,8 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 			<div className={tocFullVisibility ? 'max-h-full' : 'max-h-[388px] overflow-hidden'}>
 				{/* Header */}
 				{modal || (
-					<div className="mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-						<h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+					<div className="mb-4 border-b border-slate-100 pb-3 dark:border-slate-800">
+						<h2 className="text-sm font-semibold uppercase tracking-wide text-slate-900 dark:text-slate-100">
 							{t('title')}
 						</h2>
 					</div>
@@ -225,7 +233,7 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 						<TocTree list={list} modal={modal} />
 						{/* Overlay */}
 						{!tocFullVisibility && isOverflowing && (
-							<div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent dark:from-slate-900 pointer-events-none" />
+							<div className="pointer-events-none absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent dark:from-slate-900" />
 						)}
 					</>
 				)}
@@ -233,10 +241,10 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 
 			{/* Show more toggle option */}
 			{isOverflowing && !hideShowMoreOption && (
-				<div className="flex items-center justify-center pt-3 mt-3 border-t border-slate-100 dark:border-slate-800">
+				<div className="mt-3 flex items-center justify-center border-t border-slate-100 pt-3 dark:border-slate-800">
 					<button
 						type="button"
-						className="text-sm text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors duration-200"
+						className="text-sm text-slate-500 transition-colors duration-200 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
 						aria-expanded={tocFullVisibility}
 						aria-label={tocFullVisibility ? 'Show less content' : 'Show more content'}
 						onClick={() => {
@@ -247,12 +255,12 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 						{tocFullVisibility ? (
 							<>
 								<span>{t('showLess')}</span>
-								<ChevronUpSVG_16x16 className="inline h-3 w-3 stroke-current ml-1" />
+								<ChevronUpSVG_16x16 className="ml-1 inline h-3 w-3 stroke-current" />
 							</>
 						) : (
 							<>
 								<span>{t('showMore')}</span>
-								<ChevronDownSVG_16x16 className="inline h-3 w-3 stroke-current ml-1" />
+								<ChevronDownSVG_16x16 className="ml-1 inline h-3 w-3 stroke-current" />
 							</>
 						)}
 					</button>
