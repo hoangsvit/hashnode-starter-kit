@@ -2,7 +2,7 @@ import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next';
 import { WithUrqlProps, initUrqlClient } from 'next-urql';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextIntlClientProvider, useTranslations } from 'next-intl';
 import { useEnvironmentTitle } from '../hooks/useEnvironmentTitle';
 
@@ -28,12 +28,20 @@ export default function Archive(
 	const { publication, posts, page, totalPages } = props;
 	const router = useRouter();
 	const t = useTranslations();
-	const [currentPage, setCurrentPage] = useState(page);
+        const [currentPage, setCurrentPage] = useState(page);
+
+        useEffect(() => {
+                setCurrentPage(page);
+        }, [page]);
 	const archiveTitle = useEnvironmentTitle(`${t('archive.title')} - ${publication.displayTitle || publication.title || 'Hashnode Blog'}`);
 
 	const handlePageChange = (newPage: number) => {
-		setCurrentPage(newPage);
-		router.push(`/archive?page=${newPage}`);
+                setCurrentPage(newPage);
+                router.push(
+                        { pathname: '/archive', query: { page: newPage } },
+                        undefined,
+                        { locale: router.locale },
+                );
 	};
 
 	const generatePaginationItems = () => {
