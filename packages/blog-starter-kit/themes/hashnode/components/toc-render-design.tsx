@@ -151,6 +151,7 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 	const { list, hideShowMoreOption, modal } = props;
 	const [tocFullVisibility, setTocFullVisibility] = useState<boolean>(false);
 	const [isOverflowing, setIsOverflowing] = useState(false);
+	const initialRender = useRef(true);
 	const router = useRouter();
 	const { pathname } = router;
 	const isDraftPreview = pathname.indexOf('/preview') === 0;
@@ -161,8 +162,12 @@ const TocRenderDesign = (props: TocRenderDesignProps) => {
 		const shouldShowMoreOption = hideShowMoreOption !== false && hasEnoughItems;
 
 		setIsOverflowing(shouldShowMoreOption);
-		setTocFullVisibility(!hasEnoughItems || hideShowMoreOption === true);
-	}, []);
+
+		if (initialRender.current) {
+			setTocFullVisibility(!hasEnoughItems || hideShowMoreOption === true);
+			initialRender.current = false;
+		}
+	}, [list, hideShowMoreOption]);
 	return (
 		<div
 			className={twJoin(
