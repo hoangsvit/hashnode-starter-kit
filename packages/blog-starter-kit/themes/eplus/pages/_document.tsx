@@ -20,6 +20,7 @@ export default function Document() {
 						`,
 					}}
 				/>
+				<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" async />
 			</Head>
 			<body>
 				<Main />
