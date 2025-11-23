@@ -142,7 +142,13 @@ export function Snow() {
         };
     }, [isDarkMode, isEnabled]); // Re-run effect when theme changes to update color
 
-    if (!isEnabled) return null;
+    const now = new Date();
+    const month = now.getMonth(); // 0-11
+    const date = now.getDate();
+    // Show from Oct 1 (month 9) to Jan 15 (month 0, date <= 15)
+    const isChristmasSeason = (month >= 9) || (month === 0 && date <= 15);
+
+    if (!isEnabled || !isChristmasSeason) return null;
 
     return (
         <canvas
