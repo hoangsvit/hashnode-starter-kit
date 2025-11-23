@@ -1,10 +1,59 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, startTransition } from 'react';
 
 export function Snow() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isEnabled, setIsEnabled] = useState(true);
 
     useEffect(() => {
+        // Initial check for preference
+        if (typeof window !== 'undefined') {
+            const stored = localStorage.getItem('snow-enabled');
+            if (stored !== null) {
+                setIsEnabled(stored === 'true');
+            }
+        }
+
+        const handleToggle = () => {
+            const stored = localStorage.getItem('snow-enabled');
+            if (stored !== null) {
+                setIsEnabled(stored === 'true');
+            }
+        };
+
+        window.addEventListener('snow-toggle', handleToggle);
+
+        // Initial check for theme
+        startTransition(() => {
+            setIsDarkMode(document.documentElement.classList.contains('dark'));
+        });
+
+        // Watch for theme changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    startTransition(() => {
+                        setIsDarkMode(document.documentElement.classList.contains('dark'));
+                    });
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener('snow-toggle', handleToggle);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!isEnabled) return;
+
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -44,9 +93,21 @@ export function Snow() {
         createSnowflakes();
 
         // Animation loop
+        let animationFrameId: number;
         const animate = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+
+            // Adjust color and shadow based on theme
+            if (isDarkMode) {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'transparent';
+            } else {
+                ctx.fillStyle = 'rgba(220, 230, 240, 0.9)'; // Very light cool gray
+                ctx.shadowBlur = 2;
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.1)'; // Subtle shadow for depth
+            }
+
             ctx.beginPath();
 
             snowflakes.forEach((flake) => {
@@ -70,21 +131,24 @@ export function Snow() {
             });
 
             ctx.fill();
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         };
 
         animate();
 
         return () => {
             window.removeEventListener('resize', resizeCanvas);
+            cancelAnimationFrame(animationFrameId);
         };
-    }, []);
+    }, [isDarkMode, isEnabled]); // Re-run effect when theme changes to update color
+
+    if (!isEnabled) return null;
 
     return (
         <canvas
             ref={canvasRef}
             className="pointer-events-none fixed inset-0 z-50"
-            style={{ mixBlendMode: 'screen' }}
+            style={{ mixBlendMode: isDarkMode ? 'screen' : 'normal' }}
         />
     );
 }
