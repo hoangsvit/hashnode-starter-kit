@@ -7,6 +7,7 @@
 	"author": "",
 	"scripts": {
 		"cleandep": "rimraf node_modules && pnpm -r exec rimraf node_modules",
+		"dev": "pnpm --filter @starter-kit/blog-hashnode dev",
 		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
 		"preinstall": "npx only-allow pnpm"
 	},
