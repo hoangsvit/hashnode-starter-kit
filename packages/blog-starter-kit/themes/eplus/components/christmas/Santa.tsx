@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, startTransition } from 'react';
 
 declare global {
     namespace JSX {
@@ -11,15 +11,34 @@ declare global {
 
 export function Santa() {
     const playerRef = useRef<any>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const [isEnabled, setIsEnabled] = useState(true);
 
     useEffect(() => {
-        // Ensure lottie-player is loaded
+        // Check initial state
+        const savedState = localStorage.getItem('snow-enabled');
+        if (savedState !== null) {
+            startTransition(() => {
+                setIsEnabled(JSON.parse(savedState));
+            });
+        }
+
+        // Listen for toggle events
+        const handleToggle = (e: CustomEvent) => {
+            startTransition(() => {
+                setIsEnabled(e.detail.enabled);
+            });
+        };
+
+        window.addEventListener('snow-toggle', handleToggle as EventListener);
+        return () => window.removeEventListener('snow-toggle', handleToggle as EventListener);
+    }, []);
+
+    useEffect(() => {
+        if (!isEnabled) return;
+
+        // Import lottie-player only if not already defined
         if (typeof window !== 'undefined' && !customElements.get('lottie-player')) {
-            const script = document.createElement('script');
-            script.src = 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js';
-            script.async = true;
-            document.head.appendChild(script);
+            import('@lottiefiles/lottie-player');
         }
 
         // Add global styles for animation
@@ -30,26 +49,36 @@ export function Santa() {
             style.innerHTML = `
 				@keyframes fly-across {
 					0% {
-						transform: translateX(-450px);
+						transform: translateX(-500px);
 					}
 					100% {
-						transform: translateX(calc(100vw + 450px));
+						transform: translateX(calc(100vw + 500px));
 					}
 				}
 
 				.santa-flying {
-					animation: fly-across 15s linear infinite;
-					filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+					animation: fly-across 20s linear infinite;
 					z-index: 9999 !important;
+                    pointer-events: none;
+                    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+                    width: 500px;
+                    height: 250px;
 				}
 			`;
             document.head.appendChild(style);
         }
-    }, []);
+    }, [isEnabled]);
+
+    const now = new Date();
+    const month = now.getMonth(); // 0-11
+    const date = now.getDate();
+    // Show from Oct 1 (month 9) to Jan 15 (month 0, date <= 15)
+    const isChristmasSeason = (month >= 9) || (month === 0 && date <= 15);
+
+    if (!isEnabled || !isChristmasSeason) return null;
 
     return (
         <div
-            ref={containerRef}
             className="pointer-events-none fixed bottom-20 left-0 santa-flying"
             style={{ zIndex: 9999 }}
             suppressHydrationWarning
@@ -59,7 +88,7 @@ export function Santa() {
                 src="/animations/santa-sleigh.json"
                 background="transparent"
                 speed={1}
-                style={{ width: '400px', height: '400px' }}
+                style={{ width: '100%', height: '100%' }}
                 loop={true}
                 autoplay={true}
                 suppressHydrationWarning

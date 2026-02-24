@@ -6,12 +6,21 @@ interface ReadingProgressWithBackToTopProps {
 
 const ReadingProgressWithBackToTop: React.FC<ReadingProgressWithBackToTopProps> = ({ progress }) => {
   const [showButton, setShowButton] = useState(false);
+  const [snowEnabled, setSnowEnabled] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
       // Show button when scrolled down more than 200px
       setShowButton(window.scrollY > 200);
     };
+
+    // Initial check for snow preference
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('snow-enabled');
+      if (stored !== null) {
+        setSnowEnabled(stored === 'true');
+      }
+    }
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -20,6 +29,13 @@ const ReadingProgressWithBackToTop: React.FC<ReadingProgressWithBackToTopProps> 
   const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+
+  const toggleSnow = useCallback(() => {
+    const newState = !snowEnabled;
+    setSnowEnabled(newState);
+    localStorage.setItem('snow-enabled', String(newState));
+    window.dispatchEvent(new Event('snow-toggle'));
+  }, [snowEnabled]);
 
   return (
     <>
@@ -35,9 +51,56 @@ const ReadingProgressWithBackToTop: React.FC<ReadingProgressWithBackToTopProps> 
         />
       </div>
 
-      {/* Combined Back to Top Button with Progress Circle */}
-      {showButton && (
-        <div className="fixed bottom-6 right-6 z-50">
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-center">
+        {/* Snow Toggle Button */}
+        {(() => {
+          const now = new Date();
+          const month = now.getMonth(); // 0-11
+          const date = now.getDate();
+          // Show from Oct 1 (month 9) to Jan 15 (month 0, date <= 15)
+          const isChristmasSeason = (month >= 9) || (month === 0 && date <= 15);
+
+          if (!isChristmasSeason) return null;
+
+          return (
+            <button
+              onClick={toggleSnow}
+              className="group rounded-full bg-white/95 backdrop-blur-sm p-3 text-slate-700 shadow-lg border border-slate-200 transition-all duration-200 hover:bg-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95 dark:bg-slate-800/95 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-800 dark:focus:ring-offset-slate-900"
+              aria-label={snowEnabled ? "Disable snow" : "Enable snow"}
+              title={snowEnabled ? "Disable snow" : "Enable snow"}
+            >
+              {snowEnabled ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <line x1="2" y1="2" x2="22" y2="22"></line>
+                  <path d="M2.5 10l1.83-1.83"></path>
+                  <path d="M21.5 14l-1.83 1.83"></path>
+                  <path d="M10 2.5l1.83 1.83"></path>
+                  <path d="M14 21.5l-1.83-1.83"></path>
+                  <path d="M18 6l-1.5 1.5"></path>
+                  <path d="M6 18l1.5-1.5"></path>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <path d="M10 14l1.5 1.5"></path>
+                  <path d="M12.5 11.5l1.5 1.5"></path>
+                  <path d="M10 10l4 4"></path>
+                  <path d="M2 12h2"></path>
+                  <path d="M20 12h2"></path>
+                  <path d="M12 2v2"></path>
+                  <path d="M12 20v2"></path>
+                  <path d="M4.93 4.93l1.41 1.41"></path>
+                  <path d="M17.66 17.66l1.41 1.41"></path>
+                  <path d="M4.93 19.07l1.41-1.41"></path>
+                  <path d="M17.66 6.34l1.41-1.41"></path>
+                </svg>
+              )}
+            </button>
+          );
+        })()}
+
+        {/* Back to Top Button */}
+        {showButton && (
           <div className="relative">
             {/* Outer Progress Circle */}
             <div
@@ -75,8 +138,8 @@ const ReadingProgressWithBackToTop: React.FC<ReadingProgressWithBackToTopProps> 
               </svg>
             </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 };
