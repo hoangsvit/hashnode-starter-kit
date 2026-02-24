@@ -94,27 +94,59 @@ export const imageReplacer = (content, lazyLoad = false) => {
   var regex = /<img src="([^"]+)"/g;
   var srcVals = content.match(regex);
 
-  if (!srcVals) {
-    return content;
+  if (srcVals) {
+    var map = {};
+    srcVals.forEach((src) => {
+      src = src.split('src=')[1].replace(/"/g, '');
+      map[src] = _resizeImage(src, {});
+    });
+    var keys = Object.keys(map);
+    keys.forEach((oldSrc) => {
+      content = content.replace(oldSrc, map[oldSrc]);
+    });
   }
 
-  var map = {};
-  srcVals.forEach((src) => {
-    src = src.split('src=')[1].replace(/"/g, '');
-    map[src] = _resizeImage(src, {});
-  });
-  var keys = Object.keys(map);
-  keys.forEach((oldSrc) => {
-    content = content.replace(oldSrc, map[oldSrc]);
-  });
   if (lazyLoad) {
     content = content.replace(/<img/g, '<img loading="lazy"');
   }
-  
+
   // Add blur class if NEXT_PUBLIC_BLUR_IMAGES is enabled
   if (process.env.NEXT_PUBLIC_BLUR_IMAGES === 'true') {
     content = content.replace(/<img([^>]*)>/g, '<img$1 class="dev-mode-blur-image">');
   }
-  
+
+  // Step 1: Fix standalone YouTube iframes (without wrapper) - wrap them
+  // Match iframes that are NOT already inside embed-wrapper
+  content = content.replace(
+    /(?!<div class="embed-wrapper">.*?)<iframe([^>]*?)src=["']https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([^"'&?]+)([^"']*)["']([^>]*?)>(?:<\/iframe>)?(?!.*?<\/div>.*?<\/div>)/gi,
+    function(match, beforeSrc, videoId, afterId, afterSrc) {
+      // Check if this iframe is already wrapped (by looking backwards in content)
+      return '<div class="embed-wrapper"><div class="webembed-wrapper" style="position: relative;overflow: hidden; padding-top: 56.25%;"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + videoId + '?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="YouTube video player" style="position: absolute; top: 0; left: 0; border: 0;" class="webembed-iframe"></iframe></div></div>';
+    }
+  );
+
+  // Step 2: Fix standalone YouTube embed iframes (without wrapper)
+  content = content.replace(
+    /(?!<div class="embed-wrapper">.*?)<iframe([^>]*?)src=["']https?:\/\/(?:www\.)?youtube\.com\/embed\/([^"'&?]+)([^"']*)["']([^>]*?)>(?:<\/iframe>)?(?!.*?<\/div>.*?<\/div>)/gi,
+    function(match, beforeSrc, videoId, afterId, afterSrc) {
+      // Only wrap if not inside webembed-wrapper
+      if (match.includes('class="webembed-iframe"')) {
+        return match; // Already processed, keep as is
+      }
+      return '<div class="embed-wrapper"><div class="webembed-wrapper" style="position: relative;overflow: hidden; padding-top: 56.25%;"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + videoId + '?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="YouTube video player" style="position: absolute; top: 0; left: 0; border: 0;" class="webembed-iframe"></iframe></div></div>';
+    }
+  );
+
+  // Step 3: Fix youtu.be short URLs
+  content = content.replace(
+    /(?!<div class="embed-wrapper">.*?)<iframe([^>]*?)src=["']https?:\/\/youtu\.be\/([^"'?]+)([^"']*)["']([^>]*?)>(?:<\/iframe>)?(?!.*?<\/div>.*?<\/div>)/gi,
+    function(match, beforeSrc, videoId, afterId, afterSrc) {
+      if (match.includes('class="webembed-iframe"')) {
+        return match; // Already processed
+      }
+      return '<div class="embed-wrapper"><div class="webembed-wrapper" style="position: relative;overflow: hidden; padding-top: 56.25%;"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + videoId + '?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="YouTube video player" style="position: absolute; top: 0; left: 0; border: 0;" class="webembed-iframe"></iframe></div></div>';
+    }
+  );
+
   return content;
 };
