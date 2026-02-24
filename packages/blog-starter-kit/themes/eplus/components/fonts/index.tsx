@@ -15,13 +15,16 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const GlobalFontVariables = () => {
   // Always render the actual font variables to avoid hydration mismatch
   // The fallback fonts are already defined in the font configuration
+  const interFamily = inter.style?.fontFamily || 'Inter, sans-serif';
+  const jakartaFamily = plusJakartaSans.style?.fontFamily || 'Plus Jakarta Sans, sans-serif';
+
   return (
     <style
       dangerouslySetInnerHTML={{
         __html: `
           html {
-            --font-inter: ${inter.style.fontFamily};
-            --font-plus-jakarta-sans: ${plusJakartaSans.style.fontFamily};
+            --font-inter: ${interFamily};
+            --font-plus-jakarta-sans: ${jakartaFamily};
           }
 
           /* Custom text selection color */

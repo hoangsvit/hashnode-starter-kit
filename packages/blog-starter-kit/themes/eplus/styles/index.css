@@ -352,16 +352,30 @@ img.image--right {
 }
 
 /* Embed center alignment */
-.embed-card,
-.embed-wrapper {
-	display: flex;
-	justify-content: center;
+.embed-card {
 	width: 100%;
 	overflow-x: hidden;
 }
-.webembed-wrapper,
-.embed-wrapper > div {
+.embed-wrapper:has(.webembed-wrapper) {
 	width: 100%;
+	overflow-x: hidden;
+	margin: 1.5rem 0;
+}
+.webembed-wrapper {
+	position: relative !important;
+	width: 100% !important;
+	padding-top: 56.25% !important;
+	overflow: hidden !important;
+	height: 0 !important;
+}
+.webembed-iframe,
+.webembed-wrapper > iframe {
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+	border: 0 !important;
 }
 .embed-loading {
 	display: none;
