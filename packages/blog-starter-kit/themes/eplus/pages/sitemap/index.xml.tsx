@@ -9,6 +9,7 @@ import {
 	SitemapQuery,
 	SitemapQueryVariables,
 } from '../../generated/graphql';
+import { replaceLegacyPublicationUrl } from '../../utils/urls';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const MAX_POSTS_PER_SITEMAP = DEFAULT_SITEMAP_CONFIG.maxPostsPerSitemap;
@@ -35,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			};
 		}
 
-		const domain = publication.url;
+		const domain = replaceLegacyPublicationUrl(publication.url) || publication.url;
 		const sitemaps: string[] = [];
 
 		// Luôn có sitemap cho static pages
@@ -45,7 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		if (publication.posts.edges.length > 0) {
 			// Lấy tất cả posts để đếm
 			const allPosts = publication.posts.edges.map((edge) => edge.node);
-			
+
 			// Fetch thêm posts nếu có
 			const initialPageInfo = publication.posts.pageInfo;
 			const fetchPosts = async (after: string | null | undefined) => {
@@ -89,7 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			}
 
 			// Chỉ thêm sitemap tags nếu có bài viết với tags
-			const hasTags = allPosts.some(post => 
+			const hasTags = allPosts.some(post =>
 				post.tags && post.tags.length > 0
 			);
 			if (hasTags) {

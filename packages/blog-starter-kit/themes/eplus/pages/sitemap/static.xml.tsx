@@ -6,6 +6,7 @@ import {
 	SitemapQuery,
 	SitemapQueryVariables,
 } from '../../generated/graphql';
+import { replaceLegacyPublicationUrl } from '../../utils/urls';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const SitemapStatic = () => null;
@@ -31,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			};
 		}
 
-		const domain = publication.url;
+		const domain = replaceLegacyPublicationUrl(publication.url) || publication.url;
 		const staticPages = publication.staticPages.edges.map((edge: any) => edge.node);
 
 		// TODO: Thêm pagination logic nếu cần thiết

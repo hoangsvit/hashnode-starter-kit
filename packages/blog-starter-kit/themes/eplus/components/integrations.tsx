@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useAppContext } from './contexts/appContext';
+import { replaceLegacyPublicationUrl } from '../utils/urls';
 
 export function Integrations() {
 	const { publication } = useAppContext();
@@ -17,7 +18,8 @@ export function Integrations() {
 		koalaPublicKey,
 		msClarityID,
 	} = publication.integrations ?? {};
-	const domainURL = new URL(publication.url).hostname;
+	const publicationUrl = replaceLegacyPublicationUrl(publication.url) || publication.url;
+	const domainURL = new URL(publicationUrl).hostname;
 
 	let fbPixel = `
     !function(f,b,e,v,n,t,s)
@@ -88,7 +90,7 @@ export function Integrations() {
 
 	useEffect(() => {
 		if (!gaTrackingID || typeof window === 'undefined') return;
-		
+
 		// @ts-ignore
 		if (typeof window.gtag !== 'undefined') {
 			// @ts-ignore

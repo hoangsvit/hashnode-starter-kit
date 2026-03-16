@@ -2,6 +2,34 @@ import RSS from 'rss';
 
 const NON_ASCII_REGEX = /[\u{0080}-\u{FFFF}]/gu;
 const STRIP_HTML_REGEX = /<[^>]*>/g;
+const ABSOLUTE_HTTP_URL_REGEX = /^https?:\/\//i;
+
+const createPostItemUrl = (baseUrl: string, publication: any, post: any) => {
+	const normalizedBaseUrl = baseUrl.replace(/\/+$/, '');
+
+	if (typeof post.url === 'string' && post.url.length > 0) {
+		if (ABSOLUTE_HTTP_URL_REGEX.test(post.url)) {
+			return post.url;
+		}
+
+		if (post.url.startsWith('/')) {
+			return `${normalizedBaseUrl}${post.url}`;
+		}
+
+		return `${normalizedBaseUrl}/${post.url}`;
+	}
+
+	const slug = post.slug;
+	if (!slug) {
+		return normalizedBaseUrl;
+	}
+
+	const urlPattern = post.publication?.urlPattern || post.urlPattern || publication?.urlPattern;
+	const shouldUseSlugOnly = urlPattern === 'SIMPLE';
+	const pathname = shouldUseSlugOnly || !post.cuid ? `/${slug}` : `/${slug}-${post.cuid}`;
+
+	return `${normalizedBaseUrl}${pathname}`;
+};
 
 export const constructRSSFeedFromPosts = (
 	publication: any,
@@ -59,7 +87,7 @@ export const constructRSSFeedFromPosts = (
 		feed.item({
 			title: post.title,
 			description: post.content!.html!.replace(NON_ASCII_REGEX, '').replace(STRIP_HTML_REGEX, ''),
-			url: `${baseUrl}/${post.slug}`,
+			url: createPostItemUrl(baseUrl, publication, post),
 			categories: post.tags!.map((tag: any) => tag.name),
 			author: post.author!.name,
 			date: post.publishedAt,

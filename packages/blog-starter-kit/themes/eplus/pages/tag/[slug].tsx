@@ -20,6 +20,7 @@ import { createHeaders, createSSRExchange, getUrqlClientConfig } from '../../lib
 import PublicationPosts from '../../components/publication-posts';
 import PublicationFooter from '../../components/publication-footer';
 import { getTimezoneFromLocale } from '../../utils/timezone';
+import { replaceLegacyPublicationUrl } from '../../utils/urls';
 
 const INITIAL_LIMIT = 6;
 
@@ -36,6 +37,8 @@ export default function Post({ publication, posts, tag, slug, currentMenuId, mes
 	const t = useTranslations();
 	const router = useRouter();
 	const title = useEnvironmentTitle(`#${tag.name} - ${publication.title}`);
+	const publicationUrl = replaceLegacyPublicationUrl(publication.url) || publication.url;
+	const tagUrl = `${publicationUrl}/tag/${tag.slug}`;
 	const [after, setAfter] = useState<string | null>(null);
 	const [{ data, fetching }] = useQuery({
 		query: TagInitialDocument,
@@ -60,7 +63,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId, mes
 			<Layout>
 				<Head>
 					<title>{title}</title>
-					<link rel="canonical" href={`${publication.url}/tag/${tag.slug}`} />
+					<link rel="canonical" href={tagUrl} />
 					<meta name="description" content={`${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.about')} ${tag.name}.`} />
 
 					{/* Basic SEO meta tags */}
@@ -75,7 +78,7 @@ export default function Post({ publication, posts, tag, slug, currentMenuId, mes
 					<meta property="og:type" content="website" />
 					<meta property="og:title" content={title} />
 					<meta property="og:description" content={`${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.about')} ${tag.name}.`} />
-					<meta property="og:url" content={`${publication.url}/tag/${tag.slug}`} />
+					<meta property="og:url" content={tagUrl} />
 					<meta property="og:site_name" content={publication.title} />
 					<meta property="og:locale" content="en_US" />
 
@@ -99,12 +102,12 @@ export default function Post({ publication, posts, tag, slug, currentMenuId, mes
 								"@type": "WebPage",
 								"name": title,
 								"description": `${t('common.discover')} ${t('common.posts')} ${t('tags.postsTagged')} #${tag.name} ${t('common.on')} ${publication.title}. ${t('common.discover')} ${tag.postsCount ?? t('common.various')} ${t('common.posts')} ${t('common.aboutTopic')} ${tag.name}.`,
-								"url": `${publication.url}/tag/${tag.slug}`,
+								"url": tagUrl,
 								"mainEntity": {
 									"@type": "Blog",
 									"name": publication.title,
 									"description": publication.descriptionSEO || publication.title,
-									"url": publication.url,
+									"url": publicationUrl,
 									"author": {
 										"@type": publication.isTeam ? "Organization" : "Person",
 										"name": publication.author.name
@@ -117,13 +120,13 @@ export default function Post({ publication, posts, tag, slug, currentMenuId, mes
 											"@type": "ListItem",
 											"position": 1,
 											"name": t('common.home'),
-											"item": publication.url
+											"item": publicationUrl
 										},
 										{
 											"@type": "ListItem",
 											"position": 2,
 											"name": `${t('tags.title')}: ${tag.name}`,
-											"item": `${publication.url}/tag/${tag.slug}`
+											"item": tagUrl
 										}
 									]
 								}

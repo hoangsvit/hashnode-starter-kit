@@ -9,6 +9,7 @@ import {
 	SitemapQuery,
 	SitemapQueryVariables,
 } from '../../generated/graphql';
+import { replaceLegacyPublicationUrl } from '../../utils/urls';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const MAX_POSTS = 2000;
@@ -35,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			};
 		}
 
-		const domain = publication.url;
+		const domain = replaceLegacyPublicationUrl(publication.url) || publication.url;
 		const posts = publication.posts.edges.map((edge) => edge.node);
 
 		// Get more posts by pagination if exists to collect all tags

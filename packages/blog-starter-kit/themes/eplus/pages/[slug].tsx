@@ -34,6 +34,7 @@ import {
 	StaticPageFragment,
 } from '../generated/graphql';
 import { getTimezoneFromLocale } from '../utils/timezone';
+import { replaceLegacyPublicationUrl } from '../utils/urls';
 
 type PostProps = {
 	type: 'post';
@@ -56,6 +57,7 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 	const router = useRouter();
 	const currentLocale = router.locale || 'en';
 	const postTitle = useEnvironmentTitle(post.seo?.title || post.title);
+	const canonicalPostUrl = replaceLegacyPublicationUrl(post.url);
 	const highlightJsMonokaiTheme =
 		'.hljs{display:block;overflow-x:auto;padding:.5em;background:#23241f}.hljs,.hljs-subst,.hljs-tag{color:#f8f8f2}.hljs-emphasis,.hljs-strong{color:#a8a8a2}.hljs-bullet,.hljs-link,.hljs-literal,.hljs-number,.hljs-quote,.hljs-regexp{color:#ae81ff}.hljs-code,.hljs-section,.hljs-selector-class,.hljs-title{color:#a6e22e}.hljs-strong{font-weight:700}.hljs-emphasis{font-style:italic}.hljs-attr,.hljs-keyword,.hljs-name,.hljs-selector-tag{color:#f92672}.hljs-attribute,.hljs-symbol{color:#66d9ef}.hljs-class .hljs-title,.hljs-params{color:#f8f8f2}.hljs-addition,.hljs-built_in,.hljs-builtin-name,.hljs-selector-attr,.hljs-selector-id,.hljs-selector-pseudo,.hljs-string,.hljs-template-variable,.hljs-type,.hljs-variable{color:#e6db74}.hljs-comment,.hljs-deletion,.hljs-meta{color:#75715e}';
 
@@ -63,7 +65,7 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 		<>
 			<Head>
 				<title>{postTitle}</title>
-				<link rel="canonical" href={post.url} />
+				<link rel="canonical" href={canonicalPostUrl || ''} />
 				<meta name="description" content={post.seo?.description || post.subtitle || post.brief} />
 
 				{/* Basic SEO meta tags */}
@@ -77,7 +79,7 @@ const Post = ({ publication, post, morePosts }: PostProps) => {
 				<meta property="og:type" content="article" />
 				<meta property="og:title" content={post.seo?.title || post.title} />
 				<meta property="og:description" content={post.seo?.description || post.subtitle || post.brief} />
-				<meta property="og:url" content={post.url} />
+				<meta property="og:url" content={canonicalPostUrl || ''} />
 				<meta property="og:site_name" content={publication.title} />
 				<meta property="og:locale" content={currentLocale.replace('-', '_')} />
 				{post.publishedAt && <meta property="article:published_time" content={post.publishedAt} />}
@@ -340,12 +342,30 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (context: Get
 		]);
 
 		if (postData.publication?.post) {
+			const normalizedPublication = {
+				...postData.publication,
+				url: replaceLegacyPublicationUrl(postData.publication.url),
+			};
+
+			const normalizedPost = {
+				...postData.publication.post,
+				url: replaceLegacyPublicationUrl(postData.publication.post.url),
+			};
+
+			const normalizedMorePosts = (morePostsData.publication?.posts.edges ?? []).map((edge) => ({
+				...edge,
+				node: {
+					...edge.node,
+					url: replaceLegacyPublicationUrl(edge.node.url),
+				},
+			}));
+
 			return {
 				props: {
 					type: 'post',
-					post: postData.publication.post,
-					morePosts: morePostsData.publication?.posts.edges ?? [],
-					publication: postData.publication,
+					post: normalizedPost,
+					morePosts: normalizedMorePosts,
+					publication: normalizedPublication,
 					messages,
 				},
 				revalidate: 1,
@@ -355,11 +375,16 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (context: Get
 		const pageData = await request(endpoint, PageByPublicationDocument, { host, slug });
 
 		if (pageData.publication?.staticPage) {
+			const normalizedPublication = {
+				...pageData.publication,
+				url: replaceLegacyPublicationUrl(pageData.publication.url),
+			};
+
 			return {
 				props: {
 					type: 'page',
 					page: pageData.publication.staticPage,
-					publication: pageData.publication,
+					publication: normalizedPublication,
 					messages,
 				},
 				revalidate: 1,
