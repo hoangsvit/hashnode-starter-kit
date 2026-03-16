@@ -26,12 +26,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const allPosts = publication.posts.edges.map((edge) => ({
 		...edge.node,
 		url: replaceLegacyPublicationUrl(edge.node.url) || edge.node.url,
-		publication: edge.node.publication
-			? {
-					...edge.node.publication,
-					url: replaceLegacyPublicationUrl(edge.node.publication.url) || edge.node.publication.url,
-			  }
-			: edge.node.publication,
 	}));
 
 	const normalizedPublication = {
