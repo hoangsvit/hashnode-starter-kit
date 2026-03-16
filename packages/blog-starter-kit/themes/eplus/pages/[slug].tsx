@@ -350,12 +350,6 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (context: Get
 			const normalizedPost = {
 				...postData.publication.post,
 				url: replaceLegacyPublicationUrl(postData.publication.post.url),
-				publication: postData.publication.post.publication
-					? {
-							...postData.publication.post.publication,
-							url: replaceLegacyPublicationUrl(postData.publication.post.publication.url),
-					  }
-					: postData.publication.post.publication,
 			};
 
 			const normalizedMorePosts = (morePostsData.publication?.posts.edges ?? []).map((edge) => ({
