@@ -30,10 +30,28 @@ export const generateSitemapIndex = (sitemaps: string[], domain: string): string
 export const generatePostsSitemap = (posts: any[], domain: string, page?: number): string => {
 	let xml = '<?xml version="1.0" encoding="UTF-8"?>';
 	xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+	const normalizedDomain = domain.replace(/\/+$/, '');
+	const absoluteUrlRegex = /^https?:\/\//i;
 
 	posts.forEach((post) => {
+		let postUrl: string;
+		if (typeof post.url === 'string' && post.url.length > 0) {
+			if (absoluteUrlRegex.test(post.url)) {
+				postUrl = post.url;
+			} else if (post.url.startsWith('/')) {
+				postUrl = `${normalizedDomain}${post.url}`;
+			} else {
+				postUrl = `${normalizedDomain}/${post.url}`;
+			}
+		} else {
+			const urlPattern = post.publication?.urlPattern || post.urlPattern;
+			const shouldUseSlugOnly = urlPattern === 'SIMPLE' || !post.cuid;
+			const path = shouldUseSlugOnly ? `/${post.slug}` : `/${post.slug}-${post.cuid}`;
+			postUrl = `${normalizedDomain}${path}`;
+		}
+
 		xml += '<url>';
-		xml += `<loc>${domain}/${post.slug}</loc>`;
+		xml += `<loc>${postUrl}</loc>`;
 		xml += '<changefreq>daily</changefreq>';
 		xml += '<priority>0.8</priority>';
 		if (post.updatedAt) {
