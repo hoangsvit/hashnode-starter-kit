@@ -20,6 +20,7 @@ import { blurActiveFocus, returnFocusToElement } from '../utils/commonUtils';
 
 import { blurImageDimensions } from '../utils/const/images';
 import CustomScrollArea from './scroll-area';
+import { replaceLegacyPublicationUrl } from '../utils/urls';
 
 
 dayjs.extend(localizedFormat);
@@ -211,14 +212,16 @@ const PublicationSearch = (props: Props) => {
               {shouldRenderResult &&
                 publicationSearchResults.map((item, index: number) => {
                   const post = item.node;
-                  const postURL = post.url;
-                  const pubOrigin = post.publication?.url.replace('https://', '').replace('http://', '');
+                  const postURL = replaceLegacyPublicationUrl(post.url) || post.url || '#';
+                  const pubOrigin = replaceLegacyPublicationUrl(post.publication?.url || '')
+                    .replace('https://', '')
+                    .replace('http://', '');
 
                   return (
                     <a
                       tabIndex={0}
                       data-testid="blog-search-result"
-                      href={postURL!}
+                      href={postURL}
                       key={post.id}
                       className="block px-2 hover:bg-slate-100 focus:bg-slate-100 focus:outline-none dark:border-slate-800 dark:hover:bg-slate-800 dark:focus:bg-slate-800"
                     >

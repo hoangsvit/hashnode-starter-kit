@@ -2,6 +2,7 @@ import { constructRSSFeedFromPosts } from '@starter-kit/utils/feed';
 import request from 'graphql-request';
 import { GetServerSideProps } from 'next';
 import { RssFeedDocument, RssFeedQuery, RssFeedQueryVariables } from '../generated/graphql';
+import { replaceLegacyPublicationUrl } from '../utils/urls';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
 const RSS = () => null;
@@ -22,10 +23,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			notFound: true,
 		};
 	}
-	const allPosts = publication.posts.edges.map((edge) => edge.node);
+	const allPosts = publication.posts.edges.map((edge) => ({
+		...edge.node,
+		url: replaceLegacyPublicationUrl(edge.node.url) || edge.node.url,
+		publication: edge.node.publication
+			? {
+					...edge.node.publication,
+					url: replaceLegacyPublicationUrl(edge.node.publication.url) || edge.node.publication.url,
+			  }
+			: edge.node.publication,
+	}));
+
+	const normalizedPublication = {
+		...publication,
+		url: replaceLegacyPublicationUrl(publication.url) || publication.url,
+	};
 
 	const xml = constructRSSFeedFromPosts(
-		publication,
+		normalizedPublication,
 		allPosts,
 		after,
 		publication.posts.pageInfo.hasNextPage && publication.posts.pageInfo.endCursor
