@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { initUrqlClient } from 'next-urql';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { twJoin, twMerge } from 'tailwind-merge';
 import { useQuery } from 'urql';
 
@@ -36,7 +36,9 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 	const router = useRouter();
 	const t = useTranslations();
 	const [searchKey, setSearchKey] = useState(initialQuery);
+	const [inputValue, setInputValue] = useState(initialQuery);
 	const [after, setAfter] = useState<string | null>(null);
+	const debounceRef = useRef<number | null>(null);
 
 	const normalizedSearchKey = searchKey.trim();
 	const publicationTitle = publication.displayTitle || publication.title || 'Hashnode Blog';
@@ -66,6 +68,12 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 		// old `after` value and accidentally skip initial results.
 		setAfter(null);
 		setSearchKey(value);
+		setInputValue(value);
+		// clear any pending debounced update when navigation occurs
+		if (debounceRef.current) {
+			window.clearTimeout(debounceRef.current);
+			debounceRef.current = null;
+		}
 	}, [router.isReady, router.query.q]);
 
 	const [{ data, fetching }] = useQuery({
@@ -83,7 +91,7 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 
 	const results = data?.searchPostsOfPublication;
 
-	const handleKeywordChange = (value: string) => {
+	const applySearch = (value: string) => {
 		setAfter(null);
 		setSearchKey(value);
 
@@ -98,9 +106,34 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 		);
 	};
 
+	const handleKeywordChange = (value: string) => {
+		setInputValue(value);
+		if (debounceRef.current) {
+			window.clearTimeout(debounceRef.current);
+		}
+		// debounce applying the search to avoid frequent router.replace and queries
+		// (300ms matches `publication-search` behavior)
+		// store numeric id returned by setTimeout
+		debounceRef.current = window.setTimeout(() => {
+			applySearch(value);
+			debounceRef.current = null;
+		}, 300);
+	};
+
+	useEffect(() => {
+		return () => {
+			if (debounceRef.current) window.clearTimeout(debounceRef.current);
+		};
+	}, []);
+
 	const clearResults = () => {
 		setAfter(null);
 		setSearchKey('');
+		setInputValue('');
+		if (debounceRef.current) {
+			window.clearTimeout(debounceRef.current);
+			debounceRef.current = null;
+		}
 		router.replace('/search', undefined, { shallow: true });
 	};
 
@@ -140,7 +173,7 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 					</h1>
 					<div className="relative mb-8 w-full">
 						<input
-							value={searchKey}
+							value={inputValue}
 							onChange={(e) => handleKeywordChange(e.target.value)}
 							type="text"
 							className={twMerge(inputText, 'rounded-full px-6 py-3')}
