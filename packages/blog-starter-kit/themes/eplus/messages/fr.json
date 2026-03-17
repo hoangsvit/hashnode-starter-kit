@@ -124,7 +124,8 @@
 		"placeholder": "Rechercher des articles de ce blog...",
 		"noResults": "Aucun article trouvé",
 		"results": "Résultats de recherche",
-		"clearResults": "Effacer les résultats de recherche"
+		"clearResults": "Effacer les résultats de recherche",
+		"openSearchPage": "Ouvrir la page de recherche complète"
 	},
 	"tags": {
 		"title": "Étiquettes",

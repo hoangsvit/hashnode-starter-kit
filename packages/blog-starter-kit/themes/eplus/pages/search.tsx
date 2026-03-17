@@ -284,7 +284,7 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 					{!fetching && results?.pageInfo?.hasNextPage ? (
 						<div className="mt-8 flex justify-center">
 							<Button variant="primary" onClick={loadMore}>
-								{t('archive.loadMorePosts')}
+								{t('common.loadMore')}
 							</Button>
 						</div>
 					) : null}

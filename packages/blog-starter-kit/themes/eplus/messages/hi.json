@@ -124,7 +124,8 @@
 		"placeholder": "इस ब्लॉग से आर्टिकल खोजें...",
 		"noResults": "कोई आर्टिकल नहीं मिला",
 		"results": "खोज परिणाम",
-		"clearResults": "खोज परिणाम साफ़ करें"
+		"clearResults": "खोज परिणाम साफ़ करें",
+		"openSearchPage": "पूरा खोज पेज खोलें"
 	},
 	"tags": {
 		"title": "टैग",
