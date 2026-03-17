@@ -30,11 +30,12 @@ dayjs.extend(localizedFormat);
 
 const POSTS_PER_PAGE = 10;
 
+
 export default function SearchPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-	const { publication } = props;
+	const { publication, initialQuery = '' } = props;
 	const router = useRouter();
 	const t = useTranslations();
-	const [searchKey, setSearchKey] = useState('');
+	const [searchKey, setSearchKey] = useState(initialQuery);
 	const [after, setAfter] = useState<string | null>(null);
 
 	const normalizedSearchKey = searchKey.trim();
@@ -60,6 +61,10 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 		if (!router.isReady) return;
 		const q = router.query.q;
 		const value = Array.isArray(q) ? q[0] : q || '';
+		// When the query param changes (e.g. navigation/back/forward),
+		// reset the pagination cursor so we don't continue from an
+		// old `after` value and accidentally skip initial results.
+		setAfter(null);
 		setSearchKey(value);
 	}, [router.isReady, router.query.q]);
 
@@ -204,7 +209,7 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 													<>
 														<span className="mx-2 inline-block font-bold opacity-50">&middot;</span>
 														<p className="inline-block">
-															{post.reactionCount} {t('views')}
+															{post.reactionCount} {post.reactionCount === 1 ? t('views').slice(0, -1) : t('views')}
 														</p>
 													</>
 												)}
@@ -268,6 +273,10 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
 	const { locale = 'en' } = context;
+	// Extract `q` from the incoming request so the page can render
+	// correctly on the server with the initial search query.
+	const q = context.query.q;
+	const initialQuery = Array.isArray(q) ? q[0] : q || '';
 	const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
 	const messages = (await import(`../messages/${locale}.json`)).default;
 
@@ -284,8 +293,17 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 			},
 		)
 		.toPromise();
-
+	if (publicationRes.error) {
+		console.error('Error while fetching publication', {
+			variables: { host },
+			error: publicationRes.error,
+		});
+		throw publicationRes.error;
+	}
 	if (!publicationRes.data?.publication) {
+		console.error('Publication not found fetching publication; returning 404', {
+			variables: { host },
+		});
 		return { notFound: true };
 	}
 
@@ -293,6 +311,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 		props: {
 			messages,
 			publication: publicationRes.data.publication,
+			initialQuery,
 		},
 	};
 };
