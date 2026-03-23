@@ -59,6 +59,8 @@ const PublicationSearch = (props: Props) => {
   const [isMounted, setIsMounted] = useState(false);
   const [searchKey, setSearchKey] = useState('');
   const searchField = useRef<HTMLInputElement>(null);
+  const normalizedSearchKey = searchKey.trim();
+  const searchPageHref = normalizedSearchKey.length > 0 ? `/search?q=${encodeURIComponent(normalizedSearchKey)}` : '/search';
 
   const [{ data: _publicationSearchResults, fetching, error, operation }] = useQuery({
     query: SearchPostsOfPublicationDocument,
@@ -191,6 +193,15 @@ const PublicationSearch = (props: Props) => {
                 <CloseSVG className="h-5 w-5 fill-current text-slate-500 dark:text-slate-200" />
               </button>
             ) : null}
+          </div>
+          <div className="mb-2 flex w-full justify-end md:mb-4">
+            <a
+              href={searchPageHref}
+              className="text-sm font-medium text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+              onClick={toggleSearchUI}
+            >
+              {t('search.openSearchPage')}
+            </a>
           </div>
           <div className="relative w-full">
             {isInputEmpty && (

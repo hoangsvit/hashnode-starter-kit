@@ -124,7 +124,8 @@
 		"placeholder": "从此博客搜索文章...",
 		"noResults": "未找到文章",
 		"results": "搜索结果",
-		"clearResults": "清除搜索结果"
+		"clearResults": "清除搜索结果",
+		"openSearchPage": "打开完整搜索页面"
 	},
 	"tags": {
 		"title": "标签",

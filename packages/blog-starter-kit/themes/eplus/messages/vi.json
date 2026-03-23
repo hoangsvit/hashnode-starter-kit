@@ -124,7 +124,8 @@
 		"placeholder": "Tìm kiếm bài viết từ blog này...",
 		"noResults": "Không tìm thấy bài viết nào",
 		"results": "Kết quả tìm kiếm",
-		"clearResults": "Xóa kết quả tìm kiếm"
+		"clearResults": "Xóa kết quả tìm kiếm",
+		"openSearchPage": "Mở trang tìm kiếm đầy đủ"
 	},
 	"tags": {
 		"title": "Thẻ",
