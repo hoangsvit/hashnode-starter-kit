@@ -36,8 +36,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			};
 		}
 
-		const domain = replaceLegacyPublicationUrl(publication.url) || publication.url;
-		const posts = publication.posts.edges.map((edge) => edge.node);
+		const domain = 'https://eplus.dev';
+		// Normalize all post URLs to relative so generatePostsSitemap always uses the correct domain
+		const normalizePost = (node) => {
+			const newNode = { ...node };
+			if (typeof newNode.url === 'string' && newNode.url.startsWith('http')) {
+				delete newNode.url;
+			}
+			return newNode;
+		};
+		const posts = publication.posts.edges.map((edge) => normalizePost(edge.node));
 
 		// Get more posts by pagination if exists
 		const initialPageInfo = publication.posts.pageInfo;
@@ -59,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			}
 			const pageInfo = publication.posts.pageInfo;
 
-			posts.push(...publication.posts.edges.map((edge) => edge.node));
+			posts.push(...publication.posts.edges.map((edge) => normalizePost(edge.node)));
 
 			if (pageInfo.hasNextPage && posts.length < MAX_POSTS) {
 				await fetchPosts(pageInfo.endCursor);

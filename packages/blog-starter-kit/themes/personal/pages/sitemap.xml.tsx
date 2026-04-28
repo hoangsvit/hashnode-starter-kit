@@ -66,8 +66,13 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		await fetchPosts(initialPageInfo.endCursor);
 	}
 
-	const xml = getSitemap({
+	// Force publication.url to the correct domain
+	const publicationWithCustomUrl = {
 		...publication,
+		url: 'https://eplus.dev',
+	};
+	let xml = getSitemap({
+		...publicationWithCustomUrl,
 		posts,
 	});
 

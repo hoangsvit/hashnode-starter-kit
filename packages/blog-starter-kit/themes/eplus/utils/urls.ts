@@ -17,7 +17,7 @@ export const publicationDomainNames = {
 	development: 'app.localhost',
 	staging: 'hashnode.net',
 	test: 'hashnode.net',
-	production: 'hashnode.dev',
+	production: 'eplus.dev',
 } as const;
 
 export function getSingleQueryParam(query: ParsedUrlQuery, key: string) {
