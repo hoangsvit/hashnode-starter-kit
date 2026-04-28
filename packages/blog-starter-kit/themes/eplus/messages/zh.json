@@ -255,7 +255,8 @@
 		"browsePosts": "浏览 {publicationTitle} 的所有 {totalPosts} 篇文章",
 		"noPostsFound": "未找到文章。",
 		"previous": "上一页",
-		"next": "下一页"
+		"next": "下一页",
+		"loadMorePosts": "加载更多文章"
 	},
 	"gsp-extension": {
 		"extensionTitle": "Google Cloud Skills Boost - 助手",

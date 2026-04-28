@@ -255,7 +255,8 @@
 		"browsePosts": "Duyệt tất cả {totalPosts} bài viết từ {publicationTitle}",
 		"noPostsFound": "Không tìm thấy bài viết nào.",
 		"previous": "Trước",
-		"next": "Tiếp theo"
+		"next": "Tiếp theo",
+		"loadMorePosts": "Tải thêm bài viết"
 	},
 	"gsp-extension": {
 		"extensionTitle": "Google Cloud Skills Boost - Trợ lý",

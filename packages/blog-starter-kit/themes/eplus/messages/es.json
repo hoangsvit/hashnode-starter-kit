@@ -255,7 +255,8 @@
 		"browsePosts": "Explorar todas las {totalPosts} publicaciones de {publicationTitle}",
 		"noPostsFound": "No se encontraron publicaciones.",
 		"previous": "Anterior",
-		"next": "Siguiente"
+		"next": "Siguiente",
+		"loadMorePosts": "Cargar más publicaciones"
 	},
 	"gsp-extension": {
 		"extensionTitle": "Google Cloud Skills Boost - Asistente",

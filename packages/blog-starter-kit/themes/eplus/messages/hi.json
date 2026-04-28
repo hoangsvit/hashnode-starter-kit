@@ -255,7 +255,8 @@
 		"browsePosts": "{publicationTitle} की सभी {totalPosts} पोस्ट ब्राउज़ करें",
 		"noPostsFound": "कोई पोस्ट नहीं मिली।",
 		"previous": "पिछला",
-		"next": "अगला"
+		"next": "अगला",
+		"loadMorePosts": "और पोस्ट लोड करें"
 	},
 	"gsp-extension": {
 		"extensionTitle": "Google Cloud Skills Boost - सहायक",

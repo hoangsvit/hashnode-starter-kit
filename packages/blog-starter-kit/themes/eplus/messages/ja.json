@@ -255,7 +255,8 @@
 		"browsePosts": "{publicationTitle}のすべての{totalPosts}投稿を閲覧",
 		"noPostsFound": "投稿が見つかりません。",
 		"previous": "前へ",
-		"next": "次へ"
+		"next": "次へ",
+		"loadMorePosts": "さらに投稿を読み込む"
 	},
 	"gsp-extension": {
 		"extensionTitle": "Google Cloud Skills Boost - ヘルパー",
