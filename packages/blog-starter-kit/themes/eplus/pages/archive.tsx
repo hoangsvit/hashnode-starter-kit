@@ -77,6 +77,7 @@ export default function Archive(
 				<Layout>
 					<Head>
 						<title>{archiveTitle}</title>
+						<meta name="robots" content="index, follow" />
 						<meta
 							name="description"
 							content={t('archive.description', {

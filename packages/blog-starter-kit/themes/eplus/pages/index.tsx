@@ -99,8 +99,22 @@ export default function Index(
 			<Layout>
 				<Head>
 					<title>{pageTitle}</title>
+					<link rel="canonical" href={`https://${host}`} />
+					<meta name="robots" content="index, follow" />
 					<meta
 						name="description"
+						content={
+							publication.descriptionSEO || publication.title || `${publication.author.name}'s Blog`
+						}
+					/>
+					<meta property="og:type" content="website" />
+					<meta property="og:url" content={`https://${host}`} />
+					<meta
+						property="og:title"
+						content={publication.displayTitle || publication.title || 'Hashnode Blog Starter Kit'}
+					/>
+					<meta
+						property="og:description"
 						content={
 							publication.descriptionSEO || publication.title || `${publication.author.name}'s Blog`
 						}

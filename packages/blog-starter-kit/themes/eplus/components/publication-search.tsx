@@ -59,6 +59,8 @@ const PublicationSearch = (props: Props) => {
   const [isMounted, setIsMounted] = useState(false);
   const [searchKey, setSearchKey] = useState('');
   const searchField = useRef<HTMLInputElement>(null);
+  const normalizedSearchKey = searchKey.trim();
+  const searchPageHref = normalizedSearchKey.length > 0 ? `/search?q=${encodeURIComponent(normalizedSearchKey)}` : '/search';
 
   const [{ data: _publicationSearchResults, fetching, error, operation }] = useQuery({
     query: SearchPostsOfPublicationDocument,
@@ -192,6 +194,15 @@ const PublicationSearch = (props: Props) => {
               </button>
             ) : null}
           </div>
+          <div className="mb-2 flex w-full justify-end md:mb-4">
+            <a
+              href={searchPageHref}
+              className="text-sm font-medium text-blue-600 underline-offset-2 hover:underline dark:text-blue-400"
+              onClick={toggleSearchUI}
+            >
+              {t('search.openSearchPage')}
+            </a>
+          </div>
           <div className="relative w-full">
             {isInputEmpty && (
               <div className="my-4 flex flex-row items-center justify-center text-slate-500 dark:text-slate-300">
@@ -232,9 +243,9 @@ const PublicationSearch = (props: Props) => {
                         )}
                       >
                         <div className="md:mr-4">
-                          <h1 className="mb-2 break-words text-2xl font-bold leading-snug tracking-tight text-slate-900 hn-break-words dark:text-slate-300">
+                          <h3 className="mb-2 break-words text-2xl font-bold leading-snug tracking-tight text-slate-900 hn-break-words dark:text-slate-300">
                             {post.title}
-                          </h1>
+                          </h3>
                           <div className="mb-4 flex flex-row flex-wrap items-center font-medium text-slate-500 dark:text-slate-400">
                             <p className="inline-block">{post?.author?.name || 'Anonymous'}</p>
                             <span className="mx-2 inline-block font-bold opacity-50">&middot;</span>

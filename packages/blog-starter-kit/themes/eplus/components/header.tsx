@@ -97,7 +97,6 @@ export const Header = (props: Props) => {
 
 				<div
 					className="relative mt-8 hidden flex-row items-center justify-center overflow-hidden text-base md:flex"
-					data-tom="hidden md:flex relative flex-row items-center justify-center overflow-hidden text-base mt-8"
 				>
 					<PublicationNavLinks
 						isHome={isHome}

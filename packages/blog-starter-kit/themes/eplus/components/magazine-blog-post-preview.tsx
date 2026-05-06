@@ -66,11 +66,11 @@ function BlogPostPreview(props: Readonly<{
           alt={post.title}
         />
       </Link>
-      <h1 className="blog-article-card-title mx-4 mb-2 block break-words font-heading text-2xl font-extrabold leading-snug text-slate-900 hover:opacity-75 dark:text-slate-100">
+      <h2 className="blog-article-card-title mx-4 mb-2 block break-words font-heading text-2xl font-extrabold leading-snug text-slate-900 hover:opacity-75 dark:text-slate-100">
         <Link href={postURL} onMouseOver={preload} onFocus={() => undefined}>
           {post.title}
         </Link>
-      </h1>
+      </h2>
       <div className="blog-article-card-author-strip mx-4 flex flex-row flex-wrap items-center">
         <div className="flex flex-col items-start leading-snug">
           <a

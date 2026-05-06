@@ -124,7 +124,8 @@
 		"placeholder": "このブログから記事を検索...",
 		"noResults": "記事が見つかりません",
 		"results": "検索結果",
-		"clearResults": "検索結果をクリア"
+		"clearResults": "検索結果をクリア",
+		"openSearchPage": "検索ページを開く"
 	},
 	"tags": {
 		"title": "タグ",

@@ -284,7 +284,7 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 					{!fetching && results?.pageInfo?.hasNextPage ? (
 						<div className="mt-8 flex justify-center">
 							<Button variant="primary" onClick={loadMore}>
-								{t('archive.loadMorePosts')}
+								{t('common.loadMore')}
 							</Button>
 						</div>
 					) : null}
@@ -305,7 +305,9 @@ export default function SearchPage(props: InferGetServerSidePropsType<typeof get
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-	const { locale = 'en' } = context;
+	const { res, locale = 'en' } = context;
+	// Search pages must not be indexed — override the default X-Robots-Tag set in next.config.js.
+	res.setHeader('X-Robots-Tag', 'noindex, follow');
 	// Extract `q` from the incoming request so the page can render
 	// correctly on the server with the initial search query.
 	const q = context.query.q;

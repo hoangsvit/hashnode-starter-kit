@@ -79,11 +79,11 @@ function BlogPostPreview(props: {
         )}
       >
         <div className={layout === 'grid' ? 'w-full' : 'lg:w-3/5'}>
-          <h1 className="blog-post-card-title mb-3 break-words font-heading text-2xl font-bold leading-tight text-slate-900 dark:text-white lg:text-3xl">
+          <h2 className="blog-post-card-title mb-3 break-words font-heading text-2xl font-bold leading-tight text-slate-900 dark:text-white lg:text-3xl">
             <Link href={postURL} aria-label={post.title} onMouseOver={preload} onFocus={() => undefined}>
               {post.title}
             </Link>
-          </h1>
+          </h2>
           <div
             className={twJoin(
               'blog-post-card-meta mb-3 flex flex-row flex-wrap items-center font-heading text-sm font-medium text-slate-500 dark:text-slate-400',

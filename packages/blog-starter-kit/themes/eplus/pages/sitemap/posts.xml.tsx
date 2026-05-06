@@ -12,7 +12,7 @@ import {
 import { replaceLegacyPublicationUrl } from '../../utils/urls';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
-const MAX_POSTS = 2000; // Tăng giới hạn posts
+const MAX_POSTS = 50000; // Sitemap protocol hard limit per file
 const SitemapPosts = () => null;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -36,16 +36,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			};
 		}
 
-		const domain = 'https://eplus.dev';
-		// Normalize all post URLs to relative so generatePostsSitemap always uses the correct domain
-		const normalizePost = (node) => {
-			const newNode = { ...node };
-			if (typeof newNode.url === 'string' && newNode.url.startsWith('http')) {
-				delete newNode.url;
-			}
-			return newNode;
-		};
-		const posts = publication.posts.edges.map((edge) => normalizePost(edge.node));
+		const domain = replaceLegacyPublicationUrl(publication.url) || publication.url;
+		const posts = publication.posts.edges.map((edge) => ({
+			...edge.node,
+			url: replaceLegacyPublicationUrl(edge.node.url) || edge.node.url,
+		}));
 
 		// Get more posts by pagination if exists
 		const initialPageInfo = publication.posts.pageInfo;
@@ -67,7 +62,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			}
 			const pageInfo = publication.posts.pageInfo;
 
-			posts.push(...publication.posts.edges.map((edge) => normalizePost(edge.node)));
+			posts.push(...publication.posts.edges.map((edge) => ({
+				...edge.node,
+				url: replaceLegacyPublicationUrl(edge.node.url) || edge.node.url,
+			})));
 
 			if (pageInfo.hasNextPage && posts.length < MAX_POSTS) {
 				await fetchPosts(pageInfo.endCursor);

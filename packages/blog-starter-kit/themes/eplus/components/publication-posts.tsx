@@ -1,5 +1,6 @@
 import { Waypoint } from 'react-waypoint';
 import { twJoin } from 'tailwind-merge';
+import { useTranslations } from 'next-intl';
 
 import { ChevronDownSVG } from './icons/svgs';
 import Button from './hn-button';
@@ -33,6 +34,7 @@ const PublicationPosts = (props: {
   const {
     preferences: { layout },
   } = publication;
+  const t = useTranslations('common');
 
   return (
     <>
@@ -50,7 +52,7 @@ const PublicationPosts = (props: {
               className="w-full justify-center px-4 py-2 text-lg text-blue-600 dark:text-blue-500"
               onClick={fetchMore}
             >
-              <span>Load more</span>
+              <span>{t('loadMore')}</span>
               <ChevronDownSVG className="ml-3 h-5 w-5 fill-current" />
             </Button>
           </div>
@@ -60,7 +62,7 @@ const PublicationPosts = (props: {
       {fetchedOnce && pageInfo.hasNextPage ? <Waypoint onEnter={fetchMore} topOffset="-20%" /> : null}
       {fetchedOnce && !pageInfo.hasNextPage ? (
         <div className="blog-posts-end-card my-10 px-16 py-8 text-center font-heading font-bold text-slate-700 dark:text-slate-300">
-          <p className="text-2xl">You&apos;ve reached the end! 👋</p>
+          <p className="text-2xl">{t('reachedEnd')}</p>
         </div>
       ) : null}
     </>

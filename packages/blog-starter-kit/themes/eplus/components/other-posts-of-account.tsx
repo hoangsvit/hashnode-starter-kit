@@ -68,12 +68,12 @@ function OtherPostsOfAccount(props: Props) {
             </Link>
           )}
           <div className="blog-post-details break-words">
-            <h1 className="mb-2 font-heading text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">
+            <h2 className="mb-2 font-heading text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white">
               <Link href={postURL}>
                 {post.title.substring(0, 100)}
                 {post.title.length > 100 ? '…' : ''}
               </Link>
-            </h1>
+            </h2>
             {post.brief && (
               <p
                 className={twJoin(

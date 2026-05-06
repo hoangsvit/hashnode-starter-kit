@@ -46,7 +46,7 @@ const CustomLogo = ({
 	const blogTitle = generateBlogTitleWithoutDisplayTitle(publication);
 
 	return (
-		<h1 className="blog-main-logo">
+		<p className="blog-main-logo">
 			<Link
 				className={twJoin(
 					'blog-logo focus-ring-base flex flex-row items-center',
@@ -67,7 +67,7 @@ const CustomLogo = ({
 					alt={blogTitle}
 				/>
 			</Link>
-		</h1>
+		</p>
 	);
 };
 
@@ -89,7 +89,7 @@ const DefaultLogo = ({
 	const blogTitle = generateBlogTitleWithoutDisplayTitle(publication);
 
 	return (
-		<h1
+		<p
 			className={twJoin(
 				'blog-title',
 				textStyles[size],
@@ -119,7 +119,7 @@ const DefaultLogo = ({
 				)}
 				{blogTitle}
 			</Link>
-		</h1>
+		</p>
 	);
 };
 

@@ -38,7 +38,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		}
 
 		const domain = replaceLegacyPublicationUrl(publication.url) || publication.url;
-		const allPosts = publication.posts.edges.map((edge) => edge.node);
+		const allPosts = publication.posts.edges.map((edge) => ({
+			...edge.node,
+			url: replaceLegacyPublicationUrl(edge.node.url) || edge.node.url,
+		}));
 
 		// Get all posts by pagination
 		const initialPageInfo = publication.posts.pageInfo;
@@ -60,7 +63,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			}
 			const pageInfo = publication.posts.pageInfo;
 
-			allPosts.push(...publication.posts.edges.map((edge) => edge.node));
+			allPosts.push(...publication.posts.edges.map((edge) => ({
+				...edge.node,
+				url: replaceLegacyPublicationUrl(edge.node.url) || edge.node.url,
+			})));
 
 			if (pageInfo.hasNextPage) {
 				await fetchPosts(pageInfo.endCursor);
