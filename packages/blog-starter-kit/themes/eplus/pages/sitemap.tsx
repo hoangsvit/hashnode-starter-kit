@@ -89,7 +89,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 
 		const fetchPosts = async () => {
 			const loadedPosts: SitemapPost[] = [];
-			let after: string | null | undefined;
+			let after: string | null = null;
 			let hasNextPage = true;
 
 			try {
@@ -110,6 +110,8 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 					const publicationPosts = data.publication?.posts;
 					if (!publicationPosts) break;
 
+					const previousCursor = after;
+
 					for (const edge of publicationPosts.edges) {
 						loadedPosts.push({
 							id: edge.node.id,
@@ -120,8 +122,21 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 						});
 					}
 
-					hasNextPage = Boolean(publicationPosts.pageInfo.hasNextPage);
-					after = publicationPosts.pageInfo.endCursor;
+					const nextCursor = publicationPosts.pageInfo.endCursor ?? null;
+					const reachedKnownTotal = totalPosts > 0 && loadedPosts.length >= totalPosts;
+					const nextHasNextPage =
+						Boolean(publicationPosts.pageInfo.hasNextPage) && !reachedKnownTotal;
+
+					if (nextHasNextPage && !nextCursor) {
+						throw new Error('Sitemap pagination returned hasNextPage without an endCursor.');
+					}
+
+					if (nextHasNextPage && nextCursor === previousCursor) {
+						throw new Error('Sitemap pagination cursor did not advance.');
+					}
+
+					hasNextPage = nextHasNextPage;
+					after = nextCursor;
 				}
 
 				if (!isMounted) return;
@@ -145,7 +160,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [totalPosts]);
 
 	const postsByYear = useMemo(() => groupByYear(posts), [posts]);
 	const years = useMemo(
