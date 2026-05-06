@@ -94,6 +94,8 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 
 			try {
 				while (hasNextPage) {
+					if (!isMounted) return;
+
 					const data = await request<
 						MorePostsByPublicationQuery,
 						MorePostsByPublicationQueryVariables
@@ -102,6 +104,8 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 						first: 50,
 						after,
 					});
+
+					if (!isMounted) return;
 
 					const publicationPosts = data.publication?.posts;
 					if (!publicationPosts) break;
@@ -119,6 +123,8 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 					hasNextPage = Boolean(publicationPosts.pageInfo.hasNextPage);
 					after = publicationPosts.pageInfo.endCursor;
 				}
+
+				if (!isMounted) return;
 
 				loadedPosts.sort(
 					(a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
