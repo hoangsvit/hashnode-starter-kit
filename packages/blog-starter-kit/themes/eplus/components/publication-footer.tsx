@@ -94,6 +94,13 @@ const PublicationFooter = memo(function PublicationFooter(props: PublicationFoot
             >
               Terms
             </Link>
+            <span className="font-extrabold text-black opacity-20 dark:text-white" aria-hidden="true">&middot;</span>
+            <Link
+              href="/sitemap"
+              className="mx-2 py-1 hover:text-slate-900 dark:hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded dark:focus:ring-offset-slate-900"
+            >
+              Sitemap
+            </Link>
           </div>
         </nav>
         {disableFooterBranding ? (

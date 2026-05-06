@@ -12,8 +12,11 @@ export const DEFAULT_SITEMAP_CONFIG: SitemapConfig = {
 	cacheControl: 's-maxage=3600, stale-while-revalidate=86400',
 };
 
+const XSL_PI = '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>';
+
 export const generateSitemapIndex = (sitemaps: string[], domain: string): string => {
 	let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+	xml += XSL_PI;
 	xml += '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 	sitemaps.forEach((sitemap) => {
@@ -29,6 +32,7 @@ export const generateSitemapIndex = (sitemaps: string[], domain: string): string
 
 export const generatePostsSitemap = (posts: any[], domain: string, page?: number): string => {
 	let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+	xml += XSL_PI;
 	xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 	const normalizedDomain = domain.replace(/\/+$/, '');
 	const absoluteUrlRegex = /^https?:\/\//i;
@@ -66,6 +70,7 @@ export const generatePostsSitemap = (posts: any[], domain: string, page?: number
 
 export const generateStaticPagesSitemap = (staticPages: any[], domain: string): string => {
 	let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+	xml += XSL_PI;
 	xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 	// Homepage
@@ -92,6 +97,7 @@ export const generateStaticPagesSitemap = (staticPages: any[], domain: string): 
 
 export const generateTagsSitemap = (posts: any[], domain: string): string => {
 	let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+	xml += XSL_PI;
 	xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 	const uniqueTags = new Set<string>();
