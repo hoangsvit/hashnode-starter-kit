@@ -4,6 +4,7 @@ import { resizeImage } from '../utils/image';
 import { AppProvider } from '../components/contexts/appContext';
 import { NextIntlClientProvider, useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import styles from '../styles/newsletter.module.css';
 
 import BlogPostPreview from '../components/magazine-blog-post-preview';
@@ -50,6 +51,10 @@ const Newsletter = (props: Props) => {
       messages={messages}
       timeZone="Asia/Ho_Chi_Minh"
     >
+      <Head>
+        <title>{publication.displayTitle || publication.title} - Newsletter</title>
+        <meta name="robots" content="index, follow" />
+      </Head>
       <div className={`${styles.newsletterPage} min-h-screen transition-colors duration-300`}>
         <AppProvider publication={publication}>
           <Header currentMenuId={currentMenuId} isHome={false}/>

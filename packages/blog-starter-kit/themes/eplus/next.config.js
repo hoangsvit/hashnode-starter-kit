@@ -97,6 +97,31 @@ const config = {
 			},
 		];
 	},
+	async headers() {
+		return [
+			{
+				// Default X-Robots-Tag for all HTML pages.
+				// SSR pages can override this in getServerSideProps via res.setHeader().
+				source: '/(.*)',
+				headers: [
+					{ key: 'X-Robots-Tag', value: 'index, follow' },
+				],
+			},
+			{
+				// Override for search & 404 — these should not be indexed.
+				source: '/search',
+				headers: [
+					{ key: 'X-Robots-Tag', value: 'noindex, follow' },
+				],
+			},
+			{
+				source: '/404',
+				headers: [
+					{ key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+				],
+			},
+		];
+	},
 	async redirects() {
 		return await getRedirectionRules();
 	},

@@ -243,9 +243,9 @@ const PublicationSearch = (props: Props) => {
                         )}
                       >
                         <div className="md:mr-4">
-                          <h1 className="mb-2 break-words text-2xl font-bold leading-snug tracking-tight text-slate-900 hn-break-words dark:text-slate-300">
+                          <h3 className="mb-2 break-words text-2xl font-bold leading-snug tracking-tight text-slate-900 hn-break-words dark:text-slate-300">
                             {post.title}
-                          </h1>
+                          </h3>
                           <div className="mb-4 flex flex-row flex-wrap items-center font-medium text-slate-500 dark:text-slate-400">
                             <p className="inline-block">{post?.author?.name || 'Anonymous'}</p>
                             <span className="mx-2 inline-block font-bold opacity-50">&middot;</span>

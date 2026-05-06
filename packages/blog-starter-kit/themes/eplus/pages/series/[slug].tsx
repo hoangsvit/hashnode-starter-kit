@@ -67,6 +67,7 @@ export default function Series({
 			<Layout>
 				<Head>
 					<title>{title}</title>
+					<meta name="robots" content="index, follow" />
 				</Head>
 				<Header currentMenuId={currentMenuId} isHome={false} />
 				<div

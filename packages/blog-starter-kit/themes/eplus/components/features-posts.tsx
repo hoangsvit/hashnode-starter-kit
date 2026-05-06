@@ -80,7 +80,7 @@ const FeaturedPosts = (props: {
                   priority={isFirstPost}
                 />
               </Link>
-              <h1
+              <h2
                 className={twJoin(
                   'blog-article-card-title mx-4 mb-3 block font-heading font-extrabold text-slate-900 hover:opacity-75 dark:text-slate-100',
                   isFirstPost ? 'text-xl md:text-3xl lg:text-4xl' : 'text-xl',
@@ -89,7 +89,7 @@ const FeaturedPosts = (props: {
                 <Link href={postURL} onMouseOver={preload(post.slug)} onFocus={() => undefined}>
                   {post.title}
                 </Link>
-              </h1>
+              </h2>
               {isPinnedToBlog && (
                 <div className="blog-article-card-label mx-4 mb-1 flex flex-row items-center break-words font-heading font-medium leading-snug text-blue-600 dark:text-blue-500">
                   <span>{t('pinned')}</span>

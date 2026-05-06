@@ -1,8 +1,8 @@
-import { Head, Html, Main, NextScript } from 'next/document';
+import Document, { DocumentContext, DocumentInitialProps, Head, Html, Main, NextScript } from 'next/document';
 
-export default function Document() {
+export default function MyDocument({ locale }: { locale?: string }) {
 	return (
-		<Html lang="en">
+		<Html lang={locale || 'en'}>
 			<Head>
 				<script
 					dangerouslySetInnerHTML={{
@@ -20,7 +20,7 @@ export default function Document() {
 						`,
 					}}
 				/>
-				<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" async />
+				<script src="https://unpkg.com/@lottiefiles/lottie-player@1.6.0/dist/lottie-player.js" async />
 			</Head>
 			<body>
 				<Main />
@@ -30,3 +30,8 @@ export default function Document() {
 		</Html>
 	);
 }
+
+MyDocument.getInitialProps = async (ctx: DocumentContext): Promise<DocumentInitialProps & { locale?: string }> => {
+	const initialProps = await Document.getInitialProps(ctx);
+	return { ...initialProps, locale: ctx.locale };
+};
