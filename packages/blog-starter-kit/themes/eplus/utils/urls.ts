@@ -106,5 +106,19 @@ export const replaceLegacyPublicationUrl = (url?: string | null) => {
 		return url;
 	}
 
-	return url.replace(/^https?:\/\/hoangit\.hashnode\.dev(?=\/|$)/i, 'https://eplus.dev');
+	const customDomain = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
+
+	// Replace old hashnode subdomain (hoangit.hashnode.dev → eplus.dev)
+	let result = url.replace(/^https?:\/\/hoangit\.hashnode\.dev(?=\/|$)/i, 'https://eplus.dev');
+
+	// Replace any *.hashnode.dev subdomain when we have a custom domain configured
+	// e.g. eplus.hashnode.dev → eplus.dev
+	if (customDomain) {
+		result = result.replace(
+			/^https?:\/\/[a-z0-9-]+\.hashnode\.dev(?=\/|$)/i,
+			`https://${customDomain}`,
+		);
+	}
+
+	return result;
 };
