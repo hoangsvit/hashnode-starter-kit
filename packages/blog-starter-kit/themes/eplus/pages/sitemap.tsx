@@ -150,7 +150,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 					<div className="space-y-12">
 						{years.map((year) => (
 							<section key={year} id={`year-${year}`}>
-								<div className="mb-4 flex items-center gap-4">
+								<div className="sticky top-0 z-10 -mx-4 mb-4 flex items-center gap-4 bg-white/90 px-4 py-2 backdrop-blur dark:bg-slate-900/90">
 									<h2 className="font-heading text-2xl font-bold text-slate-800 dark:text-slate-100">
 										{year}
 									</h2>
