@@ -12,7 +12,7 @@ import {
 import { replaceLegacyPublicationUrl } from '../../utils/urls';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
-const MAX_POSTS = 2000; // Tăng giới hạn posts
+const MAX_POSTS = 50000; // Sitemap protocol hard limit per file
 const SitemapPosts = () => null;
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
