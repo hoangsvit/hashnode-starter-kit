@@ -3,11 +3,7 @@ import { useRouter } from 'next/router';
 import { twJoin } from 'tailwind-merge';
 
 import { PublicationFragment } from '../generated/graphql';
-import {
-	getExternalLinkProps,
-	getInternalNavigationHref,
-	isInternalNavigationUrl,
-} from '../utils/navigation-links';
+import { getPublicationRelativeUrl } from '../utils/urls';
 import { CheckSVG } from './icons/svgs';
 
 type IPublicationSidebarNavLinks = {
@@ -29,35 +25,28 @@ const PublicationSidebarNavLinkItem = ({
 }: IPublicationSidebarNavLinkItem) => {
 	const router = useRouter();
 
-	const isInternalHref = isInternalNavigationUrl(href);
-	const internalHref = isInternalHref ? getInternalNavigationHref(href) : href;
-	// Handle i18n routing - for default locale (en), use path as-is
+	const normalizedHref = getPublicationRelativeUrl(href) || '#';
+
+	// Handle i18n routing for internal paths only; keep external links untouched.
 	const localizedHref =
-		router.locale === 'en' || !internalHref.startsWith('/')
-			? internalHref
-			: `/${router.locale}${internalHref}`;
-	const className = twJoin(
-		isActive ? 'blog-nav-active font-semibold' : 'blog-nav',
-		'focus-ring-base mb-1 flex w-full flex-row items-center justify-between rounded p-3 font-medium text-slate-700 transition-colors duration-100 hover:bg-slate-100 active:opacity-100 dark:text-slate-200 dark:hover:bg-slate-800',
-		'focus-ring-colors-base',
-	);
-	const content = (
-		<>
+		normalizedHref.startsWith('/') && router.locale !== 'en'
+			? `/${router.locale}${normalizedHref}`
+			: normalizedHref;
+
+	return (
+		<Link
+			href={localizedHref}
+			className={twJoin(
+				isActive ? 'blog-nav-active font-semibold' : 'blog-nav',
+				'focus-ring-base mb-1 flex w-full flex-row items-center justify-between rounded p-3 font-medium text-slate-700 transition-colors duration-100 hover:bg-slate-100 active:opacity-100 dark:text-slate-200 dark:hover:bg-slate-800',
+				'focus-ring-colors-base',
+			)}
+		>
 			<span>{label}</span>
 			{isActive ? (
 				<CheckSVG className="h-5 w-5 fill-current text-slate-600 dark:text-white" />
 			) : null}
-		</>
-	);
-
-	return isInternalHref ? (
-		<Link href={localizedHref} className={className}>
-			{content}
 		</Link>
-	) : (
-		<a href={href} className={className} {...getExternalLinkProps(href)}>
-			{content}
-		</a>
 	);
 };
 

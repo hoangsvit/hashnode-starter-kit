@@ -7,11 +7,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { twJoin } from 'tailwind-merge';
 import { PublicationFragment } from '../generated/graphql';
 import { MAX_MAIN_NAV_LINKS } from '../utils/const';
-import {
-	getExternalLinkProps,
-	getInternalNavigationHref,
-	isInternalNavigationUrl,
-} from '../utils/navigation-links';
+import { getPublicationRelativeUrl } from '../utils/urls';
 import { ChevronDownV2SVG } from './icons/svgs';
 
 const PublicationNavLinksDropdown = dynamic(() => import('./publication-nav-links-dropdown'), {
@@ -60,43 +56,29 @@ function PublicationNavLinks(props: Props) {
 			? navItemsRef.current.slice(0, numMainNavItemsToRender).map((item: any) => {
 					if (!item.url) return null;
 
-					const linkClassName = twJoin(
-						item.isActive ? 'blog-nav-active' : 'blog-nav',
-						'group flex items-center justify-center border-b-2 border-transparent px-2 capitalize focus:outline-none',
-						item.isActive ? 'border-black dark:border-slate-50' : '',
-					);
-					const linkContent = (
-						<span
-							className={twJoin(
-								'blog-nav-text',
-								'mb-2 block rounded-lg px-2 py-1 ring-offset-2 transition-colors duration-150 group-focus:ring',
-								'text-slate-900 hover:bg-slate-100 group-focus:ring-blue-600 group-focus:ring-offset-white dark:text-white dark:hover:bg-slate-800 dark:group-focus:ring-offset-slate-800',
-								item.isActive
-									? 'font-semibold text-opacity-100 dark:text-opacity-100'
-									: 'font-medium text-opacity-70 dark:text-opacity-70',
-							)}
-						>
-							{item.label}
-						</span>
-					);
-
-					return isInternalNavigationUrl(item.url) ? (
+					return (
 						<Link
-							className={linkClassName}
+							className={twJoin(
+								item.isActive ? 'blog-nav-active' : 'blog-nav',
+								'group flex items-center justify-center border-b-2 border-transparent px-2 capitalize focus:outline-none',
+								item.isActive ? 'border-black dark:border-slate-50' : '',
+							)}
 							key={item.label}
-							href={getInternalNavigationHref(item.url)}
+							href={getPublicationRelativeUrl(item.url) || '#'}
 						>
-							{linkContent}
+							<span
+								className={twJoin(
+									'blog-nav-text',
+									'mb-2 block rounded-lg px-2 py-1 ring-offset-2 transition-colors duration-150 group-focus:ring',
+									'text-slate-900 hover:bg-slate-100 group-focus:ring-blue-600 group-focus:ring-offset-white dark:text-white dark:hover:bg-slate-800 dark:group-focus:ring-offset-slate-800',
+									item.isActive
+										? 'font-semibold text-opacity-100 dark:text-opacity-100'
+										: 'font-medium text-opacity-70 dark:text-opacity-70',
+								)}
+							>
+								{item.label}
+							</span>
 						</Link>
-					) : (
-						<a
-							className={linkClassName}
-							key={item.label}
-							href={item.url}
-							{...getExternalLinkProps(item.url)}
-						>
-							{linkContent}
-						</a>
 					);
 				})
 			: null;

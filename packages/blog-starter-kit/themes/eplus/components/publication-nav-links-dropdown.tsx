@@ -3,11 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import { twJoin } from 'tailwind-merge';
-import {
-	getExternalLinkProps,
-	getInternalNavigationHref,
-	isInternalNavigationUrl,
-} from '../utils/navigation-links';
+import { getPublicationRelativeUrl } from '../utils/urls';
 import { CheckSVG } from './icons/svgs/';
 import CustomScrollArea from './scroll-area';
 
@@ -30,36 +26,19 @@ function PublicationNavLinksDropdown(props: Props) {
 							? extraNavbarItems.map((navItem: any, index: number) => (
 									<React.Fragment key={`${navItem.label}-${index}`}>
 										<DropdownMenu.DropdownMenuItem asChild>
-											{isInternalNavigationUrl(navItem.url) ? (
-												<Link
-													href={getInternalNavigationHref(navItem.url)}
-													className={twJoin(
-														navItem.isActive ? 'blog-nav-more-item-active' : 'blog-nav-more-item',
-														'flex flex-row items-center justify-between px-4 py-3 font-medium hover:bg-slate-100 focus:bg-slate-100 focus:outline-none dark:hover:bg-slate-700 dark:focus:bg-slate-700',
-														navItem.isActive && 'font-bold',
-													)}
-												>
-													<span>{navItem.label}</span>
-													{navItem.isActive ? (
-														<CheckSVG className="h-5 w-5 fill-current text-blue-600 dark:text-white" />
-													) : null}
-												</Link>
-											) : (
-												<a
-													href={navItem.url}
-													className={twJoin(
-														navItem.isActive ? 'blog-nav-more-item-active' : 'blog-nav-more-item',
-														'flex flex-row items-center justify-between px-4 py-3 font-medium hover:bg-slate-100 focus:bg-slate-100 focus:outline-none dark:hover:bg-slate-700 dark:focus:bg-slate-700',
-														navItem.isActive && 'font-bold',
-													)}
-													{...getExternalLinkProps(navItem.url)}
-												>
-													<span>{navItem.label}</span>
-													{navItem.isActive ? (
-														<CheckSVG className="h-5 w-5 fill-current text-blue-600 dark:text-white" />
-													) : null}
-												</a>
-											)}
+											<Link
+												href={getPublicationRelativeUrl(navItem.url) || '#'}
+												className={twJoin(
+													navItem.isActive ? 'blog-nav-more-item-active' : 'blog-nav-more-item',
+													'flex flex-row items-center justify-between px-4 py-3 font-medium hover:bg-slate-100 focus:bg-slate-100 focus:outline-none dark:hover:bg-slate-700 dark:focus:bg-slate-700',
+													navItem.isActive && 'font-bold',
+												)}
+											>
+												<span>{navItem.label}</span>
+												{navItem.isActive ? (
+													<CheckSVG className="h-5 w-5 fill-current text-blue-600 dark:text-white" />
+												) : null}
+											</Link>
 										</DropdownMenu.DropdownMenuItem>
 										{index !== extraNavbarItems.length - 1 ? (
 											<hr className="h-px w-full border-none bg-slate-200 dark:bg-slate-700" />
