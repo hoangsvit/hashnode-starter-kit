@@ -127,6 +127,25 @@
 		"clearResults": "Clear search results",
 		"openSearchPage": "Open full search page"
 	},
+	"sitemap": {
+		"title": "Sitemap",
+		"metaDescription": "Browse {shown} of {total} articles published on {title}.",
+		"showing": "Showing {shown} of {total} articles published on <publication>{title}</publication>",
+		"searchLabel": "Search posts",
+		"searchPlaceholder": "Search all posts...",
+		"searching": "Searching...",
+		"searchButton": "Search",
+		"xmlIndex": "XML Sitemap Index",
+		"postsXml": "Posts XML",
+		"tagsXml": "Tags XML",
+		"jumpToYear": "Jump to year",
+		"articleSingular": "article",
+		"articlePlural": "articles",
+		"loadMorePosts": "Load more posts",
+		"loadingPosts": "Loading posts...",
+		"loadMoreError": "Could not load more posts. Please try again.",
+		"noArticlesFound": "No articles found."
+	},
 	"tags": {
 		"title": "Tags",
 		"postsTagged": "Posts tagged with"
