@@ -127,6 +127,24 @@
 		"clearResults": "清除搜索结果",
 		"openSearchPage": "打开完整搜索页面"
 	},
+	"sitemap": {
+		"title": "站点地图",
+		"metaDescription": "浏览 {title} 已发布的 {total} 篇文章中的 {shown} 篇。",
+		"showing": "正在显示 <publication>{title}</publication> 已发布的 {total} 篇文章中的 {shown} 篇",
+		"searchLabel": "搜索文章",
+		"searchPlaceholder": "搜索所有文章...",
+		"searchButton": "搜索",
+		"xmlIndex": "XML 站点地图索引",
+		"postsXml": "文章 XML",
+		"tagsXml": "标签 XML",
+		"jumpToYear": "跳转到年份",
+		"articleSingular": "篇文章",
+		"articlePlural": "篇文章",
+		"loadMorePosts": "加载更多文章",
+		"loadingPosts": "正在加载文章...",
+		"loadMoreError": "无法加载更多文章。请重试。",
+		"noArticlesFound": "未找到文章。"
+	},
 	"tags": {
 		"title": "标签",
 		"postsTagged": "标记为"

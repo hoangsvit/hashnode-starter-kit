@@ -1,6 +1,6 @@
 import request from 'graphql-request';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import { NextIntlClientProvider } from 'next-intl';
+import { NextIntlClientProvider, useTranslations } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -87,6 +87,7 @@ function SitemapPostsSkeleton() {
 
 function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	const router = useRouter();
+	const t = useTranslations();
 	const { publication, posts, totalPosts, initialPageInfo } = props;
 	const [sitemapPosts, setSitemapPosts] = useState(posts);
 	const [pageInfo, setPageInfo] = useState<SitemapPageInfo>(initialPageInfo);
@@ -133,7 +134,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 			setPageInfo(data.publication?.posts.pageInfo || { endCursor: null, hasNextPage: false });
 		} catch (error) {
 			console.error('Error while loading more sitemap posts', error);
-			setLoadMoreError('Could not load more posts. Please try again.');
+			setLoadMoreError(t('sitemap.loadMoreError'));
 		} finally {
 			setIsLoadingMore(false);
 		}
@@ -143,12 +144,16 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 		<AppProvider publication={publication}>
 			<Layout>
 				<Head>
-					<title>{`Sitemap — ${pubTitle}`}</title>
+					<title>{`${t('sitemap.title')} — ${pubTitle}`}</title>
 					<meta name="robots" content="index, follow" />
 					<link rel="canonical" href={`${publicationUrl}/sitemap`} />
 					<meta
 						name="description"
-						content={`Browse ${sitemapPosts.length} of ${totalPosts} articles published on ${pubTitle}.`}
+						content={t('sitemap.metaDescription', {
+							shown: sitemapPosts.length,
+							total: totalPosts,
+							title: pubTitle,
+						})}
 					/>
 				</Head>
 
@@ -158,37 +163,43 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 					{/* Page header */}
 					<div className="mb-10 border-b pb-8 dark:border-slate-800">
 						<h1 className="font-heading mb-3 text-3xl font-extrabold text-slate-900 md:text-4xl dark:text-white">
-							Sitemap
+							{t('sitemap.title')}
 						</h1>
 						<p className="text-slate-500 dark:text-slate-400">
-							Showing {sitemapPosts.length} of {totalPosts} articles published on{' '}
-							<Link
-								href="/"
-								className="font-medium text-blue-600 hover:underline dark:text-blue-400"
-							>
-								{pubTitle}
-							</Link>
+							{t.rich('sitemap.showing', {
+								shown: sitemapPosts.length,
+								total: totalPosts,
+								title: pubTitle,
+								publication: (chunks) => (
+									<Link
+										href="/"
+										className="font-medium text-blue-600 hover:underline dark:text-blue-400"
+									>
+										{chunks}
+									</Link>
+								),
+							})}
 						</p>
 						<form
 							onSubmit={submitSitemapSearch}
 							className="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row dark:border-slate-800 dark:bg-slate-900/60"
 						>
 							<label className="sr-only" htmlFor="sitemap-search">
-								Search posts
+								{t('sitemap.searchLabel')}
 							</label>
 							<input
 								id="sitemap-search"
 								type="search"
 								value={sitemapSearchQuery}
 								onChange={(event) => setSitemapSearchQuery(event.target.value)}
-								placeholder="Search all posts..."
+								placeholder={t('sitemap.searchPlaceholder')}
 								className="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-blue-500 dark:focus:ring-blue-950"
 							/>
 							<button
 								type="submit"
 								className="rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-800"
 							>
-								Search
+								{t('sitemap.searchButton')}
 							</button>
 						</form>
 
@@ -212,7 +223,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 										clipRule="evenodd"
 									/>
 								</svg>
-								XML Sitemap Index
+								{t('sitemap.xmlIndex')}
 							</a>
 							<a
 								href="/sitemap/posts.xml"
@@ -233,7 +244,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 									/>
 									<path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z" />
 								</svg>
-								Posts XML
+								{t('sitemap.postsXml')}
 							</a>
 							<a
 								href="/sitemap/tags.xml"
@@ -253,13 +264,13 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 										clipRule="evenodd"
 									/>
 								</svg>
-								Tags XML
+								{t('sitemap.tagsXml')}
 							</a>
 						</div>
 					</div>
 					{/* Quick year nav */}
 					{years.length > 1 && (
-						<nav className="mb-8 flex flex-wrap gap-2" aria-label="Jump to year">
+						<nav className="mb-8 flex flex-wrap gap-2" aria-label={t('sitemap.jumpToYear')}>
 							{years.map((year) => (
 								<a
 									key={year}
@@ -285,7 +296,11 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 									</h2>
 									<span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
 										{postsByYear[year].length}{' '}
-										{postsByYear[year].length === 1 ? 'article' : 'articles'}
+										{t(
+											postsByYear[year].length === 1
+												? 'sitemap.articleSingular'
+												: 'sitemap.articlePlural',
+										)}
 									</span>
 									<div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" aria-hidden="true" />
 								</div>
@@ -334,14 +349,14 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 								disabled={isLoadingMore}
 								className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
 							>
-								{isLoadingMore ? 'Loading posts...' : 'Load more posts'}
+								{isLoadingMore ? t('sitemap.loadingPosts') : t('sitemap.loadMorePosts')}
 							</button>
 						</div>
 					)}
 
 					{sitemapPosts.length === 0 && (
 						<p className="py-16 text-center text-slate-500 dark:text-slate-400">
-							No articles found.
+							{t('sitemap.noArticlesFound')}
 						</p>
 					)}
 				</main>

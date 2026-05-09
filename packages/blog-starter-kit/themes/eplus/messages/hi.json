@@ -127,6 +127,24 @@
 		"clearResults": "खोज परिणाम साफ़ करें",
 		"openSearchPage": "पूरा खोज पेज खोलें"
 	},
+	"sitemap": {
+		"title": "साइटमैप",
+		"metaDescription": "{title} पर प्रकाशित कुल {total} लेखों में से {shown} देखें।",
+		"showing": "<publication>{title}</publication> पर प्रकाशित कुल {total} लेखों में से {shown} दिखाए जा रहे हैं",
+		"searchLabel": "लेख खोजें",
+		"searchPlaceholder": "सभी लेखों में खोजें...",
+		"searchButton": "खोजें",
+		"xmlIndex": "XML साइटमैप इंडेक्स",
+		"postsXml": "लेख XML",
+		"tagsXml": "टैग XML",
+		"jumpToYear": "वर्ष पर जाएँ",
+		"articleSingular": "लेख",
+		"articlePlural": "लेख",
+		"loadMorePosts": "और लेख लोड करें",
+		"loadingPosts": "लेख लोड हो रहे हैं...",
+		"loadMoreError": "और लेख लोड नहीं हो सके। कृपया फिर से कोशिश करें।",
+		"noArticlesFound": "कोई लेख नहीं मिला।"
+	},
 	"tags": {
 		"title": "टैग",
 		"postsTagged": "टैग की गई पोस्ट"
