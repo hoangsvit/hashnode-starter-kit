@@ -8,6 +8,7 @@ import { AppProvider } from '../../components/contexts/appContext';
 import { Header } from '../../components/header';
 import { Layout } from '../../components/layout';
 import {
+	Post,
 	PublicationFragment,
 	TagInitialDocument,
 	TagInitialQuery,

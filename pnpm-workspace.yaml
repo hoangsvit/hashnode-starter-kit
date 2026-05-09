@@ -1,5 +1,2 @@
 packages:
-  - ./packages/**
-
-ignoredBuiltDependencies:
-  - '@vercel/speed-insights'
+  - "./packages/**"

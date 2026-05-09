@@ -83,10 +83,6 @@ const config = {
 				source: '/api/analytics',
 				destination: `${HASHNODE_ADVANCED_ANALYTICS_URL}/api/analytics`,
 			},
-			{
-				source: '/feed.xml',
-				destination: '/rss.xml',
-			},
 		];
 	},
 	async redirects() {

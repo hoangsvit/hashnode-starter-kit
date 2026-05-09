@@ -61,7 +61,7 @@ const PostShareWidget = (props: PostShareWidgetProps) => {
     }
 
     if (draft) {
-      return createDraftPreviewUrl((entity as DraftType)._id.toString());
+      return createDraftPreviewUrl(entity.id.toString());
     }
 
     return '';
