@@ -73,9 +73,6 @@ const config = {
 			},
 		],
 	},
-	eslint: {
-		ignoreDuringBuilds: true, // Chặn ESLint khi build
-	},
 	async rewrites() {
 		return [
 			{

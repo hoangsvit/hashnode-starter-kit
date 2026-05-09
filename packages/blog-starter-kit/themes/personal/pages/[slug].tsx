@@ -197,47 +197,37 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({ params }) 
 	const host = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
 	const slug = params.slug;
 
-	try {
-		const postData = await request(endpoint, SinglePostByPublicationDocument, { host, slug });
+	const postData = await request(endpoint, SinglePostByPublicationDocument, { host, slug });
 
-		if (postData.publication?.post) {
-			return {
-				props: {
-					type: 'post',
-					post: postData.publication.post,
-					publication: postData.publication,
-				},
-				revalidate: 1,
-			};
-		}
-
-		const pageData = await request(endpoint, PageByPublicationDocument, { host, slug });
-
-		if (pageData.publication?.staticPage) {
-			return {
-				props: {
-					type: 'page',
-					page: pageData.publication.staticPage,
-					publication: pageData.publication,
-				},
-				revalidate: 1,
-			};
-		}
-
+	if (postData.publication?.post) {
 		return {
-			notFound: true,
-			revalidate: 1,
-		};
-	} catch (error) {
-		console.error('Error fetching data:', error);
-
-		return {
-			notFound: true,
+			props: {
+				type: 'post',
+				post: postData.publication.post,
+				publication: postData.publication,
+			},
 			revalidate: 1,
 		};
 	}
-};
 
+	const pageData = await request(endpoint, PageByPublicationDocument, { host, slug });
+
+	if (pageData.publication?.staticPage) {
+		return {
+			props: {
+				type: 'page',
+				page: pageData.publication.staticPage,
+				publication: pageData.publication,
+			},
+			revalidate: 1,
+		};
+	}
+
+	return {
+		notFound: true,
+		revalidate: 1,
+	};
+};
 
 export async function getStaticPaths() {
 	const data = await request(

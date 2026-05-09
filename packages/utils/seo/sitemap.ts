@@ -1,16 +1,10 @@
-// Legacy sitemap function - được thay thế bởi sitemap-utils.ts
-// Giữ lại để tương thích ngược
 export const getSitemap = (publication: any) => {
-	console.warn('getSitemap() is deprecated. Use optimized sitemap structure instead.');
-
 	let xml =
 		'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
 	const domain = publication.url;
-	const staticPages = publication.staticPages?.edges?.map((edge: any) => edge.node) || [];
-	const posts = Array.isArray(publication.posts)
-		? publication.posts
-		: publication.posts?.edges?.map((edge: any) => edge.node) || [];
+	const staticPages = publication.staticPages.edges.map((edge: any) => edge.node);
+	const posts = publication.posts;
 
 	xml += '<url>';
 	xml += `<loc>${domain}</loc>`;
@@ -18,7 +12,7 @@ export const getSitemap = (publication: any) => {
 	xml += '<priority>1</priority>';
 
 	if (posts.length > 0) {
-		xml += `<lastmod>${posts[0].publishedAt || posts[0].updatedAt || new Date().toISOString()}</lastmod>`;
+		xml += `<lastmod>${posts[0].publishedAt}</lastmod>`;
 	}
 	xml += '</url>';
 
@@ -36,8 +30,8 @@ export const getSitemap = (publication: any) => {
 	staticPages.forEach((page: any) => {
 		xml += '<url>';
 		xml += `<loc>${domain}/${page.slug}</loc>`;
-		xml += '<changefreq>weekly</changefreq>';
-		xml += `<priority>0.9</priority>`;
+		xml += '<changefreq>always</changefreq>';
+		xml += `<priority>${1}</priority>`;
 		xml += '</url>';
 	});
 
@@ -53,8 +47,8 @@ export const getSitemap = (publication: any) => {
 	uniqueTags.forEach((tag: any) => {
 		xml += '<url>';
 		xml += `<loc>${domain}/tag/${tag}</loc>`;
-		xml += '<changefreq>weekly</changefreq>';
-		xml += `<priority>0.7</priority>`;
+		xml += '<changefreq>always</changefreq>';
+		xml += `<priority>1</priority>`;
 		xml += '</url>';
 	});
 
