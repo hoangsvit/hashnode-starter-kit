@@ -54,9 +54,11 @@ function PublicationSidebarNavLinks(props: IPublicationSidebarNavLinks) {
 	const { currentActiveMenuItemId, isHome, isBadge, enabledPages, navbarItems } = props;
 	const isHomePage = !currentActiveMenuItemId && isHome;
 	const isNewsletterPage = currentActiveMenuItemId && currentActiveMenuItemId === 'newsletter';
+	const isTravelPage = currentActiveMenuItemId && currentActiveMenuItemId === 'travel';
 	return (
 		<nav className="pb-8">
 			<PublicationSidebarNavLinkItem href="/" label="Home" isActive={!!isHomePage} />
+			<PublicationSidebarNavLinkItem href="/travel" label="Travel" isActive={!!isTravelPage} />
 
 			{navbarItems && navbarItems.length > 0
 				? navbarItems.map((navItem) => {

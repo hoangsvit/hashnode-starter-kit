@@ -6,7 +6,7 @@ type Props = {
 	contentMarkdown: string;
 };
 
-const MarkdownToHtmlComponent = ({ contentMarkdown }: Props) => {
+const _MarkdownToHtml = ({ contentMarkdown }: Props) => {
 	const content = markdownToHtml(contentMarkdown);
 	useEmbeds({ enabled: true });
 
@@ -18,4 +18,4 @@ const MarkdownToHtmlComponent = ({ contentMarkdown }: Props) => {
 	);
 };
 
-export const MarkdownToHtml = memo(MarkdownToHtmlComponent);
+export const MarkdownToHtml = memo(_MarkdownToHtml);

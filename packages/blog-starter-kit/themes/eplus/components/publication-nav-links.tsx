@@ -26,6 +26,7 @@ function PublicationNavLinks(props: Props) {
 		[
 			{ label: 'home', url: '/', isActive: !currentActiveMenuItemId && isHome },
 			{ label: 'archive', url: '/archive', isActive: currentActiveMenuItemId === 'archive' },
+			{ label: 'travel', url: '/travel', isActive: currentActiveMenuItemId === 'travel' },
 			...navbarItems.map((item) => {
 				const isCustomMenuItemActive =
 					currentActiveMenuItemId && item.id === currentActiveMenuItemId;
