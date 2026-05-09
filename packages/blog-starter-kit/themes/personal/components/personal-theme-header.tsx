@@ -18,8 +18,18 @@ export const PersonalHeader = () => {
 	const visibleItems = navbarItems.slice(0, 2);
 	const hiddenItems = navbarItems.slice(2);
 
+	const staticNavItems = [{ href: '/travel', label: 'Travel' }];
+
 	const navList = (
 		<ul className="flex list-none flex-row items-center gap-4 text-xs font-semibold uppercase tracking-tight text-neutral-600 dark:text-neutral-300">
+			{staticNavItems.map((item) => (
+				<li key={item.href}>
+					<Link href={item.href} className="hover:underline">
+						{item.label}
+					</Link>
+				</li>
+			))}
+
 			{visibleItems.map((item) => (
 				<li key={item.url}>
 					<a href={item.url} target="_blank" rel="noopener noreferrer" className="hover:underline">

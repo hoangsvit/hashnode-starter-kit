@@ -14,15 +14,15 @@ import {
 	DraftByIdDocument,
 	DraftByIdQuery,
 	DraftByIdQueryVariables,
-	Post,
-	Publication,
+	type Post as GeneratedPost,
+	type Publication,
 	PublicationByHostDocument,
 	PublicationByHostQuery,
 	PublicationByHostQueryVariables,
 } from '../../generated/graphql';
 
 type Props = {
-	post: Post;
+	post: GeneratedPost;
 	publication: Publication;
 };
 
@@ -38,14 +38,14 @@ export default function Post({ publication, post }: Props) {
 				w: 1600,
 				h: 840,
 				c: 'thumb',
-		  })
+			})
 		: undefined;
 
 	const tagsList = post.tags?.map((tag) => (
 		<li key={tag.id}>
 			<Link
 				href={`/tag/${tag.slug}`}
-				className="block rounded-full border px-2 py-1 font-medium hover:bg-slate-50 dark:border-neutral-800 dark:hover:bg-neutral-800 md:px-4"
+				className="block rounded-full border px-2 py-1 font-medium hover:bg-slate-50 md:px-4 dark:border-neutral-800 dark:hover:bg-neutral-800"
 			>
 				#{tag.slug}
 			</Link>
@@ -72,7 +72,7 @@ export default function Post({ publication, post }: Props) {
 						)}
 						<MarkdownToHtml contentMarkdown={post.content.markdown} />
 						{(post.tags ?? []).length > 0 && (
-							<div className="mx-auto w-full text-slate-600 dark:text-neutral-300 md:max-w-screen-md">
+							<div className="mx-auto w-full text-slate-600 md:max-w-screen-md dark:text-neutral-300">
 								<ul className="flex flex-row flex-wrap items-center gap-2">{tagsList}</ul>
 							</div>
 						)}
