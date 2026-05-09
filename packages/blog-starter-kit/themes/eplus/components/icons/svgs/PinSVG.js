@@ -1,0 +1,21 @@
+import React from 'react';
+
+const PinSVG = ({ className, ...props }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    {...props}
+  >
+    <path
+      d="M12 14a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 0v6"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+export default PinSVG;

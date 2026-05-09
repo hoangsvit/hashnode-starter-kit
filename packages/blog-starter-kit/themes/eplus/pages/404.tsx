@@ -1,0 +1,36 @@
+import Head from 'next/head';
+import Link from 'next/link';
+import { useEnvironmentTitle } from '../hooks/useEnvironmentTitle';
+
+export default function Custom404() {
+  const title = useEnvironmentTitle('404 - Page Not Found');
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
+      <main className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
+        <div className="text-center">
+        <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600 dark:text-primary-500">404</h1>
+        <p className="mb-4 text-3xl tracking-tight font-bold text-gray-900 md:text-4xl dark:text-white">Something&#39;s missing.</p>
+          <p className="mt-6 text-pretty text-lg font-medium text-gray-500 sm:text-xl/8">
+            Sorry, we couldn’t find the page you’re looking for.
+          </p>
+          <div className="mt-10 flex items-center justify-center gap-x-6">
+            <a
+              href="/"
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Go back home
+            </a>
+            <Link href="https://t.me/hoang_it" className="text-sm font-semibold text-gray-900">
+              Contact support <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}

@@ -1,0 +1,135 @@
+/* Styles for images with lightbox functionality */
+.lightbox-overlay {
+	animation: lightbox-fade 0.2s ease-out;
+}
+
+.lightbox-content {
+	animation: lightbox-zoom 0.2s ease-out;
+}
+
+@keyframes lightbox-fade {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes lightbox-zoom {
+	from {
+		transform: scale(0.95);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+
+.lightbox-enabled {
+	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+	position: relative;
+}
+
+.lightbox-enabled:hover {
+	transform: scale(1.01);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.lightbox-enabled:after {
+	content: '';
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 24px;
+	height: 24px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7'%3E%3C/path%3E%3C/svg%3E");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.4);
+	opacity: 0;
+	transition: opacity 0.2s ease-in-out;
+	pointer-events: none;
+	z-index: 10;
+}
+
+.lightbox-enabled:hover:after {
+	opacity: 1;
+}
+
+/* Zoom cursor styles */
+[style*='cursor: grab'] {
+	cursor: grab !important;
+}
+
+[style*='cursor: grab']:active {
+	cursor: grabbing !important;
+}
+
+/* Zoom control button styles */
+button[disabled] {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Dark mode adjustments */
+.dark .lightbox-enabled:hover {
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Add instructions tooltip when hovering over images */
+.prose img.lightbox-enabled {
+	position: relative;
+}
+
+.prose img.lightbox-enabled:hover::before {
+	content: attr(data-instructions);
+	position: absolute;
+	bottom: 8px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: rgba(0, 0, 0, 0.7);
+	color: white;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	white-space: nowrap;
+	z-index: 10;
+}
+
+/* Hide keyboard shortcut tips on mobile devices */
+@media (max-width: 768px) {
+	/* Hide the hover tooltip on images */
+	.prose img.lightbox-enabled:hover::before {
+		display: none;
+	}
+
+	/* Hide the help tooltip in the lightbox for mobile */
+	.lightbox-help-tooltip {
+		display: none;
+	}
+}
+
+/* Simplify zoom controls on mobile */
+@media (max-width: 768px) {
+	.lightbox-zoom-controls {
+		padding: 6px 10px;
+	}
+
+	.lightbox-zoom-controls button {
+		width: 30px;
+		height: 30px;
+	}
+
+	.lightbox-zoom-text {
+		min-width: 36px;
+		font-size: 12px;
+	}
+
+	.lightbox-reset-button {
+		font-size: 11px;
+		padding: 2px 6px;
+	}
+}

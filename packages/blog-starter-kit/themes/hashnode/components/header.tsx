@@ -43,7 +43,41 @@ export const Header = (props: Props) => {
 						)}
 					>
 						<HeaderBlogSearch publication={publication} />
-						<Button as="a" href="#" type="primary" label="Sign up" />
+						{/* Dark mode toggle button */}
+						<Button
+							type='outline'
+							className="ml-2 rounded p-2 transition-colors hover:bg-gray-200 dark:hover:bg-slate-700"
+							onClick={() => {
+								const html = document.documentElement;
+								const isDark = html.classList.contains('dark');
+								if (isDark) {
+									html.classList.remove('dark');
+									localStorage.setItem('theme', 'light');
+								} else {
+									html.classList.add('dark');
+									localStorage.setItem('theme', 'dark');
+								}
+							}}
+							aria-label="Toggle dark mode"
+							data-tom="dark-mode-toggle"
+							label=""
+							icon={
+								<svg
+									className="h-5 w-5"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.07l-.71.71M21 12h-1M4 12H3m16.66 5.66l-.71-.71M4.05 4.93l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+									/>
+								</svg>
+							}
+						/>
 					</div>
 				</div>
 
