@@ -66,10 +66,54 @@ function mapPostToSitemapPost(post: {
 	};
 }
 
+function getPostPublishedAtTimestamp(post: SitemapPost): number {
+	return new Date(post.publishedAt).getTime();
+}
+
 function sortPostsNewestFirst(posts: SitemapPost[]): SitemapPost[] {
-	return [...posts].sort(
-		(a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-	);
+	return [...posts].sort((a, b) => getPostPublishedAtTimestamp(b) - getPostPublishedAtTimestamp(a));
+}
+
+function mergePostsNewestFirst(
+	currentPosts: SitemapPost[],
+	nextPosts: SitemapPost[],
+): SitemapPost[] {
+	const sortedNextPosts = sortPostsNewestFirst(nextPosts);
+	const mergedPosts: SitemapPost[] = [];
+	const seenPostIds = new Set<string>();
+	let currentIndex = 0;
+	let nextIndex = 0;
+
+	const appendPost = (post: SitemapPost) => {
+		if (seenPostIds.has(post.id)) return;
+		seenPostIds.add(post.id);
+		mergedPosts.push(post);
+	};
+
+	while (currentIndex < currentPosts.length && nextIndex < sortedNextPosts.length) {
+		const currentPost = currentPosts[currentIndex];
+		const nextPost = sortedNextPosts[nextIndex];
+
+		if (getPostPublishedAtTimestamp(currentPost) >= getPostPublishedAtTimestamp(nextPost)) {
+			appendPost(currentPost);
+			currentIndex += 1;
+		} else {
+			appendPost(nextPost);
+			nextIndex += 1;
+		}
+	}
+
+	while (currentIndex < currentPosts.length) {
+		appendPost(currentPosts[currentIndex]);
+		currentIndex += 1;
+	}
+
+	while (nextIndex < sortedNextPosts.length) {
+		appendPost(sortedNextPosts[nextIndex]);
+		nextIndex += 1;
+	}
+
+	return mergedPosts;
 }
 
 function SitemapPostsSkeleton() {
@@ -149,7 +193,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 
 			const nextPosts =
 				data.publication?.posts.edges.map((edge) => mapPostToSitemapPost(edge.node)) || [];
-			setSitemapPosts((currentPosts) => sortPostsNewestFirst([...currentPosts, ...nextPosts]));
+			setSitemapPosts((currentPosts) => mergePostsNewestFirst(currentPosts, nextPosts));
 			setPageInfo(data.publication?.posts.pageInfo || { endCursor: null, hasNextPage: false });
 		} catch (error) {
 			console.error('Error while loading more sitemap posts', error);
