@@ -127,6 +127,25 @@
 		"clearResults": "Xóa kết quả tìm kiếm",
 		"openSearchPage": "Mở trang tìm kiếm đầy đủ"
 	},
+	"sitemap": {
+		"title": "Sơ đồ trang",
+		"metaDescription": "Duyệt {shown} trong tổng số {total} bài viết đã xuất bản trên {title}.",
+		"showing": "Đang hiển thị {shown} trong tổng số {total} bài viết đã xuất bản trên <publication>{title}</publication>",
+		"searchLabel": "Tìm bài viết",
+		"searchPlaceholder": "Tìm trong tất cả bài viết...",
+		"searching": "Đang tìm kiếm...",
+		"searchButton": "Tìm kiếm",
+		"xmlIndex": "Chỉ mục XML Sitemap",
+		"postsXml": "XML bài viết",
+		"tagsXml": "XML thẻ",
+		"jumpToYear": "Chuyển đến năm",
+		"articleSingular": "bài viết",
+		"articlePlural": "bài viết",
+		"loadMorePosts": "Tải thêm bài viết",
+		"loadingPosts": "Đang tải bài viết...",
+		"loadMoreError": "Không thể tải thêm bài viết. Vui lòng thử lại.",
+		"noArticlesFound": "Không tìm thấy bài viết nào."
+	},
 	"tags": {
 		"title": "Thẻ",
 		"postsTagged": "Bài viết được gắn thẻ"

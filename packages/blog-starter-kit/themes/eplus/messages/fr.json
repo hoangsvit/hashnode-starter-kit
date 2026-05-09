@@ -127,6 +127,25 @@
 		"clearResults": "Effacer les résultats de recherche",
 		"openSearchPage": "Ouvrir la page de recherche complète"
 	},
+	"sitemap": {
+		"title": "Plan du site",
+		"metaDescription": "Parcourez {shown} des {total} articles publiés sur {title}.",
+		"showing": "Affichage de {shown} sur {total} articles publiés sur <publication>{title}</publication>",
+		"searchLabel": "Rechercher des articles",
+		"searchPlaceholder": "Rechercher dans tous les articles...",
+		"searching": "Recherche...",
+		"searchButton": "Rechercher",
+		"xmlIndex": "Index XML du sitemap",
+		"postsXml": "XML des articles",
+		"tagsXml": "XML des tags",
+		"jumpToYear": "Aller à l'année",
+		"articleSingular": "article",
+		"articlePlural": "articles",
+		"loadMorePosts": "Charger plus d'articles",
+		"loadingPosts": "Chargement des articles...",
+		"loadMoreError": "Impossible de charger plus d'articles. Veuillez réessayer.",
+		"noArticlesFound": "Aucun article trouvé."
+	},
 	"tags": {
 		"title": "Étiquettes",
 		"postsTagged": "Articles étiquetés avec"

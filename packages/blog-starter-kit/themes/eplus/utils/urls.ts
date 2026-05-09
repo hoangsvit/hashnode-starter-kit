@@ -101,24 +101,75 @@ export const createPostUrl = (
 
 export const createDraftPreviewUrl = (id: string) => `${getAppUrl()}/preview/${id}`;
 
+const LEGACY_HASHNODE_PUBLICATION_HOST = 'hoangit.hashnode.dev';
+const DEFAULT_FRONTEND_PUBLICATION_HOST = 'eplus.dev';
+
+const getFrontendPublicationHost = () =>
+	process.env.NEXT_PUBLIC_FRONTEND_PUBLICATION_HOST ||
+	process.env.NEXT_PUBLIC_SITE_HOST ||
+	DEFAULT_FRONTEND_PUBLICATION_HOST;
+
+const getFrontendPublicationOrigin = () => `https://${getFrontendPublicationHost()}`;
+
+const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const isHashnodePublicationHost = (hostname: string) => /(^|\.)hashnode\.dev$/i.test(hostname);
+
+const isFrontendPublicationHost = (hostname: string) =>
+	hostname.toLowerCase() === getFrontendPublicationHost().toLowerCase();
+
 export const replaceLegacyPublicationUrl = (url?: string | null) => {
 	if (!url) {
 		return url;
 	}
 
-	const customDomain = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
+	const frontendOrigin = getFrontendPublicationOrigin();
 
-	// Replace old hashnode subdomain (hoangit.hashnode.dev → eplus.dev)
-	let result = url.replace(/^https?:\/\/hoangit\.hashnode\.dev(?=\/|$)/i, 'https://eplus.dev');
+	// Replace the original Hashnode publication URL (hoangit.hashnode.dev) with
+	// the public frontend domain used by generated sitemaps and canonical URLs.
+	let result = url.replace(
+		new RegExp(
+			`^https?:\\/\\/${escapeRegExp(LEGACY_HASHNODE_PUBLICATION_HOST)}(?=\\/|$)`,
+			'i',
+		),
+		frontendOrigin,
+	);
 
-	// Replace any *.hashnode.dev subdomain when we have a custom domain configured
-	// e.g. eplus.hashnode.dev → eplus.dev
-	if (customDomain) {
-		result = result.replace(
-			/^https?:\/\/[a-z0-9-]+\.hashnode\.dev(?=\/|$)/i,
-			`https://${customDomain}`,
-		);
-	}
+	// Hashnode can return navbar/static-page URLs on any *.hashnode.dev host.
+	// Keep those links on the public frontend instead of sending readers back to Hashnode.
+	result = result.replace(/^https?:\/\/[a-z0-9-]+\.hashnode\.dev(?=\/|$)/i, frontendOrigin);
 
 	return result;
+};
+
+export const getPublicationRelativeUrl = (url?: string | null) => {
+	const normalizedUrl = replaceLegacyPublicationUrl(url);
+
+	if (!normalizedUrl) {
+		return normalizedUrl;
+	}
+
+	if (
+		normalizedUrl.startsWith('/') ||
+		normalizedUrl.startsWith('#') ||
+		/^(mailto|tel):/i.test(normalizedUrl)
+	) {
+		return normalizedUrl;
+	}
+
+	try {
+		const parsedUrl = new URL(normalizedUrl, getFrontendPublicationOrigin());
+
+		if (
+			isFrontendPublicationHost(parsedUrl.hostname) ||
+			parsedUrl.hostname.toLowerCase() === LEGACY_HASHNODE_PUBLICATION_HOST ||
+			isHashnodePublicationHost(parsedUrl.hostname)
+		) {
+			return `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
+		}
+	} catch (error) {
+		return normalizedUrl;
+	}
+
+	return normalizedUrl;
 };
