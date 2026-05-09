@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 
 import { AppProvider } from '../components/contexts/appContext';
 import { Header } from '../components/header';
@@ -86,17 +86,29 @@ function SitemapPostsSkeleton() {
 }
 
 function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+	const router = useRouter();
 	const { publication, posts, totalPosts, initialPageInfo } = props;
 	const [sitemapPosts, setSitemapPosts] = useState(posts);
 	const [pageInfo, setPageInfo] = useState<SitemapPageInfo>(initialPageInfo);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
+	const [sitemapSearchQuery, setSitemapSearchQuery] = useState('');
 	const hasMorePosts = Boolean(pageInfo.hasNextPage);
 	const publicationUrl = replaceLegacyPublicationUrl(publication.url) || publication.url;
 	const pubTitle = publication.displayTitle || publication.title;
 
 	const postsByYear = useMemo(() => groupByYear(sitemapPosts), [sitemapPosts]);
 	const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+
+	const submitSitemapSearch = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		const query = sitemapSearchQuery.trim();
+		router.push({
+			pathname: '/search',
+			query: query ? { q: query } : {},
+		});
+	};
 
 	const loadMorePosts = async () => {
 		if (!hasMorePosts || isLoadingMore) return;
@@ -157,6 +169,29 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 								{pubTitle}
 							</Link>
 						</p>
+						<form
+							onSubmit={submitSitemapSearch}
+							className="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row dark:border-slate-800 dark:bg-slate-900/60"
+						>
+							<label className="sr-only" htmlFor="sitemap-search">
+								Search posts
+							</label>
+							<input
+								id="sitemap-search"
+								type="search"
+								value={sitemapSearchQuery}
+								onChange={(event) => setSitemapSearchQuery(event.target.value)}
+								placeholder="Search all posts..."
+								className="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-blue-500 dark:focus:ring-blue-950"
+							/>
+							<button
+								type="submit"
+								className="rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-800"
+							>
+								Search
+							</button>
+						</form>
+
 						<div className="mt-4 flex flex-wrap gap-3 text-sm">
 							<a
 								href="/sitemap/index.xml"
