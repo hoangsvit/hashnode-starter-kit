@@ -98,6 +98,16 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 	const hasMorePosts = Boolean(pageInfo.hasNextPage);
 	const publicationUrl = replaceLegacyPublicationUrl(publication.url) || publication.url;
 	const pubTitle = publication.displayTitle || publication.title;
+	const activeLocale = router.locale ?? 'en';
+	const sitemapDateFormatter = useMemo(
+		() =>
+			new Intl.DateTimeFormat(activeLocale, {
+				day: '2-digit',
+				month: 'short',
+				timeZone: getTimezoneFromLocale(activeLocale),
+			}),
+		[activeLocale],
+	);
 
 	const postsByYear = useMemo(() => groupByYear(sitemapPosts), [sitemapPosts]);
 	const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
@@ -325,8 +335,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 								<ul className="space-y-1">
 									{postsByYear[year].map((post) => {
 										const date = new Date(post.publishedAt);
-										const month = date.toLocaleString('en', { month: 'short' });
-										const day = String(date.getDate()).padStart(2, '0');
+										const formattedDate = sitemapDateFormatter.format(date);
 										return (
 											<li key={post.id}>
 												<Link
@@ -337,7 +346,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 														dateTime={post.publishedAt}
 														className="mt-0.5 w-16 shrink-0 text-xs font-medium tabular-nums text-slate-400 dark:text-slate-500"
 													>
-														{month} {day}
+														{formattedDate}
 													</time>
 													<span className="leading-snug text-slate-700 group-hover:text-blue-600 dark:text-slate-300 dark:group-hover:text-blue-400">
 														{post.title}
