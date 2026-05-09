@@ -133,6 +133,7 @@
 		"showing": "Đang hiển thị {shown} trong tổng số {total} bài viết đã xuất bản trên <publication>{title}</publication>",
 		"searchLabel": "Tìm bài viết",
 		"searchPlaceholder": "Tìm trong tất cả bài viết...",
+		"searching": "Đang tìm kiếm...",
 		"searchButton": "Tìm kiếm",
 		"xmlIndex": "Chỉ mục XML Sitemap",
 		"postsXml": "XML bài viết",

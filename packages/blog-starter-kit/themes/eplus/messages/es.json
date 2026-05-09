@@ -133,6 +133,7 @@
 		"showing": "Mostrando {shown} de {total} artículos publicados en <publication>{title}</publication>",
 		"searchLabel": "Buscar artículos",
 		"searchPlaceholder": "Buscar en todos los artículos...",
+		"searching": "Buscando...",
 		"searchButton": "Buscar",
 		"xmlIndex": "Índice XML del sitemap",
 		"postsXml": "XML de artículos",

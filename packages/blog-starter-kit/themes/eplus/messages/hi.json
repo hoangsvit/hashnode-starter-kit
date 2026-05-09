@@ -133,6 +133,7 @@
 		"showing": "<publication>{title}</publication> पर प्रकाशित कुल {total} लेखों में से {shown} दिखाए जा रहे हैं",
 		"searchLabel": "लेख खोजें",
 		"searchPlaceholder": "सभी लेखों में खोजें...",
+		"searching": "खोजा जा रहा है...",
 		"searchButton": "खोजें",
 		"xmlIndex": "XML साइटमैप इंडेक्स",
 		"postsXml": "लेख XML",

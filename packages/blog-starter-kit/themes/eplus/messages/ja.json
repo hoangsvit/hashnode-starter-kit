@@ -133,6 +133,7 @@
 		"showing": "<publication>{title}</publication>で公開された全{total}件の記事のうち{shown}件を表示しています",
 		"searchLabel": "記事を検索",
 		"searchPlaceholder": "すべての記事を検索...",
+		"searching": "検索中...",
 		"searchButton": "検索",
 		"xmlIndex": "XMLサイトマップインデックス",
 		"postsXml": "記事XML",

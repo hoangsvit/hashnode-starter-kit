@@ -94,6 +94,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 	const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
 	const [sitemapSearchQuery, setSitemapSearchQuery] = useState('');
+	const [isSearching, setIsSearching] = useState(false);
 	const hasMorePosts = Boolean(pageInfo.hasNextPage);
 	const publicationUrl = replaceLegacyPublicationUrl(publication.url) || publication.url;
 	const pubTitle = publication.displayTitle || publication.title;
@@ -101,14 +102,22 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 	const postsByYear = useMemo(() => groupByYear(sitemapPosts), [sitemapPosts]);
 	const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 
-	const submitSitemapSearch = (event: FormEvent<HTMLFormElement>) => {
+	const submitSitemapSearch = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		if (isSearching) return;
 
 		const query = sitemapSearchQuery.trim();
-		router.push({
-			pathname: '/search',
-			query: query ? { q: query } : {},
-		});
+		setIsSearching(true);
+
+		try {
+			await router.push({
+				pathname: '/search',
+				query: query ? { q: query } : {},
+			});
+		} catch (error) {
+			console.error('Error while opening sitemap search', error);
+			setIsSearching(false);
+		}
 	};
 
 	const loadMorePosts = async () => {
@@ -182,6 +191,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 						</p>
 						<form
 							onSubmit={submitSitemapSearch}
+							aria-busy={isSearching}
 							className="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3 sm:flex-row dark:border-slate-800 dark:bg-slate-900/60"
 						>
 							<label className="sr-only" htmlFor="sitemap-search">
@@ -193,13 +203,21 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 								value={sitemapSearchQuery}
 								onChange={(event) => setSitemapSearchQuery(event.target.value)}
 								placeholder={t('sitemap.searchPlaceholder')}
-								className="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-blue-500 dark:focus:ring-blue-950"
+								disabled={isSearching}
+								className="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-blue-500 dark:focus:ring-blue-950"
 							/>
 							<button
 								type="submit"
-								className="rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-800"
+								disabled={isSearching}
+								className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-800"
 							>
-								{t('sitemap.searchButton')}
+								{isSearching && (
+									<span
+										className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+										aria-hidden="true"
+									/>
+								)}
+								{isSearching ? t('sitemap.searching') : t('sitemap.searchButton')}
 							</button>
 						</form>
 

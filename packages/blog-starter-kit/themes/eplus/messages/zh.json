@@ -133,6 +133,7 @@
 		"showing": "正在显示 <publication>{title}</publication> 已发布的 {total} 篇文章中的 {shown} 篇",
 		"searchLabel": "搜索文章",
 		"searchPlaceholder": "搜索所有文章...",
+		"searching": "正在搜索...",
 		"searchButton": "搜索",
 		"xmlIndex": "XML 站点地图索引",
 		"postsXml": "文章 XML",
