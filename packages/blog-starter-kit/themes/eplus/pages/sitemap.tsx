@@ -4,12 +4,16 @@ import { NextIntlClientProvider } from 'next-intl';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useMemo, useState } from 'react';
 
 import { AppProvider } from '../components/contexts/appContext';
 import { Header } from '../components/header';
 import { Layout } from '../components/layout';
 import PublicationFooter from '../components/publication-footer';
 import {
+	MorePostsByPublicationDocument,
+	MorePostsByPublicationQuery,
+	MorePostsByPublicationQueryVariables,
 	PostsByPublicationDocument,
 	PostsByPublicationQuery,
 	PostsByPublicationQueryVariables,
@@ -18,6 +22,7 @@ import { getTimezoneFromLocale } from '../utils/timezone';
 import { replaceLegacyPublicationUrl } from '../utils/urls';
 
 const GQL_ENDPOINT = process.env.NEXT_PUBLIC_HASHNODE_GQL_ENDPOINT;
+const HASHNODE_PUBLICATION_HOST = process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST;
 const SITEMAP_POSTS_LIMIT = 50;
 
 type SitemapPost = {
@@ -26,6 +31,11 @@ type SitemapPost = {
 	slug: string;
 	url: string;
 	publishedAt: string;
+};
+
+type SitemapPageInfo = {
+	endCursor?: string | null;
+	hasNextPage?: boolean | null;
 };
 
 type PostsByYear = Record<string, SitemapPost[]>;
@@ -40,14 +50,82 @@ function groupByYear(posts: SitemapPost[]): PostsByYear {
 	return grouped;
 }
 
+function mapPostToSitemapPost(post: {
+	id: string;
+	title: string;
+	slug: string;
+	url: string;
+	publishedAt: string;
+}): SitemapPost {
+	return {
+		id: post.id,
+		title: post.title,
+		slug: post.slug,
+		url: replaceLegacyPublicationUrl(post.url) || post.url,
+		publishedAt: post.publishedAt,
+	};
+}
+
+function sortPostsNewestFirst(posts: SitemapPost[]): SitemapPost[] {
+	return [...posts].sort(
+		(a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+	);
+}
+
+function SitemapPostsSkeleton() {
+	return (
+		<div className="space-y-3" aria-hidden="true">
+			{Array.from({ length: 5 }).map((_, index) => (
+				<div key={index} className="flex animate-pulse items-center gap-3 rounded-lg px-3 py-2.5">
+					<div className="h-3 w-16 shrink-0 rounded-full bg-slate-200 dark:bg-slate-800" />
+					<div className="h-4 flex-1 rounded-full bg-slate-200 dark:bg-slate-800" />
+				</div>
+			))}
+		</div>
+	);
+}
+
 function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-	const { publication, posts, totalPosts } = props;
-	const hasMorePosts = totalPosts > posts.length;
+	const { publication, posts, totalPosts, initialPageInfo } = props;
+	const [sitemapPosts, setSitemapPosts] = useState(posts);
+	const [pageInfo, setPageInfo] = useState<SitemapPageInfo>(initialPageInfo);
+	const [isLoadingMore, setIsLoadingMore] = useState(false);
+	const [loadMoreError, setLoadMoreError] = useState<string | null>(null);
+	const hasMorePosts = Boolean(pageInfo.hasNextPage);
 	const publicationUrl = replaceLegacyPublicationUrl(publication.url) || publication.url;
 	const pubTitle = publication.displayTitle || publication.title;
 
-	const postsByYear = groupByYear(posts);
+	const postsByYear = useMemo(() => groupByYear(sitemapPosts), [sitemapPosts]);
 	const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+
+	const loadMorePosts = async () => {
+		if (!hasMorePosts || isLoadingMore) return;
+
+		setIsLoadingMore(true);
+		setLoadMoreError(null);
+
+		try {
+			const data = await request<MorePostsByPublicationQuery, MorePostsByPublicationQueryVariables>(
+				GQL_ENDPOINT,
+				MorePostsByPublicationDocument,
+				{
+					host: HASHNODE_PUBLICATION_HOST,
+					first: SITEMAP_POSTS_LIMIT,
+					after: pageInfo.endCursor,
+				},
+			);
+
+			const nextPosts =
+				data.publication?.posts.edges.map((edge) => mapPostToSitemapPost(edge.node)) || [];
+			setSitemapPosts((currentPosts) => sortPostsNewestFirst([...currentPosts, ...nextPosts]));
+			setPageInfo(data.publication?.posts.pageInfo || { endCursor: null, hasNextPage: false });
+		} catch (error) {
+			console.error('Error while loading more sitemap posts', error);
+			setLoadMoreError('Could not load more posts. Please try again.');
+		} finally {
+			setIsLoadingMore(false);
+		}
+	};
 
 	return (
 		<AppProvider publication={publication}>
@@ -58,7 +136,7 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 					<link rel="canonical" href={`${publicationUrl}/sitemap`} />
 					<meta
 						name="description"
-						content={`Browse the latest ${posts.length} of ${totalPosts} articles published on ${pubTitle}.`}
+						content={`Browse ${sitemapPosts.length} of ${totalPosts} articles published on ${pubTitle}.`}
 					/>
 				</Head>
 
@@ -71,14 +149,13 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 							Sitemap
 						</h1>
 						<p className="text-slate-500 dark:text-slate-400">
-							Showing the latest {posts.length} of {totalPosts} articles published on{' '}
+							Showing {sitemapPosts.length} of {totalPosts} articles published on{' '}
 							<Link
 								href="/"
 								className="font-medium text-blue-600 hover:underline dark:text-blue-400"
 							>
 								{pubTitle}
 							</Link>
-							{hasMorePosts ? ' for faster page loading.' : '.'}
 						</p>
 						<div className="mt-4 flex flex-wrap gap-3 text-sm">
 							<a
@@ -145,14 +222,6 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 							</a>
 						</div>
 					</div>
-
-					{hasMorePosts && (
-						<div className="mb-8 rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-800 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-200">
-							This page loads only the newest {SITEMAP_POSTS_LIMIT} posts to stay fast. Use the XML
-							sitemaps above for the full search-engine sitemap.
-						</div>
-					)}
-
 					{/* Quick year nav */}
 					{years.length > 1 && (
 						<nav className="mb-8 flex flex-wrap gap-2" aria-label="Jump to year">
@@ -214,7 +283,28 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 						))}
 					</div>
 
-					{posts.length === 0 && (
+					{isLoadingMore && <SitemapPostsSkeleton />}
+
+					{loadMoreError && (
+						<p className="mt-6 text-center text-sm text-red-600 dark:text-red-400">
+							{loadMoreError}
+						</p>
+					)}
+
+					{hasMorePosts && (
+						<div className="mt-10 flex justify-center">
+							<button
+								type="button"
+								onClick={loadMorePosts}
+								disabled={isLoadingMore}
+								className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-200"
+							>
+								{isLoadingMore ? 'Loading posts...' : 'Load more posts'}
+							</button>
+						</div>
+					)}
+
+					{sitemapPosts.length === 0 && (
 						<p className="py-16 text-center text-slate-500 dark:text-slate-400">
 							No articles found.
 						</p>
@@ -259,7 +349,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 		GQL_ENDPOINT,
 		PostsByPublicationDocument,
 		{
-			host: process.env.NEXT_PUBLIC_HASHNODE_PUBLICATION_HOST,
+			host: HASHNODE_PUBLICATION_HOST,
 			first: SITEMAP_POSTS_LIMIT,
 		},
 	);
@@ -270,16 +360,9 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 	}
 
 	// Load only the first page of posts so the HTML sitemap can render quickly.
-	const posts: SitemapPost[] = publication.posts.edges.map((edge) => ({
-		id: edge.node.id,
-		title: edge.node.title,
-		slug: edge.node.slug,
-		url: replaceLegacyPublicationUrl(edge.node.url) || edge.node.url,
-		publishedAt: edge.node.publishedAt,
-	}));
-
-	// Sort newest first
-	posts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+	const posts = sortPostsNewestFirst(
+		publication.posts.edges.map((edge) => mapPostToSitemapPost(edge.node)),
+	);
 
 	return {
 		props: {
@@ -287,6 +370,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 			publication,
 			posts,
 			totalPosts: publication.posts.totalDocuments || posts.length,
+			initialPageInfo: publication.posts.pageInfo,
 		},
 	};
 };
