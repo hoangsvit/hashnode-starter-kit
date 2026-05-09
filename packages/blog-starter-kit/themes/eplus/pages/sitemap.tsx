@@ -99,14 +99,16 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 	const publicationUrl = replaceLegacyPublicationUrl(publication.url) || publication.url;
 	const pubTitle = publication.displayTitle || publication.title;
 
+	const trimmedSearchQuery = sitemapSearchQuery.trim();
+	const isSearchDisabled = isSearching || trimmedSearchQuery.length === 0;
 	const postsByYear = useMemo(() => groupByYear(sitemapPosts), [sitemapPosts]);
 	const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
 
 	const submitSitemapSearch = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		if (isSearching) return;
+		if (isSearchDisabled) return;
 
-		const query = sitemapSearchQuery.trim();
+		const query = trimmedSearchQuery;
 		setIsSearching(true);
 
 		try {
@@ -204,11 +206,12 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 								onChange={(event) => setSitemapSearchQuery(event.target.value)}
 								placeholder={t('sitemap.searchPlaceholder')}
 								disabled={isSearching}
+								required
 								className="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-70 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-blue-500 dark:focus:ring-blue-950"
 							/>
 							<button
 								type="submit"
-								disabled={isSearching}
+								disabled={isSearchDisabled}
 								className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-70 dark:bg-blue-500 dark:hover:bg-blue-400 dark:focus:ring-blue-800"
 							>
 								{isSearching && (
