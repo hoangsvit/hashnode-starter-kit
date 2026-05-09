@@ -191,10 +191,14 @@ function SitemapPage(props: InferGetServerSidePropsType<typeof getServerSideProp
 				},
 			);
 
-			const nextPosts =
-				data.publication?.posts.edges.map((edge) => mapPostToSitemapPost(edge.node)) || [];
+			const nextPostsConnection = data.publication?.posts;
+			if (!nextPostsConnection?.pageInfo) {
+				throw new Error('Missing publication posts while loading more sitemap posts');
+			}
+
+			const nextPosts = nextPostsConnection.edges.map((edge) => mapPostToSitemapPost(edge.node));
 			setSitemapPosts((currentPosts) => mergePostsNewestFirst(currentPosts, nextPosts));
-			setPageInfo(data.publication?.posts.pageInfo || { endCursor: null, hasNextPage: false });
+			setPageInfo(nextPostsConnection.pageInfo);
 		} catch (error) {
 			console.error('Error while loading more sitemap posts', error);
 			setLoadMoreError(t('sitemap.loadMoreError'));
