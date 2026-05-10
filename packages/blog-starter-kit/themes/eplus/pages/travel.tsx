@@ -35,28 +35,28 @@ const travelStops: TravelStop[] = [
 		flag: '🇸🇬',
 		status: 'visited',
 		description: 'Một điểm dừng hiện đại, xanh và rất dễ khám phá bằng MRT.',
-		position: { x: 50, y: 82 },
+		position: { x: 500, y: 575 },
 	},
 	{
 		country: 'Thái Lan',
 		flag: '🇹🇭',
 		status: 'visited',
 		description: 'Ẩm thực đường phố, chùa chiền và nhịp sống đầy năng lượng.',
-		position: { x: 42, y: 62 },
+		position: { x: 420, y: 410 },
 	},
 	{
 		country: 'Đài Loan',
 		flag: '🇹🇼',
 		status: 'visited',
 		description: 'Chợ đêm, trà sữa và những cung đường núi ven biển đáng nhớ.',
-		position: { x: 70, y: 43 },
+		position: { x: 720, y: 300 },
 	},
 	{
 		country: 'Trung Quốc',
 		flag: '🇨🇳',
 		status: 'next',
 		description: 'Điểm đến tiếp theo trong hành trình khám phá châu Á.',
-		position: { x: 60, y: 30 },
+		position: { x: 585, y: 205 },
 	},
 ];
 
@@ -126,32 +126,136 @@ export default function TravelPage({ publication }: Props) {
 								</div>
 							</div>
 
-							<div className="relative min-h-[24rem] overflow-hidden rounded-[2rem] border border-white/70 bg-sky-100/80 p-4 shadow-inner dark:border-slate-800 dark:bg-sky-950/30">
-								<div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.28),transparent_28%),radial-gradient(circle_at_80%_30%,rgba(34,197,94,0.24),transparent_24%),radial-gradient(circle_at_50%_80%,rgba(251,191,36,0.28),transparent_22%)]" />
-								<div className="absolute inset-x-8 top-1/2 h-px -rotate-12 bg-white/80 dark:bg-white/20" />
-								<div className="absolute inset-y-10 left-1/2 w-px rotate-12 bg-white/80 dark:bg-white/20" />
-
-								{travelStops.map((stop) => (
-									<div
-										key={stop.country}
-										className="absolute -translate-x-1/2 -translate-y-1/2"
-										style={{ left: `${stop.position.x}%`, top: `${stop.position.y}%` }}
-									>
-										<div
-											className={`flex h-14 w-14 items-center justify-center rounded-full text-2xl shadow-lg ring-4 ${
-												stop.status === 'next'
-													? 'animate-pulse bg-amber-400 ring-amber-200 dark:bg-amber-300 dark:ring-amber-900'
-													: 'bg-white ring-sky-200 dark:bg-slate-900 dark:ring-sky-900'
-											}`}
-											aria-label={stop.country}
+							<div className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-sky-100 shadow-2xl shadow-sky-900/10 ring-1 ring-sky-200/70 dark:border-slate-800 dark:bg-sky-950/30 dark:ring-sky-900/50">
+								<svg
+									className="h-[28rem] w-full"
+									role="img"
+									viewBox="0 0 1000 680"
+									aria-label="Bản đồ hành trình qua Singapore, Thái Lan, Đài Loan và Trung Quốc"
+								>
+									<defs>
+										<linearGradient id="travelOcean" x1="0" x2="1" y1="0" y2="1">
+											<stop offset="0%" stopColor="#bae6fd" />
+											<stop offset="45%" stopColor="#e0f2fe" />
+											<stop offset="100%" stopColor="#fef3c7" />
+										</linearGradient>
+										<filter
+											id="mapShadow"
+											colorInterpolationFilters="sRGB"
+											x="-20%"
+											y="-20%"
+											width="140%"
+											height="140%"
 										>
-											{stop.flag}
-										</div>
-										<span className="mt-2 block whitespace-nowrap rounded-full bg-white/90 px-3 py-1 text-center text-xs font-bold text-slate-700 shadow-sm dark:bg-slate-950/90 dark:text-slate-200">
-											{stop.country}
-										</span>
-									</div>
-								))}
+											<feDropShadow
+												dx="0"
+												dy="12"
+												floodColor="#0f172a"
+												floodOpacity="0.16"
+												stdDeviation="12"
+											/>
+										</filter>
+									</defs>
+
+									<rect width="1000" height="680" fill="url(#travelOcean)" />
+									<g stroke="#38bdf8" strokeDasharray="5 18" strokeOpacity="0.32" strokeWidth="1">
+										<path d="M120 110H900" />
+										<path d="M90 250H930" />
+										<path d="M80 390H940" />
+										<path d="M130 530H890" />
+										<path d="M250 70V620" />
+										<path d="M500 45V635" />
+										<path d="M750 70V620" />
+									</g>
+
+									<g filter="url(#mapShadow)">
+										<path
+											d="M430 130L505 92L620 96L720 145L790 222L760 285L678 310L605 288L552 326L475 308L410 260L370 196Z"
+											className="fill-emerald-100 stroke-emerald-500/60 dark:fill-emerald-900/60 dark:stroke-emerald-500/60"
+											strokeWidth="2"
+										/>
+										<path
+											d="M393 340L440 360L470 420L456 486L498 535L480 590L425 535L398 472L368 430L374 372Z"
+											className="fill-emerald-100 stroke-emerald-500/60 dark:fill-emerald-900/60 dark:stroke-emerald-500/60"
+											strokeWidth="2"
+										/>
+										<path
+											d="M704 266C730 280 743 315 724 354C699 328 694 292 704 266Z"
+											className="fill-emerald-100 stroke-emerald-500/60 dark:fill-emerald-900/60 dark:stroke-emerald-500/60"
+											strokeWidth="2"
+										/>
+										<path
+											d="M487 560C506 554 526 561 535 578C522 590 497 590 482 578Z"
+											className="fill-emerald-100 stroke-emerald-500/60 dark:fill-emerald-900/60 dark:stroke-emerald-500/60"
+											strokeWidth="2"
+										/>
+									</g>
+
+									<path
+										d="M500 575C452 535 401 485 420 410C474 351 626 363 720 300C666 269 620 242 585 205"
+										fill="none"
+										stroke="#f97316"
+										strokeDasharray="12 14"
+										strokeLinecap="round"
+										strokeWidth="5"
+									/>
+
+									{travelStops.map((stop) => (
+										<g
+											key={stop.country}
+											transform={`translate(${stop.position.x} ${stop.position.y})`}
+										>
+											<circle
+												r={stop.status === 'next' ? 25 : 20}
+												className={
+													stop.status === 'next'
+														? 'fill-amber-400 stroke-white dark:fill-amber-300 dark:stroke-amber-950'
+														: 'fill-sky-600 stroke-white dark:fill-sky-400 dark:stroke-sky-950'
+												}
+												strokeWidth="6"
+											/>
+											<text dominantBaseline="central" fontSize="22" textAnchor="middle">
+												{stop.flag}
+											</text>
+											<text
+												className="fill-slate-800 font-bold dark:fill-white"
+												fontSize="22"
+												textAnchor="middle"
+												y="48"
+											>
+												{stop.country}
+											</text>
+										</g>
+									))}
+
+									<g transform="translate(40 590)">
+										<rect
+											className="fill-white/85 dark:fill-slate-950/80"
+											width="238"
+											height="54"
+											rx="18"
+										/>
+										<circle className="fill-sky-600 dark:fill-sky-400" cx="26" cy="27" r="7" />
+										<text
+											className="fill-slate-700 text-xs font-semibold dark:fill-slate-200"
+											x="42"
+											y="32"
+										>
+											Đã đi
+										</text>
+										<circle className="fill-amber-400" cx="126" cy="27" r="7" />
+										<text
+											className="fill-slate-700 text-xs font-semibold dark:fill-slate-200"
+											x="142"
+											y="32"
+										>
+											Sắp đi
+										</text>
+									</g>
+								</svg>
+								<div className="absolute right-4 top-4 rounded-full bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-slate-600 shadow-sm dark:bg-slate-950/80 dark:text-slate-300">
+									Asia route · not to scale
+								</div>
 							</div>
 						</div>
 					</section>
